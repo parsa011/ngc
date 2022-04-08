@@ -1,0 +1,12 @@
+*.o
+*.out
+*.swp
+bin/
+obj/
+src/.deps
+dist/
+autom4te.cache/
+tags
+TAGS
+.vscode/
+.VSCodeCounter
