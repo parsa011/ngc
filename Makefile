@@ -11,23 +11,27 @@ BINARY   = $(BINDIR)/Program.bin
 
 HCOLOR   = \033[32m
 RCOLOR   = \033[0m
+
+define write_help
+	@echo "$(HCOLOR)$1$(RCOLOR)    $2"
+endef
+export HEADER
+
 #-include $(DEPS)
 
 help:
-	@echo "$(HCOLOR)build$(RCOLOR)    build world, all of language"
-	@echo "$(HCOLOR)parser$(RCOLOR)    build parser"
-	@echo "$(HCOLOR)lexer$(RCOLOR)     build lexer"
-	@echo "$(HCOLOR)ast$(RCOLOR)       build abstract sytanx tree"
-	@echo "$(HCOLOR)CG$(RCOLOR)        build Code Generator"
-	
-	@echo "$(HCOLOR)tests\033[0m     build world and run tests in tests folder"
-	@echo "$(HCOLOR)  test-lexer$(RCOLOR)     test just lexer of language"
-	@echo "$(HCOLOR)  test-parser$(RCOLOR)    test just parserof language"
-	@echo "$(HCOLOR)  test-ast$(RCOLOR)       test ast"
-	@echo "$(HCOLOR)  test-cg$(RCOLOR)        test code generator"
-	
-	@echo "$(HCOLOR)install$(RCOLOR)   install language on your machine"
-	@echo "$(HCOLOR)doc$(RCOLOR)       create documents and help files"
+	$(call write_help,build,   build world, all of language)
+	$(call write_help,parser,  build parser)
+	$(call write_help,lexer,   build lexer)
+	$(call write_help,ast,     build abstract sytanx tree)
+	$(call write_help,CG,      build Code Generator)
+	$(call write_help,tests,   build world and run tests in tests folder)
+	$(call write_help,  test-lexer,  test just lexer of language)
+	$(call write_help,  test-parser, test just parserof language)
+	$(call write_help,  test-ast,    test test ast)
+	$(call write_help,  test-cg,     test code generator)
+	$(call write_help,install, install language on your machine)
+	$(call write_help,doc,     create documents and help files)
 
 all : help
 	
