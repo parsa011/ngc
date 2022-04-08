@@ -9,8 +9,10 @@ OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o)) # main.o say_hel
 DEPS     = $(OBJECTS:.o=.d)
 BINARY   = $(BINDIR)/Program.bin
 
-HCOLOR   = \033[32m # reset color for help messages
-RCOLOR   = \033[0m	# reset color sequence
+# Help Color
+HCOLOR   = \033[32m
+# Reset Sequence
+RCOLOR   = \033[0m
 
 define write_help
 	@echo "$(HCOLOR)$1$(RCOLOR)    $2"
