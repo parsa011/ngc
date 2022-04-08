@@ -4,8 +4,10 @@ SRCDIR	 = src
 OBJDIR	 = obj
 BINDIR	 = bin
 
-SOURCES  = $(shell find $(SRCDIR) -type f -name '*.c') # fine c files in SRCDIR folder
-OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o)) # main.o say_hello.o
+# fine c files in SRCDIR folder
+SOURCES  = $(shell find $(SRCDIR) -type f -name '*.c')
+# main.o say_hello.o
+OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
 DEPS     = $(OBJECTS:.o=.d)
 BINARY   = $(BINDIR)/Program.bin
 
@@ -21,6 +23,8 @@ export HEADER
 
 #-include $(DEPS)
 
+.PHONY: help build
+
 help:
 	$(call write_help,build,   build world, all of language)
 	$(call write_help,parser,  build parser)
@@ -34,9 +38,10 @@ help:
 	$(call write_help,  test-cg,     test code generator)
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
-
-all : help
 	
+build:
+	@echo "TODO"
+
 #
 #buildsolution: dir $(BINARY)
 #
