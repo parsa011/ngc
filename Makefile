@@ -22,8 +22,9 @@ export HEADER
 
 help:
 	$(call write_help,build,   build world, all of language)
-	$(call write_help,parser,  build parser)
 	$(call write_help,lexer,   build lexer)
+	$(call write_help,token,   build token)
+	$(call write_help,parser,  build parser)
 	$(call write_help,ast,     build abstract sytanx tree)
 	$(call write_help,CG,      build Code Generator)
 	$(call write_help,tests,   build world and run tests in tests folder)
@@ -34,12 +35,15 @@ help:
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
 	
-build:
+build: lexer token
 	@echo "TODO"
 
 
 lexer :
 	@cd $(SRCDIR)/lexer ; make all
+
+token :
+	@cd $(SRCDIR)/token ; make all
 
 #
 #buildsolution: dir $(BINARY)
@@ -56,5 +60,5 @@ lexer :
 #    $(CC) $(CFLAGS) -c -MMD -MP -o $@ $<
 #
 
-#clean:
- #   echo "clean runing..."
+clean:
+	cd $(OBJDIR) ; rm -rf *
