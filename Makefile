@@ -1,15 +1,10 @@
-CC       =  gcc
-CFLAGS	 = -g -Wall -I.
+CC       = gcc
 SRCDIR	 = src
-OBJDIR	 = obj
-BINDIR	 = bin
+OBJDIR	 = build 
 
-# fine c files in SRCDIR folder
-SOURCES  = $(shell find $(SRCDIR) -type f -name '*.c')
-# main.o say_hello.o
-OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
-DEPS     = $(OBJECTS:.o=.d)
-BINARY   = $(BINDIR)/Program.bin
+# main.o 
+#OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
+#DEPS     = $(OBJECTS:.o=.d)
 
 # Help Color
 HCOLOR   = \033[32m
@@ -41,6 +36,10 @@ help:
 	
 build:
 	@echo "TODO"
+
+
+lexer :
+	@cd $(SRCDIR)/lexer ; make all
 
 #
 #buildsolution: dir $(BINARY)
