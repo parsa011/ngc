@@ -31,8 +31,11 @@ $(BUILD_DIR): $(OBJS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c
-	mkdir -p $(dir $@)
+	@$(call change_color, \033[35m)
+	@mkdir -p $(dir $@)
+	@echo "Building Lexer : "
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	@$(call reset_color)
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those

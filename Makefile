@@ -6,15 +6,27 @@ OBJDIR	 = build
 #OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
 #DEPS     = $(OBJECTS:.o=.d)
 
-# Help Color
-HCOLOR   = \033[32m
+# Colors
+GREENCOLOR   = \033[32m
+PURPLECOLOR  = \033[35m
+
 # Reset Sequence
 RCOLOR   = \033[0m
 
 define write_help
-	@echo "$(HCOLOR)$1$(RCOLOR)    $2"
+	@echo "$(GREENCOLOR)$1$(RCOLOR)    $2"
 endef
-export HEADER
+export write_help
+
+define change_color
+	@echo "$(1)"
+endef
+export change_color
+
+define reset_color
+	@echo "$(RCOLOR)"
+endef
+export reset_color
 
 #-include $(DEPS)
 
@@ -37,7 +49,6 @@ help:
 	
 build: lexer token
 	@echo "TODO"
-
 
 lexer :
 	@cd $(SRCDIR)/lexer ; make all
