@@ -50,11 +50,8 @@ help:
 build: lexer token
 	@echo "TODO"
 
-lexer :
-	@cd $(SRCDIR)/lexer ; make all
-
-token :
-	@cd $(SRCDIR)/token ; make all
+lexer token:
+	@cd $(SRCDIR)/$@ ; make all
 
 #
 #buildsolution: dir $(BINARY)
