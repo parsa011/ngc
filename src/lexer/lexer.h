@@ -9,6 +9,7 @@
 */
 
 #include "../ngc.h"
+#include <stdio.h>
 
 struct position {
 	int line;

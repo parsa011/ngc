@@ -6,3 +6,4 @@
 *	This file is part of ngc languge (new generation c)
 */
 
+#include "lexer.h"
