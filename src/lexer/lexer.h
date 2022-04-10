@@ -11,11 +11,6 @@
 #include "../ngc.h"
 #include <stdio.h>
 
-struct position {
-	int line;
-	int col;
-};
-
 struct lexer {
 	FILE *fp;
 	char *file_name;

@@ -8,11 +8,21 @@
 *	This file is part of ngc languge (new generation c)
 */
 
+#include <stdbool.h>
+
 /*
  *	These are some basic definitions, for readablity we define extern as public
  *	and private as static
  */
 #define public extern
 #define private static
+
+/*
+ *	@brief : just a simple struct to hold position of something, (it can be token and ...)
+ */
+struct position {
+	int line;
+	int col;
+};
 
 #endif
