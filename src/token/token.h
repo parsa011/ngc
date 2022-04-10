@@ -204,4 +204,11 @@ char *token_type_str[] = {
 	"T_BAD"
 };
 
+
+/*
+ *	@brief : return Token string from token_type_str array , panic if token id was not valid
+ */
+public char *get_token_str(int);
+
+
 #endif
