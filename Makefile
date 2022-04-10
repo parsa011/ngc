@@ -32,6 +32,8 @@ export reset_color
 
 .PHONY: help build
 
+BUILDS = lexer token
+
 help:
 	$(call write_help,build,   build world, all of language)
 	$(call write_help,lexer,   build lexer)
@@ -47,10 +49,9 @@ help:
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
 	
-build: lexer token
-	@echo "TODO"
+build: $(BUILDS)
 
-lexer token:
+$(BUILDS):
 	@cd $(SRCDIR)/$@ ; make all
 
 #
@@ -69,4 +70,4 @@ lexer token:
 #
 
 clean:
-	cd $(OBJDIR) ; rm -rf *
+	cd $(OBJDIR) ; rm -rfv *
