@@ -14,7 +14,7 @@ $(BUILD_DIR): $(OBJS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c
-	@$(call change_color, \033[35m)
+	@$(call change_color, $(PURPLECOLOR))
 	@mkdir -p $(dir $@)
 	@echo "Building Token : "
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@

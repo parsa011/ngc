@@ -1,3 +1,5 @@
+include scripts/colors.mk
+
 CC       		= gcc
 SRCDIR	 		= src
 CWD				= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
@@ -13,27 +15,9 @@ CONFIG_FILE 	= $(PREFIX)config.h
 CONFIGURE_FILE  = $(PREFIX)scripts/configure.sh
 PHONY 			=
 
-# Colors
-GREENCOLOR   = \033[32m
-PURPLECOLOR  = \033[35m
-
-# Reset Sequence
-RCOLOR   = \033[0m
-
 define write_help
 	@echo "$(GREENCOLOR)$1$(RCOLOR)    $2"
 endef
-export write_help
-
-define change_color
-	@echo "$(1)"
-endef
-export change_color
-
-define reset_color
-	@echo "$(RCOLOR)"
-endef
-export reset_color
 
 PHONY = help build
 
@@ -42,7 +26,7 @@ ifeq ($(wildcard $(CONFIG_FILE)),)
 PHONY = info
 info :
 	@echo "Please run 'bash $(CONFIGURE_FILE)' or 'make config' Before Building"
-	@exit
+
 else
 
 BUILDS = lexer token util
