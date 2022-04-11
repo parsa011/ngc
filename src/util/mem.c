@@ -8,6 +8,8 @@
 
 #include "mem.h"
 
+#include "basic.h"
+
 #include <stdlib.h>
 #include <assert.h>
 

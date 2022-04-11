@@ -10,6 +10,8 @@
 
 #include <stdbool.h>
 
+#include "util/mem.h"
+
 /*
  *	These are some basic definitions, for readablity we define extern as public
  *	and private as static
