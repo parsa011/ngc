@@ -37,7 +37,7 @@ public struct lexer *lexer_init(char *);
  *	@brief : Clsoe given lexer
  *		- lexder to clsoe and free
  */
-public void lexer_close(struct lexder *);
+public void lexer_close(struct lexer *);
 
 /*
  *	@brief : Return new char from given file, but If There isn't Anything Saved Char
