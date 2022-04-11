@@ -17,8 +17,9 @@ $(BUILD_DIR): $(OBJS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
-	@$(call change_color, $(PURPLECOLOR))
 	@mkdir -p $(dir $@)
+	@$(call change_color, $(RCOLOR))
 	@echo "Building Lexer : "
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	@echo " - Compile $(GREENCOLOR)$(<)$(RCOLOR)" 
 	@$(call reset_color)
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
