@@ -32,7 +32,7 @@ export reset_color
 
 .PHONY: help build
 
-BUILDS = lexer token
+BUILDS = lexer token util
 
 help:
 	$(call write_help,build,   build world, all of language)
@@ -46,6 +46,7 @@ help:
 	$(call write_help,  test-parser, test just parserof language)
 	$(call write_help,  test-ast,    test test ast)
 	$(call write_help,  test-cg,     test code generator)
+	$(call write_help,util, compile utility function)
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
 	
