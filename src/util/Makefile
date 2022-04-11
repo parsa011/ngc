@@ -1,3 +1,5 @@
+include ../../scripts/colors.mk
+
 BUILD_DIR := ../../build
 SRC_DIRS := .
 

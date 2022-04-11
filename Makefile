@@ -23,7 +23,6 @@ PHONY = help build
 
 # check if used runned configure.sh or no (config.h file should exist)
 ifeq ($(wildcard $(CONFIG_FILE)),)
-PHONY = info
 info :
 	@echo "Please run 'bash $(CONFIGURE_FILE)' or 'make config' Before Building"
 
