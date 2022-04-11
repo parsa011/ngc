@@ -206,6 +206,7 @@ char *token_type_str[] = {
 
 struct token {
 	int type;
+	struct position pos;
 };
 
 /*
