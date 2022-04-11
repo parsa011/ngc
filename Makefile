@@ -1,10 +1,17 @@
-CC       = gcc
-SRCDIR	 = src
-OBJDIR	 = build 
+CC       		= gcc
+SRCDIR	 		= src
+CWD				= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-# main.o 
-#OBJECTS  = $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
-#DEPS     = $(OBJECTS:.o=.d)
+ifneq ($(findstring ngc/src,$(CWD)),ngc/src)
+PREFIX 			= ./
+else
+PREFIX 			= ../../
+endif
+
+BUILDDIR		= $(PREFIX)build 
+CONFIG_FILE 	= $(PREFIX)config.h
+CONFIGURE_FILE  = $(PREFIX)scripts/configure.sh
+PHONY 			=
 
 # Colors
 GREENCOLOR   = \033[32m
@@ -28,9 +35,15 @@ define reset_color
 endef
 export reset_color
 
-#-include $(DEPS)
+PHONY = help build
 
-.PHONY: help build
+# check if used runned configure.sh or no (config.h file should exist)
+ifeq ($(wildcard $(CONFIG_FILE)),)
+PHONY = info
+info :
+	@echo "Please run 'bash $(CONFIGURE_FILE)' or 'make config' Before Building"
+	@exit
+else
 
 BUILDS = lexer token util
 
@@ -46,7 +59,7 @@ help:
 	$(call write_help,  test-parser, test just parserof language)
 	$(call write_help,  test-ast,    test test ast)
 	$(call write_help,  test-cg,     test code generator)
-	$(call write_help,util, compile utility function)
+	$(call write_help,util,    compile utility function)
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
 	
@@ -55,20 +68,11 @@ build: $(BUILDS)
 $(BUILDS):
 	@cd $(SRCDIR)/$@ ; make all
 
-#
-#buildsolution: dir $(BINARY)
-#
-#dir:
-#	# create folder with p switch to prevent of showing error when they exists
-#    mkdir -p $(OBJDIR)
-#    mkdir -p $(BINDIR)
-#
-#$(BINARY): $(OBJECTS)
-#    $(CC) $(CFLAGS) $^ -o $@
-#
-#$(OBJDIR)/%.o: $(SRCDIR)/%.c
-#    $(CC) $(CFLAGS) -c -MMD -MP -o $@ $<
-#
-
 clean:
-	cd $(OBJDIR) ; rm -rfv *
+	cd $(BUILDDIR) ; rm -rfv *
+
+.PHONY: $(PHONY)
+endif
+
+config :
+	bash $(CONFIGURE_FILE)
