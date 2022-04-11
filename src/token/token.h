@@ -207,6 +207,18 @@ char *token_type_str[] = {
 struct token {
 	int type;
 	struct position pos;
+
+	union
+	{
+		struct
+		{
+			const char* string;
+			size_t str_length;
+		};
+
+		double real;
+		lexint_t integer;
+	};
 };
 
 /*
@@ -221,13 +233,13 @@ public char *get_token_str(int);
 public struct token *token_init(token_type type);
 
 /*
- *	@brief : free given token
- */
-public void token_free(struct token *);
-
-/*
  *	@brief : make a duplicate of given token
  */
 public struct token *token_duplicate(struct token *);
+
+/*
+ *	@brief : free given token
+ */
+public void token_free(struct token *);
 
 #endif
