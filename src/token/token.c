@@ -8,6 +8,11 @@
 
 #include "token.h"
 
+public struct token *token_init(token_type type)
+{
+	return NULL;
+}
+
 /*
  *	TODO : panic if id was out or token_type_str array range
  */

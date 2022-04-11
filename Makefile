@@ -7,7 +7,7 @@ CWD				= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 ifneq ($(findstring ngc/src,$(CWD)),ngc/src)
 PREFIX 			= ./
 else
-PREFIX 			= ../../
+PREFIX 			= ../
 endif
 
 BUILDDIR		= $(PREFIX)build 
@@ -45,11 +45,14 @@ help:
 	$(call write_help,util,    compile utility function)
 	$(call write_help,install, install language on your machine)
 	$(call write_help,doc,     create documents and help files)
-	
-build: $(BUILDS)
+
+world :
+	cd $(SRCDIR); make ngc
 
 $(BUILDS):
 	@cd $(SRCDIR)/$@ ; make all
+
+remake : clean build
 
 clean:
 	cd $(BUILDDIR) ; rm -rfv *

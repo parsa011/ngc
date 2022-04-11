@@ -3,6 +3,7 @@
 *.swp
 bin/
 config.h
+build/*
 obj/
 src/.deps
 dist/
