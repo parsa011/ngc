@@ -10,7 +10,7 @@
 
 #include "../ngc.h"
 
-enum {
+typedef enum {
 	T_EOF,
 
 	T_PLUS, 		// +
@@ -204,11 +204,29 @@ char *token_type_str[] = {
 	"T_BAD"
 };
 
+struct token {
+	int type;
+};
 
 /*
  *	@brief : return Token string from token_type_str array , panic if token id was not valid
  */
 public char *get_token_str(int);
 
+/*
+ *	@brief : create and return new token
+ *	dont forget to make token free after use :)
+ */
+public struct token *token_init(token_type type);
+
+/*
+ *	@brief : free given token
+ */
+public void token_free(struct token *);
+
+/*
+ *	@brief : make a duplicate of given token
+ */
+public struct token *token_duplicate(struct token *);
 
 #endif

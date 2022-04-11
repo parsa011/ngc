@@ -8,7 +8,6 @@
 
 #include "token.h"
 
-
 /*
  *	TODO : panic if id was out or token_type_str array range
  */
