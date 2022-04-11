@@ -2,6 +2,7 @@
 *.out
 *.swp
 bin/
+config.h
 obj/
 src/.deps
 dist/
