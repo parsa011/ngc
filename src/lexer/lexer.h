@@ -24,14 +24,33 @@ struct lexer {
 	/* I/O functions */
 	void (*open_file)(struct lexer *, char *);
 	void (*close_file)(struct lexer *);
-
 };
+
+/*
+ *	pointer to lexer that we are working with
+ */
+private struct lexer *working_lexer; 
 
 /*
  *	@brief : Init new lexer, open file by give name and return pointer to lexer
  *		- name of file to open in lexer
  */
 public struct lexer *lexer_init();
+
+/*
+ *	@brief : set working_lexer variable to given lexer pointer
+ */
+public void set_working_lexer(struct lexer *);
+
+/*
+ *	@brief : test if give lexer is working_lexer
+ */
+public bool is_current_lexer(struct lexer *l);
+
+/*
+ *	@brief : lex given lexer and find new token of it
+ */
+public void lex(struct lexer *l);
 
 /*
  *	@brief : Clsoe given lexer
