@@ -107,15 +107,15 @@ typedef enum {
 	T_BAD
 } token_type;
 
-char *token_type_str[] = {
+private char *token_type_str[] = {
 	"T_EOF",
 
 	"T_PLUS", 		// +
 	"T_DASH",		// -
 	"T_STAR",		// *
 	"T_SLASH",		// /
-	"T_PERCENT,"	// %
-	"T_PIPE,"		// |
+	"T_PERCENT",	// %
+	"T_PIPE",		// |
 	"T_PIPEPIPE",	// ||
 	"T_EQUAL",		// =
 	"T_AND",		// &
@@ -140,23 +140,23 @@ char *token_type_str[] = {
 	"T_OP",			// {
 	"T_CP",			// }
 
-	"T_INC",		// ++
-	"T_DEC",		// --
+	"T_INC",			// ++
+	"T_DEC",			// --
 
-	"T_ISEQUAL",	// ==
-	"T_INCEQUAL",	// +=
-	"T_DECEQUAL",	// -=
-	"T_MUEQUAL",	// *=
-	"T_MODEQUAL",	// %=
-	"T_SHLEQUAL",	// <<=
-	"T_SHREQUAL",	// >>=
-	"T_DIVEQUAL",	// /=
-	"T_NOTEQUAL",	// !=
-	"T_ANDEQUAL",	// &=
-	"T_OREQUAL",	// |=
-	"T_XOREQUAL",	// ^=
-	"T_SHIFT_L",	// <<
-	"T_SHIFT_R",	// >>
+	"T_ISEQUAL",		// ==
+	"T_INCEQUAL",		// +=
+	"T_DECEQUAL",		// -=
+	"T_MUEQUAL",		// *=
+	"T_MODEQUAL",		// %=
+	"T_SHLEQUAL",		// <<=
+	"T_SHREQUAL",		// >>=
+	"T_DIVEQUAL",		// /=
+	"T_NOTEQUAL",		// !=
+	"T_ANDEQUAL",		// &=
+	"T_OREQUAL",		// |=
+	"T_XOREQUAL",		// ^=
+	"T_SHIFT_L",		// <<
+	"T_SHIFT_R",		// >>
 
 	"T_DO",
 	"T_WHILE",
