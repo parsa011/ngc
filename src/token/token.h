@@ -40,8 +40,8 @@ typedef enum {
 	T_CL_CB,		// }
 	T_OBRKT,		// [
 	T_CBRKT,		// ]
-	T_OP,			// {
-	T_CP,			// }
+	T_OP_P,			// {
+	T_CP_P,			// }
 
 	T_INC,			// ++
 	T_DEC,			// --
