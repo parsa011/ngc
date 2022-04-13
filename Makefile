@@ -60,7 +60,7 @@ clean:
 
 run : world
 	@echo "============================="
-	@cd $(BUILDDIR); ./$(TARGET)
+	@cd $(BUILDDIR); ./$(TARGET) ../example/main.c
 
 .PHONY: $(PHONY)
 endif
