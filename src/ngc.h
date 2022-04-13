@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 
+#include "util/basic.h"
 #include "util/mem.h"
 
 /*
