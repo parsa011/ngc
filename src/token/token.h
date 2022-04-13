@@ -128,7 +128,7 @@ private char *token_type_str[] = {
 	"T_GT",			// >
 	"T_LT",			// <
 	"T_HASHTAG",	// #
-	"T_BSLASH",
+	"T_BSLASH",	
 	"T_TILDE",		// ~
 	"T_COLON",		// :
 	"T_SEMI",		// ;
@@ -137,8 +137,8 @@ private char *token_type_str[] = {
 	"T_CL_CB",		// }
 	"T_OBRKT",		// [
 	"T_CBRKT",		// ]
-	"T_OP",			// {
-	"T_CP",			// }
+	"T_OP_P",		// (
+	"T_CP_P",		// )
 
 	"T_INC",			// ++
 	"T_DEC",			// --
