@@ -90,9 +90,4 @@ private void skip_ol_comment();
  */
 private void skip_ml_comment();
 
-/*
- *	@brief : Return next token as pointer from give lexer
- */
-public struct token *lexer_next(struct lexer *);
-
 #endif

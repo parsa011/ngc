@@ -117,7 +117,14 @@ public void lex(struct lexer *l)
 			if (c == '=') {
 				l->tok.type = T_DIVEQUAL;
 				break;
-			}
+			} else if (c == '*') {
+				skip_ml_comment();
+				lex(l);
+			} else if (c == '/') {
+				skip_ol_comment();
+				lex(l);
+			} else 
+				put_back(c);
 			l->tok.type = T_SLASH;
 			break;
 
@@ -267,5 +274,37 @@ public void lex(struct lexer *l)
 		case ')' :
 			l->tok.type = T_CP_P;
 			break;
+
+		default :
+			// TODO : scan keywords and identifirers and ...
+			if (isalpha(c) || c == '_') {
+
+			}
 	}	
+}
+
+private void skip_ol_comment() 
+{
+	int c = next_char();
+	while (c != '\n') {
+		c = next_char();
+	}
+	put_back(c);
+}
+
+private void skip_ml_comment() 
+{
+	int c = next_char();
+	while (1) {
+		if (c == EOF) {
+			//TODO : EOF in comment
+		}
+		if (c == '*') {
+			c = next_char();
+			if (c == '/')
+				break;
+		}
+		c = next_char();
+	}
+	put_back(c);
 }
