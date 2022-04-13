@@ -22,8 +22,8 @@ struct lexer {
 	struct position prevpos;
 
 	/* I/O functions */
-	void (open_file)(struct lexer *, char *);
-	void (close_file)(struct lexer *);
+	void (*open_file)(struct lexer *, char *);
+	void (*close_file)(struct lexer *);
 
 };
 
