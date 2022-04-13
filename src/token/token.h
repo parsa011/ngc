@@ -242,4 +242,9 @@ public struct token *token_duplicate(struct token *);
  */
 public void token_free(struct token *);
 
+/*
+ *	@brief : return precedenf of given token type
+ */
+public int token_precedence(token_type);
+
 #endif
