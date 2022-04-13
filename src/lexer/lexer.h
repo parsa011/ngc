@@ -11,6 +11,7 @@
 */
 
 #include "../ngc.h"
+#include "../token/token.h"
 #include <stdio.h>
 
 struct lexer {
@@ -22,6 +23,7 @@ struct lexer {
 	struct position pos;
 	struct position prevpos;
 
+	struct token tok;
 
 	/* I/O functions */
 	void (*open_file)(struct lexer *, char *);
@@ -60,7 +62,6 @@ public void lex(struct lexer *l);
 
 /*
  *	@brief : Clsoe given lexer
- *		- lexder to clsoe and free
  */
 public void lexer_close(struct lexer *);
 
@@ -71,14 +72,13 @@ private char next_char();
 
 /*
  *	@brief : Put back given Char, To get it after new new_char call
- *		- char to put back
  */
 private void put_back(char);
 
 /*
  *	@brief : Skip White spaces And and put_back last non space char to give it from next_char
  */
-private void skip_whitespace();
+private char skip_whitespace();
 
 /*
  *	@brief : Eat One line Comment, skip until new \n :)
@@ -92,7 +92,6 @@ private void skip_ml_comment();
 
 /*
  *	@brief : Return next token as pointer from give lexer
- *		- lexer to read it file
  */
 public struct token *lexer_next(struct lexer *);
 
