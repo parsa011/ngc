@@ -13,6 +13,8 @@
 #include "util/basic.h"
 #include "util/mem.h"
 
+#define VERSION "0.0.1"
+
 /*
  *	These are some basic definitions, for readablity we define extern as public
  *	and private as static
