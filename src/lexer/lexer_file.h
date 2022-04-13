@@ -21,4 +21,9 @@ public void lexer_open_file(struct lexer *, char *);
  */
 public void lexer_close_file(struct lexer *);
 
+/*
+ *	@brief : read just on character from given file
+ */
+public char lexer_file_read_char(FILE *fp);
+
 #endif
