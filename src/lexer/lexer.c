@@ -7,3 +7,9 @@
 */
 
 #include "lexer.h"
+
+public struct lexer *lexer_init()
+{
+	struct lexer *l = ngc_malloc(sizeof(struct lexer));
+	return l;
+}
