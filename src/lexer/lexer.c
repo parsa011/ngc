@@ -54,6 +54,15 @@ private char next_char()
 	return c;
 }
 
+private char skip_whitespace()
+{
+	int c;
+	do {
+		c = next_char();
+	} while (isspace(c));
+	return c;
+}
+
 public void lex(struct lexer *l)
 {
 	if (!is_current_lexer(l)) {
