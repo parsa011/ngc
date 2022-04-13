@@ -17,13 +17,13 @@ struct lexer {
 	FILE *fp;
 	char *file_name;
 	char current_char;
-	/* contains current text of input file */
-	char *buf;
-	size_t buflen; // Length of buffer currently used
-	size_t alloc;  // Space allocated for buffer
 
 	struct position pos;
 	struct position prevpos;
+
+	/* I/O functions */
+	void (open_file)(char *);
+	void (close_file)();
 
 };
 
@@ -31,7 +31,7 @@ struct lexer {
  *	@brief : Init new lexer, open file by give name and return pointer to lexer
  *		- name of file to open in lexer
  */
-public struct lexer *lexer_init(char *);
+public struct lexer *lexer_init();
 
 /*
  *	@brief : Clsoe given lexer
