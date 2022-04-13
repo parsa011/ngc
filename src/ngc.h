@@ -28,4 +28,8 @@ struct position {
 	int col;
 };
 
+void usage();
+
+void panic(const char *, ...);
+
 #endif
