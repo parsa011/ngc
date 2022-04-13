@@ -3,6 +3,8 @@
 
 #include "../../config.h"
 
+#include <stdio.h>
+
 #define print(str)		printf("%s", (str))
 #define printl(str)		printf("%s\n", (str))
 
