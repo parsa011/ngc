@@ -3,6 +3,7 @@ include scripts/colors.mk
 CC       		= gcc
 SRCDIR	 		= src
 CWD				= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+TARGET			= ngc
 
 ifneq ($(findstring ngc/src,$(CWD)),ngc/src)
 PREFIX 			= ./
@@ -56,6 +57,10 @@ remake : clean build
 
 clean:
 	cd $(BUILDDIR) ; rm -rfv *
+
+run : world
+	@echo "============================="
+	@cd $(BUILDDIR); ./$(TARGET)
 
 .PHONY: $(PHONY)
 endif
