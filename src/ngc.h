@@ -28,6 +28,8 @@ struct position {
 	int col;
 };
 
+#define new_pos_struct ((struct position) { .line = 1, .col = 0 })
+
 void usage();
 
 void panic(const char *, ...);
