@@ -30,8 +30,14 @@ struct position {
 
 #define new_pos_struct ((struct position) { .line = 1, .col = 0 })
 
+/*
+ *	@brief : print usage and panic
+ */
 void usage();
 
+/*
+ *	@brief : write messages and exit()
+ */
 void panic(const char *, ...);
 
 #endif
