@@ -19,6 +19,7 @@ public struct lexer *lexer_init()
 	l->close_file = &lexer_close_file;
 	l->put_back_char = 0;
 	l->pos = new_pos_struct;
+	l->buffer = prosing_string_init("");
 	return l;
 }
 
@@ -44,7 +45,7 @@ private char next_char()
 	if (pt_back) {
 		c = pt_back;
 		put_back(0);
-		return c;
+		goto return_char;
 	}
 	c = lexer_file_read_char(working_lexer->fp);
 	if (c == '\n') {
@@ -53,6 +54,9 @@ private char next_char()
 	} else
 		working_lexer->pos.col++;
 	working_lexer->current_char = c;
+return_char:
+	if (!isspace(c))
+		prosing_string_append_char(working_lexer->buffer, c);
 	return c;
 }
 
@@ -70,6 +74,7 @@ public void lex(struct lexer *l)
 	if (!is_current_lexer(l)) {
 		//panic("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
 	}
+	prosing_string_reset(working_lexer->buffer);
 	int c = skip_whitespace();
 	switch (c) {
 
@@ -287,7 +292,7 @@ public void lex(struct lexer *l)
 			if (isalpha(c) || c == '_') {
 
 			}
-	}	
+	}
 }
 
 private void skip_ol_comment() 

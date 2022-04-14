@@ -14,11 +14,15 @@
 #include "../token/token.h"
 #include <stdio.h>
 
+#define BUF_MAX_LEN 32
+
 struct lexer {
 	FILE *fp;
 	char *file_name;
 	char current_char;
 	char put_back_char;
+
+	string *buffer;
 
 	struct position pos;
 	struct position prevpos;
