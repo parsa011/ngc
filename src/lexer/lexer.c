@@ -74,98 +74,100 @@ public void lex(struct lexer *l)
 	switch (c) {
 
 		case EOF :
-			l->tok.type = T_EOF;
+			set_working_lexer_token_type(T_EOF);
 			break;
 
 		case '+' :
 			c = next_char();
 			if (c == '=' ) {
-				l->tok.type = T_INCEQUAL;
+				set_working_lexer_token_type(T_INCEQUAL);
 				break;
 			} else if (c == '+') {
-				l->tok.type = T_INC;
+				set_working_lexer_token_type(T_INC);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_PLUS;
+			set_working_lexer_token_type(T_PLUS);
 			break;
 
 		case '-' :
 			c = next_char();
 			if (c == '=' ) {
-				l->tok.type = T_DECEQUAL;
+				set_working_lexer_token_type(T_DECEQUAL);
 				break;
 			} else if (c == '-') {
-				l->tok.type = T_DEC;
+				set_working_lexer_token_type(T_DEC);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_DASH;
+			set_working_lexer_token_type(T_DASH);
 			break;
 
 		case '*' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_MUEQUAL;
+				set_working_lexer_token_type(T_MUEQUAL);
 				break;
 			}
-			l->tok.type = T_STAR;
+			set_working_lexer_token_type(T_STAR);
 			break;
 
 		case '/' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_DIVEQUAL;
+				set_working_lexer_token_type(T_DIVEQUAL);
 				break;
 			} else if (c == '*') {
 				skip_ml_comment();
 				lex(l);
+				break;
 			} else if (c == '/') {
 				skip_ol_comment();
 				lex(l);
+				break;
 			} else 
 				put_back(c);
-			l->tok.type = T_SLASH;
+			set_working_lexer_token_type(T_SLASH);
 			break;
 
 		case '%' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_MODEQUAL;
+				set_working_lexer_token_type(T_MODEQUAL);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_PERCENT;
+			set_working_lexer_token_type(T_PERCENT);
 			break;
 
 		case '|' :
 			c = next_char();
 			if (c == '|') {
-				l->tok.type = T_PIPEPIPE;
+				set_working_lexer_token_type(T_PIPEPIPE);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_PIPE;
+			set_working_lexer_token_type(T_PIPE);
 			break;
 
 		case '=' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_ISEQUAL;
+				set_working_lexer_token_type(T_ISEQUAL);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_EQUAL;
+			set_working_lexer_token_type(T_EQUAL);
 			break;
 
 		case '&' :
 			c = next_char();
 			if (c == '&') {
-				l->tok.type = T_ANDAND;
+				set_working_lexer_token_type(T_ANDAND);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_AND;
+			set_working_lexer_token_type(T_AND);
 			break;
 				
 		case '.' :
@@ -179,25 +181,25 @@ public void lex(struct lexer *l)
 		case '^' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_XOREQUAL;
+				set_working_lexer_token_type(T_XOREQUAL);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_CARET;
+			set_working_lexer_token_type(T_CARET);
 			break;
 
 		case '?' :
-			l->tok.type = T_QUES;
+			set_working_lexer_token_type(T_QUES);
 			break;
 		
 		case '!' :
 			c = next_char();
 			if (c == '=') {
-				l->tok.type = T_NOTEQUAL;
+				set_working_lexer_token_type(T_NOTEQUAL);
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_EXCLAM;
+			set_working_lexer_token_type(T_EXCLAM);
 			break;
 
 		case '>' :
@@ -205,14 +207,14 @@ public void lex(struct lexer *l)
 			if (c == '>') {
 				c = next_char();
 				if (c == '=') {
-					l->tok.type = T_SHREQUAL;
+					set_working_lexer_token_type(T_SHREQUAL);
 					break;
 				} else
 					put_back(c);
-				l->tok.type = T_SHIFT_R;
+				set_working_lexer_token_type(T_SHIFT_R);
 			} else
 				put_back(c);
-			l->tok.type = T_GT;
+			set_working_lexer_token_type(T_GT);
 			break;
 
 
@@ -221,58 +223,58 @@ public void lex(struct lexer *l)
 			if (c == '<') {
 				c = next_char();
 				if (c == '=') {
-					l->tok.type = T_SHLEQUAL;
+					set_working_lexer_token_type(T_SHLEQUAL);
 					break;
 				} else
 					put_back(c);
-				l->tok.type = T_SHIFT_L;
+				set_working_lexer_token_type(T_SHIFT_L);
 			} else
 				put_back(c);
-			l->tok.type = T_LT;
+			set_working_lexer_token_type(T_LT);
 			break;
 
 		case '#' :
-			l->tok.type = T_HASHTAG;
+			set_working_lexer_token_type(T_HASHTAG);
 			break;
 		
 		case '\\' :
-			l->tok.type = T_BSLASH;
+			set_working_lexer_token_type(T_BSLASH);
 			break;
 
 		case '~' :
-			l->tok.type = T_TILDE;
+			set_working_lexer_token_type(T_TILDE);
 			break;
 
 		case ':' :
-			l->tok.type = T_COLON;
+			set_working_lexer_token_type(T_COLON);
 			break;
 
 		case ';' :
-			l->tok.type = T_SEMI;
+			set_working_lexer_token_type(T_SEMI);
 			break;
 
 		case '{' :
-			l->tok.type = T_OP_CB;
+			set_working_lexer_token_type(T_OP_CB);
 			break;
 
 		case '}' :
-			l->tok.type = T_CL_CB;
+			set_working_lexer_token_type(T_CL_CB);
 			break;
 
 		case '[' :
-			l->tok.type = T_OBRKT;
+			set_working_lexer_token_type(T_OBRKT);
 			break;
 
 		case ']' :
-			l->tok.type = T_CBRKT;
+			set_working_lexer_token_type(T_CBRKT);
 			break;
 
 		case '(' :
-			l->tok.type = T_OP_P;
+			set_working_lexer_token_type(T_OP_P);
 			break;
 
 		case ')' :
-			l->tok.type = T_CP_P;
+			set_working_lexer_token_type(T_CP_P);
 			break;
 
 		default :
@@ -289,7 +291,6 @@ private void skip_ol_comment()
 	while (c != '\n') {
 		c = next_char();
 	}
-	put_back(c);
 }
 
 private void skip_ml_comment() 
