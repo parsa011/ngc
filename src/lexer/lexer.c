@@ -307,5 +307,5 @@ private void skip_ml_comment()
 		}
 		c = next_char();
 	}
-	put_back(c);
+	next_char();
 }
