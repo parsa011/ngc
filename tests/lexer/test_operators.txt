@@ -1,0 +1,3 @@
+/* some comment */
+// anohter comment
+	++ -- - / /*comment inside line */ -= ++
