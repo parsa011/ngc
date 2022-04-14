@@ -274,7 +274,7 @@ public void lex(struct lexer *l)
 			break;
 
 		case ')' :
-			set_working_lexer_token_type(T_CP_P);
+			set_working_lexer_token_type(T_CL_P);
 			break;
 
 		default :
