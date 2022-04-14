@@ -108,7 +108,8 @@ public void lex(struct lexer *l)
 			if (c == '=') {
 				set_working_lexer_token_type(T_MUEQUAL);
 				break;
-			}
+			} else
+				put_back(c);
 			set_working_lexer_token_type(T_STAR);
 			break;
 
@@ -144,6 +145,9 @@ public void lex(struct lexer *l)
 			c = next_char();
 			if (c == '|') {
 				set_working_lexer_token_type(T_PIPEPIPE);
+				break;
+			} else if (c == '=') {
+				set_working_lexer_token_type(T_OREQUAL);
 				break;
 			} else
 				put_back(c);
@@ -212,6 +216,7 @@ public void lex(struct lexer *l)
 				} else
 					put_back(c);
 				set_working_lexer_token_type(T_SHIFT_R);
+				break;
 			} else
 				put_back(c);
 			set_working_lexer_token_type(T_GT);
