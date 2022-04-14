@@ -2,7 +2,7 @@ include ../scripts/colors.mk
 
 TARGET := ngc
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
-SUBDIRS := lexer token util
+SUBDIRS := lexer token util ../lib
 BUILD_DIR := ../build
 
 SRCS := $(shell find $(SUBDIRS) -name '*.c')

@@ -12,6 +12,7 @@
 
 #include "util/basic.h"
 #include "util/mem.h"
+#include "../lib/prosing.h"
 
 #define VERSION "0.0.1"
 
