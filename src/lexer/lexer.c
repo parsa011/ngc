@@ -68,7 +68,7 @@ private char skip_whitespace()
 public void lex(struct lexer *l)
 {
 	if (!is_current_lexer(l)) {
-		panic("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
+		//panic("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
 	}
 	int c = skip_whitespace();
 	switch (c) {
