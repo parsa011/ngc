@@ -31,6 +31,7 @@ struct lexer {
 };
 
 #define get_lexer_put_back(l) (l->put_back_char)
+#define set_working_lexer_token_type(t) (working_lexer->tok.type = t)
 
 /*
  *	pointer to lexer that we are working with
