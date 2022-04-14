@@ -1,0 +1,7 @@
+/* some comment */ <<= >> ?<<= - -=
++= %=
+	!
+//a asdf asdfasdf
+//asdfasdfadf
+~ || |=
+// anohter comment
