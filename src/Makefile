@@ -1,24 +1,40 @@
 include ../scripts/colors.mk
 
+CC = cc
 TARGET := ngc
-CFLAGS = -Wall
+CFLAGS = 
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
 SUBDIRS := lexer token util ../lib
 BUILD_DIR := ../build
 
+# Super dirty :)
+# TODO : find a single way for all of them
+#==========================================
 SRCS := $(shell find $(SUBDIRS) -name '*.c')
 INCS := $(shell find $(SUBDIRS) -name '*.h')
-
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
-# The final build step.
+LEX_SRC := $(shell find lexer -name '*.c')
+LEX_INCS := $(shell find lexer -name '*.h')
+LEX_OBJS := $(LEX_SRC:%=$(BUILD_DIR)/%.o)
 
+TOKEN_SRC := $(shell find token -name '*.c')
+TOKEN_INCS := $(shell find token -name '*.h')
+TOKEN_OBJS := $(TOKEN_SRC:%=$(BUILD_DIR)/%.o)
 
-.PHONY : $(SUBDIRS)
-$(TARGET) : $(SUBDIRS) main.c
+UTIL_SRC := $(shell find util -name '*.c')
+UTIL_INCS := $(shell find util -name '*.h')
+UTIL_OBJS := $(UTIL_SRC:%=$(BUILD_DIR)/%.o)
+#==========================================
+
+$(TARGET) : $(OBJS)
 	$(CC) main.c $(OBJS) -o $(BUILD_DIR)/$@
 
-$(SUBDIRS) : $(OBJS)
+lexer : $(LEX_OBJS) $(LEX_INCS)
+
+token : $(TOKEN_OBJS) $(TOKEN_INCS)
+
+util : $(UTIL_OBJS) $(UTIL_INCS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
@@ -26,7 +42,10 @@ $(BUILD_DIR)/%.c.o: %.c $(INCS)
 	@echo " - Compile $(GREENCOLOR)$(<)$(RCOLOR)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
--include $(OBJS:.o=.d)
+clean :
+	@cd ..; make clean
 
 %.d: %.c
 	$(CC) $(CFLAGS) -MM -MT $@ -MF $@ $<
+
+-include $(OBJS:.o=.d)

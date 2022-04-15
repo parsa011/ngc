@@ -26,7 +26,6 @@ PHONY = help build
 ifeq ($(wildcard $(CONFIG_FILE)),)
 info :
 	@echo "Please run 'bash $(CONFIGURE_FILE)' or 'make config' Before Building"
-
 else
 
 help:
@@ -46,7 +45,7 @@ help:
 	$(call write_help,doc,     create documents and help files)
 
 world :
-	cd $(SRCDIR); make ngc
+	cd $(SRCDIR); make
 
 remake : clean build
 
@@ -56,6 +55,10 @@ clean:
 run : world
 	@echo "============================="
 	@cd $(BUILDDIR); ./$(TARGET) ../example/main.c
+
+SUBDIRS := ngc lexer token util
+$(SUBDIRS) :
+	@cd $(SRCDIR); make $@
 
 .PHONY: $(PHONY)
 endif
