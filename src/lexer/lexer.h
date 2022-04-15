@@ -95,4 +95,9 @@ private void skip_ol_comment();
  */
 private void skip_ml_comment();
 
+/*
+ *	@brief : scan identifier
+ */
+private void scan_ident();
+
 #endif

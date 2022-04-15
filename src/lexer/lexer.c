@@ -290,7 +290,9 @@ public void lex(struct lexer *l)
 		default :
 			// TODO : scan keywords and identifirers and ...
 			if (isalpha(c) || c == '_') {
-
+				scan_ident();
+				set_working_lexer_token_type(guess_text_type(l->buffer->value));
+				break;
 			}
 	}
 }
@@ -318,4 +320,12 @@ private void skip_ml_comment()
 		c = next_char();
 	}
 	next_char();
+}
+
+private void scan_ident()
+{
+	int c = next_char();
+	while (isalnum(c))
+		c = next_char();
+	put_back(c);
 }
