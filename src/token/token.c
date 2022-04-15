@@ -36,3 +36,9 @@ public void token_free(struct token *p)
 {
 	ngc_free(p);
 }
+
+public token_type guess_text_type(char *text)
+{
+	// TODO : implement this function
+	return T_IDENT;
+}
