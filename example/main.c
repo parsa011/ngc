@@ -1,7 +1,7 @@
 --
-/
+//
 -
-// afasdf 
+// comment
 /* asdfasdf 
 .
 >>=
@@ -13,4 +13,5 @@ int main()
 	a--;
 	return 0;
 */
++=
 }

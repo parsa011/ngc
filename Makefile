@@ -29,8 +29,6 @@ info :
 
 else
 
-BUILDS = lexer token util
-
 help:
 	$(call write_help,build,   build world, all of language)
 	$(call write_help,lexer,   build lexer)
@@ -49,9 +47,6 @@ help:
 
 world :
 	cd $(SRCDIR); make ngc
-
-$(BUILDS):
-	@cd $(SRCDIR)/$@ ; make all
 
 remake : clean build
 

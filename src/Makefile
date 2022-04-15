@@ -1,6 +1,7 @@
 include ../scripts/colors.mk
 
 TARGET := ngc
+CFLAGS = -Wall
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
 SUBDIRS := lexer token util ../lib
 BUILD_DIR := ../build
@@ -12,6 +13,7 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 # The final build step.
 
+
 .PHONY : $(SUBDIRS)
 $(TARGET) : $(SUBDIRS) main.c
 	$(CC) main.c $(OBJS) -o $(BUILD_DIR)/$@
@@ -22,4 +24,9 @@ $(SUBDIRS) : $(OBJS)
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
 	@mkdir -p $(dir $@)
 	@echo " - Compile $(GREENCOLOR)$(<)$(RCOLOR)"
-	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+-include $(OBJS:.o=.d)
+
+%.d: %.c
+	$(CC) $(CFLAGS) -MM -MT $@ -MF $@ $<
