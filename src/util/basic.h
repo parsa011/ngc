@@ -104,4 +104,6 @@ for(item = (array)+count; keep; keep = !keep)
 #define IS_EVEN( num )  (!IS_ODD( (num) ))
 #define IS_ODD( num )   ((num) & 1)
 
+#define CHAR_TO_NUM(c) (c - '0')
+
 #endif

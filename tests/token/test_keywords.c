@@ -24,7 +24,7 @@ void run_test()
 	for (int i = 0; i < sizeof(list) / sizeof(list[0]); i++) {
 		t = guess_text_type(list[i].text);
 		if (t != list[i].type) {
-			error--;
+			error++;
 			printf("invalid text type : <'%s'> -----> %d (%s)\n", list[i].text, t, get_token_str(t));
 		}
 	}

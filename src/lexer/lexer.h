@@ -100,4 +100,9 @@ private void skip_ml_comment();
  */
 private void scan_ident();
 
+/*
+ *	@brief : scan number from lexer , number can be decimal or octal or ....
+ */
+private void scan_number(char);
+
 #endif
