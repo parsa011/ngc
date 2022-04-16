@@ -207,15 +207,10 @@ private char *token_type_str[] = {
 struct token {
 	int type;
 	struct position pos;
-
+	string *text;
 	union
 	{
-		struct
-		{
-			const char* string;
-			size_t str_length;
-		};
-
+		string *str;
 		double real;
 		int integer;
 	};
