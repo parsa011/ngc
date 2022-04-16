@@ -44,7 +44,10 @@ int main(int argc, char *argv[])
 	lex(l);
 	while (l->tok.type != T_EOF) {
 		printf("%s\n", get_token_str(l->tok.type));
-		printf("string is <%s> and len : %d\n", l->tok.text->value, l->tok.text->len);
+		//printf("string is <%s> and len : %d\n", l->tok.text->value, l->tok.text->len);
+		if (l->tok.type == T_INTLIT) {
+			printf("token is literal and value : %d\n", l->tok.integer);
+		}
 		lex(l);
 	}
 	return 0;

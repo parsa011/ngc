@@ -103,6 +103,6 @@ private void scan_ident();
 /*
  *	@brief : scan number from lexer , number can be decimal or octal or ....
  */
-private void scan_number(char);
+private int scan_number(char);
 
 #endif

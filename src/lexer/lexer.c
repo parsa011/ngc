@@ -314,8 +314,10 @@ public void lex(struct lexer *l)
 				break;
 			}
 			if (isdigit(c)) {
-				scan_number(c);
+				l->tok.integer = scan_number(c);
 				set_working_lexer_token_type(T_INTLIT);
+				printf("%d\n", l->tok.integer);
+				break;
 			}
 	}
 }
@@ -358,13 +360,25 @@ private void scan_ident()
 }
 
 // TODO : implement scaning other types of number like hex, octal
-private void scan_number(char c)
+private int scan_number(char c)
 {
-	int res = CHAR_TO_NUM(c);
-	c = next_char();
+	int base = 10, res = 0;
+	if (c == '0') {
+		c = next_char();
+		prosing_string_append_char(working_lexer->tok.text, c);
+		if (c == 'x') {
+			base = 16;
+			c = next_char();
+		}
+		else {
+			base = 8;
+		}		
+	}
 	while (isdigit(c)) {
-		res *= 10 + CHAR_TO_NUM(c);
+		prosing_string_append_char(working_lexer->tok.text, c);
+		res = res * base + CHAR_TO_NUM(c);
 		c = next_char();
 	}
 	put_back(c);
+	return res;
 }
