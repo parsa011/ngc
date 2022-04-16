@@ -20,6 +20,7 @@ public struct lexer *lexer_init()
 	l->put_back_char = 0;
 	l->pos = new_pos_struct;
 	l->buffer = prosing_string_init("");
+	l->tok.text = prosing_string_init("");
 	return l;
 }
 
@@ -55,8 +56,8 @@ private char next_char()
 		working_lexer->pos.col++;
 	working_lexer->current_char = c;
 return_char:
-	if (!isspace(c))
-		prosing_string_append_char(working_lexer->buffer, c);
+//	if (!isspace(c))
+//		prosing_string_append_char(working_lexer->buffer, c);
 	return c;
 }
 
@@ -74,8 +75,11 @@ public void lex(struct lexer *l)
 	if (!is_current_lexer(l)) {
 		//panic("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
 	}
-	prosing_string_reset(working_lexer->buffer);
 	int c = skip_whitespace();
+	
+	prosing_string_reset(l->tok.text);
+	prosing_string_append_char(l->tok.text, c);
+
 	switch (c) {
 
 		case EOF :
@@ -85,9 +89,11 @@ public void lex(struct lexer *l)
 		case '+' :
 			c = next_char();
 			if (c == '=' ) {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_INCEQUAL);
 				break;
 			} else if (c == '+') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_INC);
 				break;
 			} else
@@ -98,9 +104,11 @@ public void lex(struct lexer *l)
 		case '-' :
 			c = next_char();
 			if (c == '=' ) {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_DECEQUAL);
 				break;
 			} else if (c == '-') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_DEC);
 				break;
 			} else
@@ -111,6 +119,7 @@ public void lex(struct lexer *l)
 		case '*' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_MUEQUAL);
 				break;
 			} else
@@ -121,6 +130,7 @@ public void lex(struct lexer *l)
 		case '/' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_DIVEQUAL);
 				break;
 			} else if (c == '*') {
@@ -139,6 +149,7 @@ public void lex(struct lexer *l)
 		case '%' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_MODEQUAL);
 				break;
 			} else
@@ -149,9 +160,11 @@ public void lex(struct lexer *l)
 		case '|' :
 			c = next_char();
 			if (c == '|') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_PIPEPIPE);
 				break;
 			} else if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_OREQUAL);
 				break;
 			} else
@@ -162,6 +175,7 @@ public void lex(struct lexer *l)
 		case '=' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_ISEQUAL);
 				break;
 			} else
@@ -172,6 +186,7 @@ public void lex(struct lexer *l)
 		case '&' :
 			c = next_char();
 			if (c == '&') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_ANDAND);
 				break;
 			} else
@@ -190,6 +205,7 @@ public void lex(struct lexer *l)
 		case '^' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_XOREQUAL);
 				break;
 			} else
@@ -204,6 +220,7 @@ public void lex(struct lexer *l)
 		case '!' :
 			c = next_char();
 			if (c == '=') {
+				prosing_string_append_char(l->tok.text, c);
 				set_working_lexer_token_type(T_NOTEQUAL);
 				break;
 			} else
@@ -214,8 +231,10 @@ public void lex(struct lexer *l)
 		case '>' :
 			c = next_char();
 			if (c == '>') {
+				prosing_string_append_char(l->tok.text, c);
 				c = next_char();
 				if (c == '=') {
+					prosing_string_append_char(l->tok.text, c);
 					set_working_lexer_token_type(T_SHREQUAL);
 					break;
 				} else
@@ -231,8 +250,10 @@ public void lex(struct lexer *l)
 		case '<' :
 			c = next_char();
 			if (c == '<') {
+				prosing_string_append_char(l->tok.text, c);
 				c = next_char();
 				if (c == '=') {
+					prosing_string_append_char(l->tok.text, c);
 					set_working_lexer_token_type(T_SHLEQUAL);
 					break;
 				} else
@@ -301,6 +322,7 @@ private void skip_ol_comment()
 {
 	int c = next_char();
 	while (c != '\n') {
+		prosing_string_append_char(working_lexer->tok.text, c);
 		c = next_char();
 	}
 }
@@ -309,6 +331,7 @@ private void skip_ml_comment()
 {
 	int c = next_char();
 	while (1) {
+		prosing_string_append_char(working_lexer->tok.text, c);
 		if (c == EOF) {
 			//TODO : EOF in comment
 		}
@@ -325,7 +348,9 @@ private void skip_ml_comment()
 private void scan_ident()
 {
 	int c = next_char();
-	while (isalnum(c))
+	while (isalnum(c)) {
+		prosing_string_append_char(working_lexer->tok.text, c);
 		c = next_char();
+	}
 	put_back(c);
 }
