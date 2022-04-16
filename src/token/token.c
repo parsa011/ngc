@@ -40,5 +40,113 @@ public void token_free(struct token *p)
 public token_type guess_text_type(char *text)
 {
 	// TODO : implement this function
+	switch (*text) {
+
+		case 'a' :
+			if (!strcmp(text, "auto"))
+				return T_AUTO;
+			break;
+
+		case 'b' :
+			if (!strcmp(text, "break"))
+				return T_BREAK;
+			break;
+
+		case 'c' :
+			if (!strcmp(text, "char"))
+				return T_CHAR;
+			else if (!strcmp(text, "case"))
+				return T_CASE;
+			else if (!strcmp(text, "continue"))
+				return T_CONTINUE;
+			else if (!strcmp(text, "const"))
+				return T_CONST;
+			break;
+
+		case 'd' :
+			if (!strcmp(text, "do"))
+				return T_DO;
+			else if (!strcmp(text, "default"))
+				return T_DEFAULT;
+			else if (!strcmp(text, "double"))
+				return T_DOUBLE;
+			break;
+
+		case 'e' :
+			if (!strcmp(text, "enum"))
+				return T_ENUM;
+			else if (!strcmp(text, "extern"))
+				return T_EXTERN;
+			else if (!strcmp(text, "else"))
+				return T_ELSE;
+			break;
+
+		case 'f' :
+			if (!strcmp(text, "for"))
+				return T_FOR;
+			else if (!strcmp(text, "float"))
+				return T_FLOAT;
+			break;
+
+		case 'g' :
+			if (!strcmp(text, "goto"))
+				return T_GOTO;
+		
+		case 'l' :
+			if (!strcmp(text, "label"))
+				return T_LABEL;
+			else if (!strcmp(text, "long"))
+				return T_LONG;
+			break;
+
+		case 'r' :
+			if (!strcmp(text, "return"))
+				return T_RETURN;
+			else if (!strcmp(text, "register"))
+				return T_REGISTER;
+			break;
+
+		case 's' :
+			if (!strcmp(text, "sizeof"))
+				return T_SIZEOF;
+			else if (!strcmp(text, "signed"))
+				return T_SIGNED;
+			else if (!strcmp(text, "static"))
+				return T_STATIC;
+			else if (!strcmp(text, "switch"))
+				return T_SWITCH;
+			break;
+
+		case 't' :
+			if (!strcmp(text, "typedef"))
+				return T_TYPEDEF;
+			break;
+
+		case 'i' :
+			if (!strcmp(text, "int"))
+				return T_INT;
+			else if (!strcmp(text, "if"))
+				return T_IF;
+			break;
+
+		case 'v' :
+			if (!strcmp(text, "volatile"))
+				return T_VOLATILE;
+			else if (!strcmp(text, "void"))
+				return T_VOID;
+			break;
+
+		case 'u' :
+			if (!strcmp(text, "union"))
+				return T_UNION;
+			else if (!strcmp(text, "unsigned"))
+				return T_UNSIGNED;
+			break;
+
+		case 'w' :
+			if (!strcmp(text, "while"))
+				return T_WHILE;
+
+	}
 	return T_IDENT;
 }

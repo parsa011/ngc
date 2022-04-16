@@ -46,7 +46,7 @@ private char next_char()
 	if (pt_back) {
 		c = pt_back;
 		put_back(0);
-		goto return_char;
+		return c;
 	}
 	c = lexer_file_read_char(working_lexer->fp);
 	if (c == '\n') {
@@ -55,9 +55,7 @@ private char next_char()
 	} else
 		working_lexer->pos.col++;
 	working_lexer->current_char = c;
-return_char:
-//	if (!isspace(c))
-//		prosing_string_append_char(working_lexer->buffer, c);
+	prosing_string_append_char(working_lexer->buffer, c);
 	return c;
 }
 
@@ -312,7 +310,7 @@ public void lex(struct lexer *l)
 			// TODO : scan keywords and identifirers and ...
 			if (isalpha(c) || c == '_') {
 				scan_ident();
-				set_working_lexer_token_type(guess_text_type(l->buffer->value));
+				set_working_lexer_token_type(guess_text_type(l->tok.text->value));
 				break;
 			}
 	}

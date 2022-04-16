@@ -1,5 +1,6 @@
 int main()
 {
+	long int age = 10;
 	/* useless comment */
 	int a;
 	// another comment
