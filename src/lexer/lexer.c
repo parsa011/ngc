@@ -262,6 +262,20 @@ public void lex(struct lexer *l)
 			set_working_lexer_token_type(T_LT);
 			break;
 
+		case '"' :
+			l->tok.str = prosing_string_init("");
+			c = next_char();
+			while (c != '"') {
+				if (c == EOF) {
+					// TODO : Implement early_eof_error();
+					break;
+				}
+				prosing_string_append_char(l->tok.str, c);
+				c = next_char();
+			}
+			set_working_lexer_token_type(T_STRLIT);
+			break;
+
 		case '#' :
 			set_working_lexer_token_type(T_HASHTAG);
 			break;
