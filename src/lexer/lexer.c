@@ -333,6 +333,7 @@ public void lex(struct lexer *l)
 				break;
 			}
 			set_working_lexer_token_type(T_BAD);
+			show_lexer_error("Bad Token");
 			break;
 	}
 }
@@ -354,12 +355,17 @@ private char *get_pointer_to_buffer(struct position *pos)
 	return p;
 }
 
-private void show_lexer_error()
+private void show_lexer_error(char *msg)
 {
 	char *p = get_pointer_to_buffer(&working_lexer->pos);
-	putchar(*p);
-	puts("ERROR : ");
-	printf("Position -> %d:%d\n", working_lexer->pos.line, working_lexer->pos.col);
+
+	char info[64];
+	get_lexer_pos_string(working_lexer, info);
+
+	printf("%s: \033[33merror:\033[0m %s\n", info, msg);
+
+	printf("%d |", working_lexer->pos.line);
+
 	if (working_lexer->pos.col > 0) {
 		char *first_of_line = p - working_lexer->pos.col;
 		while (first_of_line < p) {
@@ -367,6 +373,18 @@ private void show_lexer_error()
 		}
 		putchar('\n');
 	}
+}
+
+public void print_line_info()
+{
+	char info[64];
+	get_lexer_pos_string(working_lexer, info);
+	puts(info);
+}
+
+public void get_lexer_pos_string(struct lexer *l, char *buf)
+{
+	snprintf(buf, 64, "%s:%d:%d", l->file_name, l->pos.line, l->pos.col);
 }
 
 private void skip_ol_comment() 

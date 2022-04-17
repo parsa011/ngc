@@ -33,7 +33,6 @@ token : $(TOKEN_OBJS) $(TOKEN_INCS)
 	@mkdir -p $(dir $@)
 	@echo " - Compile $(GREENCOLOR)$(<)$(RCOLOR)"
 	@$(CC) $(CFLAGS) $< ../src/lexer/lexer.c ../src/util/mem.c ../lib/prosing.c ../src/lexer/lexer_file.c ../src/token/token.c -o $@
-	@./$<.o
 
 clean :
 	find . -name "*.o" -type f -delete

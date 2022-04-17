@@ -39,15 +39,14 @@ int main(int argc, char *argv[])
 		usage(argv[0]);
 	}
 	struct lexer *l = lexer_init();
+	if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
+		panic("Given File is not a valid 'c' file : %s", argv[1]);
+	}
 	l->open_file(l, argv[1]);
 	set_working_lexer(l);
 	lex(l);
 	while (l->tok.type != T_EOF) {
-		printf("%s\n", get_token_str(l->tok.type));
-		//printf("string is <%s> and len : %d\n", l->tok.text->value, l->tok.text->len);
-		if (l->tok.type == T_INTLIT) {
-			printf("token is literal and value : %d\n", l->tok.integer);
-		}
+		//print_token(&l->tok);
 		lex(l);
 	}
 	return 0;

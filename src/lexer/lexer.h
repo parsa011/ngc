@@ -68,7 +68,12 @@ public void lex(struct lexer *l);
 /*
  *	@brief : print full line and show current char as a bad token
  */
-private void show_lexer_error();
+private void show_lexer_error(char *msg);
+
+/*
+ *	@brief : return current position of given lexer as : file_name:line:col format
+ */
+public void get_lexer_pos_string(struct lexer *, char *);
 
 /*
  *	@brief : Clsoe given lexer

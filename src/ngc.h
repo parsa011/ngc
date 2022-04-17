@@ -12,9 +12,12 @@
 
 #include "util/basic.h"
 #include "util/mem.h"
+#include "util/file_util.h"
 #include "../lib/prosing.h"
 
 #define VERSION "0.0.1"
+
+#define NGC_FILE_TYPE "c"
 
 /*
  *	These are some basic definitions, for readablity we define extern as public
