@@ -66,6 +66,11 @@ public bool is_current_lexer(struct lexer *l);
 public void lex(struct lexer *l);
 
 /*
+ *	@brief : print full line and show current char as a bad token
+ */
+private void show_lexer_error();
+
+/*
  *	@brief : Clsoe given lexer
  */
 public void lexer_close(struct lexer *);

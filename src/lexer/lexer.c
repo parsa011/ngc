@@ -316,9 +316,42 @@ public void lex(struct lexer *l)
 			if (isdigit(c)) {
 				l->tok.integer = scan_number(c);
 				set_working_lexer_token_type(T_INTLIT);
-				printf("%d\n", l->tok.integer);
 				break;
 			}
+			set_working_lexer_token_type(T_BAD);
+			break;
+	}
+}
+
+private char *get_pointer_to_buffer(struct position *pos)
+{
+	char *p = working_lexer->buffer->value;
+	struct position current_pos = new_pos_struct;
+	while (*p) {
+		if (current_pos.line == pos->line && current_pos.col == pos->col)
+			break;
+		if (*p == '\n') {
+			current_pos.col = 0;
+			current_pos.line++;
+		} else
+			current_pos.col++;
+		p++;
+	}
+	return p;
+}
+
+private void show_lexer_error()
+{
+	char *p = get_pointer_to_buffer(&working_lexer->pos);
+	putchar(*p);
+	puts("ERROR : ");
+	printf("Position -> %d:%d\n", working_lexer->pos.line, working_lexer->pos.col);
+	if (working_lexer->pos.col > 0) {
+		char *first_of_line = p - working_lexer->pos.col;
+		while (first_of_line < p) {
+			putchar(*first_of_line++);
+		}
+		putchar('\n');
 	}
 }
 
@@ -365,12 +398,12 @@ private int scan_number(char c)
 	int base = 10, res = 0;
 	if (c == '0') {
 		c = next_char();
-		prosing_string_append_char(working_lexer->tok.text, c);
 		if (c == 'x') {
+			prosing_string_append_char(working_lexer->tok.text, c);
 			base = 16;
 			c = next_char();
 		}
-		else {
+		else if (isdigit(c)) {
 			base = 8;
 		}		
 	}
