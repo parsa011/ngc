@@ -1,6 +1,12 @@
 #ifndef _A_LITTLE_BASICS_H
 # define _A_LITTLE_BASICS_H
 
+#ifdef WIN32
+#include <io.h>
+#define F_OK 0
+#define access _access
+#endif
+
 #include "../../config.h"
 
 #include <stdio.h>
