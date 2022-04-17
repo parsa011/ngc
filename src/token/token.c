@@ -146,7 +146,29 @@ public token_type guess_text_type(char *text)
 		case 'w' :
 			if (!strcmp(text, "while"))
 				return T_WHILE;
+			break;
 
 	}
 	return T_IDENT;
+}
+
+public void print_token(struct token *t)
+{
+	printf("%s --> %s", get_token_str(t->type), t->text->value);
+	switch (t->type) {
+
+		case T_INTLIT :
+			printf(" --> Value : %d" , t->integer);
+			break;
+		
+		case T_DOUBLE :
+			printf(" --> Value : %f", t->real);
+			break;
+
+		case T_STRLIT :
+			printf(" --> Value : %s", t->str->value);
+			break;
+
+	}
+	putchar('\n');
 }

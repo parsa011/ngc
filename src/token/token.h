@@ -242,10 +242,14 @@ public void token_free(struct token *);
  */
 public int token_precedence(token_type);
 
-
 /*
  *	@brief : return keyword type related to given string , return T_IDENT if given char was not keyword
  */
 public token_type guess_text_type(char *);
+
+/*
+ *	@brief : print token with data and ...
+ */
+public void print_token(struct token *);
 
 #endif
