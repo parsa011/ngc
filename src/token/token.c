@@ -161,12 +161,12 @@ public void print_token(struct token *t)
 			printf(" --> Value : %d" , t->integer);
 			break;
 		
-		case T_DOUBLE :
-			printf(" --> Value : %f", t->real);
-			break;
-
 		case T_STRLIT :
 			printf(" --> Value : %s", t->str->value);
+			break;
+
+		case T_REALLIT :
+			printf(" --> Value : %f", t->real);
 			break;
 
 	}

@@ -345,8 +345,13 @@ str_concat:
 				break;
 			}
 			if (isdigit(c)) {
-				l->tok.integer = scan_number(c);
-				set_working_lexer_token_type(T_INTLIT);
+				double res = scan_number(c);
+				if (l->tok.type == T_REALLIT) {
+					l->tok.real = res;
+				} else {
+					l->tok.integer = (int) res;
+				}
+				print_token(&l->tok);
 				break;
 			}
 			set_working_lexer_token_type(T_BAD);
@@ -379,10 +384,12 @@ private void show_lexer_error(char *msg)
 	char info[64];
 	get_lexer_pos_string(working_lexer, info);
 
-	printf("%s: \033[33merror:\033[0m %s\n", info, msg);
+	// TODO : enhance and rewrite this piece of code
+	printf("%s --> \033[33merror:\033[0m %s\n", info, msg);
 
 	printf("%d |", working_lexer->pos.line);
 
+	// TODO : color code writing
 	if (working_lexer->pos.col > 0) {
 		char *first_of_line = p - working_lexer->pos.col;
 		while (first_of_line < p) {
@@ -434,17 +441,17 @@ private void skip_ml_comment()
 private void scan_ident()
 {
 	int c = next_char();
-	while (isalnum(c)) {
+	while (isalnum(c) || c == '_') {
 		prosing_string_append_char(working_lexer->tok.text, c);
 		c = next_char();
 	}
 	put_back(c);
 }
 
-// TODO : implement scaning other types of number like hex, octal
-private int scan_number(char c)
+private double scan_number(char c)
 {
-	int base = 10, res = 0;
+	int base = 10;
+	double res = 0;
 	if (c == '0') {
 		c = next_char();
 		if (c == 'x') {
@@ -454,13 +461,38 @@ private int scan_number(char c)
 		}
 		else if (isdigit(c)) {
 			base = 8;
-		}		
+		}
 	}
+	float floating_point = 0, pow = 1;
+	bool in_floating_point = false;
+	int k = 0;
 	while (isdigit(c)) {
-		prosing_string_append_char(working_lexer->tok.text, c);
-		res = res * base + CHAR_TO_NUM(c);
+		/* if base is 10 , and it is the first cycle of while , do not add char to text
+		 * because it's added before */
+		if (k++ == 0 && base == 10)
+			k++;
+		else
+			prosing_string_append_char(working_lexer->tok.text, c);
+
+		if (in_floating_point) {
+			pow *= 10;
+			floating_point = floating_point * 10 + CHAR_TO_NUM(c);
+		} else {
+			res = res * base + CHAR_TO_NUM(c);
+		}
+
 		c = next_char();
+		if (c == '.') {
+			in_floating_point = true;
+			prosing_string_append_char(working_lexer->tok.text, c);
+			c = next_char();
+		}
 	}
 	put_back(c);
+	if (in_floating_point) {
+		set_working_lexer_token_type(T_REALLIT);
+		return res + floating_point / pow;
+	}
+	set_working_lexer_token_type(T_INTLIT);
 	return res;
 }

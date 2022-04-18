@@ -113,6 +113,6 @@ private void scan_ident();
 /*
  *	@brief : scan number from lexer , number can be decimal or octal or ....
  */
-private int scan_number(char);
+private double scan_number(char);
 
 #endif
