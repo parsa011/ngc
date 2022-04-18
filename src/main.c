@@ -46,8 +46,7 @@ int main(int argc, char *argv[])
 	set_working_lexer(l);
 	lex(l);
 	while (l->tok.type != T_EOF) {
-		if (l->tok.type == T_STRLIT)
-			print_token(&l->tok);
+		//print_token(&l->tok);
 		lex(l);
 	}
 	return 0;

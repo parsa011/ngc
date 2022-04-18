@@ -193,6 +193,18 @@ public void lex(struct lexer *l)
 			break;
 				
 		case '.' :
+			c = next_char();
+			if (c == '.') {
+				c = next_char();
+				if (c != '.') {
+					show_lexer_error("Bad Token");
+					set_working_lexer_token_type(T_BAD);
+					break;
+				}
+				set_working_lexer_token_type(T_ELLIPSIS);
+				break;
+			} else
+				put_back(c);
 			l->tok.type = T_DOT;
 			break;
 
