@@ -66,6 +66,12 @@ private struct lexer *working_lexer;
 public struct lexer *lexer_init();
 
 /*
+ *	@brief : close lexer file and make lexer memory free , also check if given lexer is working_lexer
+ *	if it's , it will change working_lexer (for now it will make if free)
+ */
+public void lexer_destory(struct lexer *);
+
+/*
  *	@brief : set working_lexer variable to given lexer pointer
  */
 public void set_working_lexer(struct lexer *);

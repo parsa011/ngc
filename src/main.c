@@ -49,5 +49,6 @@ int main(int argc, char *argv[])
 		//print_token(&l->tok);
 		lex(l);
 	}
+	lexer_destory(l);
 	return 0;
 }

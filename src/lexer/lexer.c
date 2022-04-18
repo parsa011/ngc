@@ -24,6 +24,14 @@ public struct lexer *lexer_init()
 	return l;
 }
 
+public void lexer_destory(struct lexer *l)
+{
+	l->close_file(l);
+	if (working_lexer == l)
+		working_lexer = NULL;
+	ngc_free(l);
+}
+
 public void set_working_lexer(struct lexer *l)
 {
 	working_lexer = l;
@@ -54,6 +62,8 @@ private void add_char_to_token(char c)
 	int *bufp = &working_lexer->tok.bufp;
 	if (*bufp == TOKEN_BUF_SIZE - 1) {
 		show_lexer_error("Too Large Idnefier");
+		// TODO : destry other lexer (in future that we have more lexer :)) )
+		lexer_destory(working_lexer);
 		panic(NULL);
 	}
 	working_lexer->tok.buffer[working_lexer->tok.bufp++] = c;
