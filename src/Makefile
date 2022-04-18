@@ -28,7 +28,7 @@ UTIL_OBJS := $(UTIL_SRC:%=$(BUILD_DIR)/%.o)
 #==========================================
 
 $(TARGET) : $(OBJS)
-	$(CC) main.c $(OBJS) -o $(BUILD_DIR)/$@
+	$(CC) main.c $(OBJS) -g -o $(BUILD_DIR)/$@
 
 lexer : $(LEX_OBJS) $(LEX_INCS)
 
@@ -40,7 +40,7 @@ util : $(UTIL_OBJS) $(UTIL_INCS)
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
 	@mkdir -p $(dir $@)
 	@echo " - Compile $(GREENCOLOR)$(<)$(RCOLOR)"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -g -c $< -o $@
 
 clean :
 	@cd ..; make clean
