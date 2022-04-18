@@ -3,7 +3,7 @@ int main()
 {
 	long int age = 010;
 	int a;
-	char *name = "parsa mahmoudy" " sahebi";
+	char *name = "parsa " "mahmoudy" " sahebi";
 	// another comment
 	a--;
 	int temp = `;
