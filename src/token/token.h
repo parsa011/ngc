@@ -24,6 +24,7 @@ typedef enum {
 	T_AND,			// &
 	T_ANDAND,		// &&
 	T_DOT,			// .
+	T_ELLIPSIS,		// ...
 	T_COMMA,		// ,
 	T_CARET,		// ^
 	T_QUES,			// ?
@@ -121,6 +122,7 @@ private char *token_type_str[] = {
 	"T_AND",		// &
 	"T_ANDAND",		// &&
 	"T_DOT",		// .
+	"T_ELLIPSIS",	// ...
 	"T_COMMA",		// ,
 	"T_CARET",		// ^
 	"T_QUES",		// ?
