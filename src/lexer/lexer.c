@@ -264,6 +264,7 @@ public void lex(struct lexer *l)
 
 		case '"' :
 			l->tok.str = prosing_string_init("");
+str_again:
 			c = next_char();
 			while (c != '"') {
 				if (c == EOF) {
@@ -273,6 +274,8 @@ public void lex(struct lexer *l)
 				prosing_string_append_char(l->tok.str, c);
 				c = next_char();
 			}
+			if ((c = skip_whitespace()) == '"')
+				goto str_again;
 			set_working_lexer_token_type(T_STRLIT);
 			break;
 
