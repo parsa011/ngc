@@ -275,6 +275,7 @@ public void lex(struct lexer *l)
 			break;
 
 		case '"' :
+			prosing_free(l->tok.str);
 			l->tok.str = prosing_string_init("");
 str_concat:
 			c = next_char();
@@ -351,7 +352,6 @@ str_concat:
 				} else {
 					l->tok.integer = (int) res;
 				}
-				print_token(&l->tok);
 				break;
 			}
 			set_working_lexer_token_type(T_BAD);
