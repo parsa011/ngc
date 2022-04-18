@@ -154,7 +154,7 @@ public token_type guess_text_type(char *text)
 
 public void print_token(struct token *t)
 {
-	printf("%s --> %s", get_token_str(t->type), t->buffer);
+	printf("%s --> %s (%d)", get_token_str(t->type), t->buffer, t->bufp);
 	switch (t->type) {
 
 		case T_INTLIT :

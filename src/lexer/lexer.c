@@ -52,8 +52,9 @@ private void add_char_to_lexer_buffer(char c)
 private void add_char_to_token(char c)
 {
 	int *bufp = &working_lexer->tok.bufp;
-	if (*bufp >= TOKEN_BUF_SIZE) {
-		*bufp = 0;
+	if (*bufp == TOKEN_BUF_SIZE - 1) {
+		show_lexer_error("Too Large Idnefier");
+		panic(NULL);
 	}
 	working_lexer->tok.buffer[working_lexer->tok.bufp++] = c;
 	working_lexer->tok.buffer[working_lexer->tok.bufp] = '\0';
@@ -170,6 +171,7 @@ private void scan_ident()
 	int c = next_char();
 	while (isalnum(c) || c == '_') {
 		add_char_to_token(c);
+		//printf("%d\n", working_lexer->tok.bufp);
 		c = next_char();
 	}
 	put_back(c);
