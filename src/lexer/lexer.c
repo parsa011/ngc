@@ -19,8 +19,8 @@ public struct lexer *lexer_init()
 	l->close_file = &lexer_close_file;
 	l->put_back_char = 0;
 	l->pos = new_pos_struct;
-	l->buffer = prosing_string_init("");
-	l->tok.text = prosing_string_init("");
+	l->bufp = 0;
+	l->tok.bufp = 0;
 	return l;
 }
 
@@ -39,6 +39,32 @@ private void put_back(char c)
 	working_lexer->put_back_char = c;
 }
 
+private void add_char_to_lexer_buffer(char c)
+{
+	int *bufp = &working_lexer->bufp;
+	if (*bufp >= LEXER_BUFFER_LENGTH) {
+		*bufp = 0;
+	}
+	working_lexer->buffer[working_lexer->bufp++] = c;
+	working_lexer->buffer[*bufp] = '\0';
+}
+
+private void add_char_to_token(char c)
+{
+	int *bufp = &working_lexer->tok.bufp;
+	if (*bufp >= TOKEN_BUF_SIZE) {
+		*bufp = 0;
+	}
+	working_lexer->tok.buffer[working_lexer->tok.bufp++] = c;
+	working_lexer->tok.buffer[working_lexer->tok.bufp] = '\0';
+}
+
+private void reset_token_text()
+{
+	working_lexer->tok.bufp = 0;
+	working_lexer->tok.buffer[0] = '\0';
+}
+
 private char next_char()
 {
 	char c;
@@ -55,7 +81,9 @@ private char next_char()
 	} else
 		working_lexer->pos.col++;
 	working_lexer->current_char = c;
-	prosing_string_append_char(working_lexer->buffer, c);
+
+	add_char_to_lexer_buffer(c);
+	
 	return c;
 }
 
@@ -68,6 +96,134 @@ private char skip_whitespace()
 	return c;
 }
 
+private char *get_pointer_to_buffer(struct position *pos)
+{
+	char *p = working_lexer->buffer;
+	// struct position current_pos = new_pos_struct;
+	// while (*p) {
+	// 	if (current_pos.line == pos->line && current_pos.col == pos->col)
+	// 		break;
+	// 	if (*p == '\n') {
+	// 		current_pos.col = 0;
+	// 		current_pos.line++;
+	// 	} else
+	// 		current_pos.col++;
+	// 	p++;
+	// }
+	return p + working_lexer->bufp;
+}
+
+private void show_lexer_error(char *msg)
+{
+	char *p = get_pointer_to_buffer(&working_lexer->pos);
+
+	char info[64];
+	get_lexer_pos_string(working_lexer, info);
+
+	// TODO : enhance and rewrite this piece of code
+	printf("%s --> \033[33merror:\033[0m %s\n", info, msg);
+
+	printf("%d |", working_lexer->pos.line);
+
+	// TODO : color code writing
+	if (working_lexer->pos.col > 0) {
+		char *first_of_line = p - working_lexer->pos.col;
+		while (first_of_line < p) {
+			putchar(*first_of_line++);
+		}
+		putchar('\n');
+	}
+}
+
+public void get_lexer_pos_string(struct lexer *l, char *buf)
+{
+	snprintf(buf, 64, "%s:%d:%d", l->file_name, l->pos.line, l->pos.col);
+}
+
+private void skip_ol_comment() 
+{
+	int c = next_char();
+	while (c != '\n') {
+		c = next_char();
+	}
+}
+
+private void skip_ml_comment() 
+{
+	int c = next_char();
+	while (1) {
+		if (c == EOF) {
+			//TODO : EOF in comment
+		}
+		if (c == '*') {
+			c = next_char();
+			if (c == '/')
+				break;
+		}
+		c = next_char();
+	}
+	next_char();
+}
+
+private void scan_ident()
+{
+	int c = next_char();
+	while (isalnum(c) || c == '_') {
+		add_char_to_token(c);
+		c = next_char();
+	}
+	put_back(c);
+}
+
+private double scan_number(char c)
+{
+	int base = 10;
+	double res = 0;
+	if (c == '0') {
+		c = next_char();
+		if (c == 'x') {
+			add_char_to_token(c);
+			base = 16;
+			c = next_char();
+		}
+		else if (isdigit(c)) {
+			base = 8;
+		}
+	}
+	float floating_point = 0, pow = 1;
+	bool in_floating_point = false;
+	int k = 0;
+	while (isdigit(c)) {
+		/* if base is 10 , and it is the first cycle of while , do not add char to text
+		 * because it's added before */
+		if (k++ == 0 && base == 10)
+			k++;
+		else
+			add_char_to_token(c);
+
+		if (in_floating_point) {
+			pow *= 10;
+			floating_point = floating_point * 10 + CHAR_TO_NUM(c);
+		} else {
+			res = res * base + CHAR_TO_NUM(c);
+		}
+
+		c = next_char();
+		if (c == '.') {
+			in_floating_point = true;
+			add_char_to_token(c);
+			c = next_char();
+		}
+	}
+	put_back(c);
+	if (in_floating_point) {
+		set_working_lexer_token_type(T_REALLIT);
+		return res + floating_point / pow;
+	}
+	set_working_lexer_token_type(T_INTLIT);
+	return res;
+}
+
 public void lex(struct lexer *l)
 {
 	if (!is_current_lexer(l)) {
@@ -75,8 +231,8 @@ public void lex(struct lexer *l)
 	}
 	int c = skip_whitespace();
 	
-	prosing_string_reset(l->tok.text);
-	prosing_string_append_char(l->tok.text, c);
+	reset_token_text();
+	add_char_to_token(c);
 
 	switch (c) {
 
@@ -87,11 +243,11 @@ public void lex(struct lexer *l)
 		case '+' :
 			c = next_char();
 			if (c == '=' ) {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_INCEQUAL);
 				break;
 			} else if (c == '+') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_INC);
 				break;
 			} else
@@ -102,11 +258,11 @@ public void lex(struct lexer *l)
 		case '-' :
 			c = next_char();
 			if (c == '=' ) {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_DECEQUAL);
 				break;
 			} else if (c == '-') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_DEC);
 				break;
 			} else
@@ -117,7 +273,7 @@ public void lex(struct lexer *l)
 		case '*' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_MUEQUAL);
 				break;
 			} else
@@ -128,7 +284,7 @@ public void lex(struct lexer *l)
 		case '/' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_DIVEQUAL);
 				break;
 			} else if (c == '*') {
@@ -147,7 +303,7 @@ public void lex(struct lexer *l)
 		case '%' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_MODEQUAL);
 				break;
 			} else
@@ -158,11 +314,11 @@ public void lex(struct lexer *l)
 		case '|' :
 			c = next_char();
 			if (c == '|') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_PIPEPIPE);
 				break;
 			} else if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_OREQUAL);
 				break;
 			} else
@@ -173,7 +329,7 @@ public void lex(struct lexer *l)
 		case '=' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_ISEQUAL);
 				break;
 			} else
@@ -184,7 +340,7 @@ public void lex(struct lexer *l)
 		case '&' :
 			c = next_char();
 			if (c == '&') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_ANDAND);
 				break;
 			} else
@@ -215,7 +371,7 @@ public void lex(struct lexer *l)
 		case '^' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_XOREQUAL);
 				break;
 			} else
@@ -230,7 +386,7 @@ public void lex(struct lexer *l)
 		case '!' :
 			c = next_char();
 			if (c == '=') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				set_working_lexer_token_type(T_NOTEQUAL);
 				break;
 			} else
@@ -241,10 +397,10 @@ public void lex(struct lexer *l)
 		case '>' :
 			c = next_char();
 			if (c == '>') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				c = next_char();
 				if (c == '=') {
-					prosing_string_append_char(l->tok.text, c);
+					add_char_to_token(c);
 					set_working_lexer_token_type(T_SHREQUAL);
 					break;
 				} else
@@ -260,10 +416,10 @@ public void lex(struct lexer *l)
 		case '<' :
 			c = next_char();
 			if (c == '<') {
-				prosing_string_append_char(l->tok.text, c);
+				add_char_to_token(c);
 				c = next_char();
 				if (c == '=') {
-					prosing_string_append_char(l->tok.text, c);
+					add_char_to_token(c);
 					set_working_lexer_token_type(T_SHLEQUAL);
 					break;
 				} else
@@ -275,7 +431,6 @@ public void lex(struct lexer *l)
 			break;
 
 		case '"' :
-			prosing_free(l->tok.str);
 			l->tok.str = prosing_string_init("");
 str_concat:
 			c = next_char();
@@ -292,6 +447,23 @@ str_concat:
 			else
 				put_back(c);
 			set_working_lexer_token_type(T_STRLIT);
+			break;
+
+		case '\'' :
+			l->tok.str = prosing_string_init("");
+			c = next_char();
+			if (c == '\\') {
+				prosing_string_append_char(l->tok.str, c);
+				c = next_char();
+			}
+			prosing_string_append_char(l->tok.str, c);
+			c = next_char();
+			if (c != '\'') {
+				set_working_lexer_token_type(T_BAD);
+				show_lexer_error("Unclosed Char Literal");
+				break;;
+			}
+			set_working_lexer_token_type(T_CHARLIT);
 			break;
 
 		case '#' :
@@ -342,7 +514,7 @@ str_concat:
 			// TODO : scan keywords and identifirers and ...
 			if (isalpha(c) || c == '_') {
 				scan_ident();
-				set_working_lexer_token_type(guess_text_type(l->tok.text->value));
+				set_working_lexer_token_type(guess_text_type(l->tok.buffer));
 				break;
 			}
 			if (isdigit(c)) {
@@ -358,141 +530,4 @@ str_concat:
 			show_lexer_error("Bad Token");
 			break;
 	}
-}
-
-private char *get_pointer_to_buffer(struct position *pos)
-{
-	char *p = working_lexer->buffer->value;
-	struct position current_pos = new_pos_struct;
-	while (*p) {
-		if (current_pos.line == pos->line && current_pos.col == pos->col)
-			break;
-		if (*p == '\n') {
-			current_pos.col = 0;
-			current_pos.line++;
-		} else
-			current_pos.col++;
-		p++;
-	}
-	return p;
-}
-
-private void show_lexer_error(char *msg)
-{
-	char *p = get_pointer_to_buffer(&working_lexer->pos);
-
-	char info[64];
-	get_lexer_pos_string(working_lexer, info);
-
-	// TODO : enhance and rewrite this piece of code
-	printf("%s --> \033[33merror:\033[0m %s\n", info, msg);
-
-	printf("%d |", working_lexer->pos.line);
-
-	// TODO : color code writing
-	if (working_lexer->pos.col > 0) {
-		char *first_of_line = p - working_lexer->pos.col;
-		while (first_of_line < p) {
-			putchar(*first_of_line++);
-		}
-		putchar('\n');
-	}
-}
-
-public void print_line_info()
-{
-	char info[64];
-	get_lexer_pos_string(working_lexer, info);
-	puts(info);
-}
-
-public void get_lexer_pos_string(struct lexer *l, char *buf)
-{
-	snprintf(buf, 64, "%s:%d:%d", l->file_name, l->pos.line, l->pos.col);
-}
-
-private void skip_ol_comment() 
-{
-	int c = next_char();
-	while (c != '\n') {
-		prosing_string_append_char(working_lexer->tok.text, c);
-		c = next_char();
-	}
-}
-
-private void skip_ml_comment() 
-{
-	int c = next_char();
-	while (1) {
-		prosing_string_append_char(working_lexer->tok.text, c);
-		if (c == EOF) {
-			//TODO : EOF in comment
-		}
-		if (c == '*') {
-			c = next_char();
-			if (c == '/')
-				break;
-		}
-		c = next_char();
-	}
-	next_char();
-}
-
-private void scan_ident()
-{
-	int c = next_char();
-	while (isalnum(c) || c == '_') {
-		prosing_string_append_char(working_lexer->tok.text, c);
-		c = next_char();
-	}
-	put_back(c);
-}
-
-private double scan_number(char c)
-{
-	int base = 10;
-	double res = 0;
-	if (c == '0') {
-		c = next_char();
-		if (c == 'x') {
-			prosing_string_append_char(working_lexer->tok.text, c);
-			base = 16;
-			c = next_char();
-		}
-		else if (isdigit(c)) {
-			base = 8;
-		}
-	}
-	float floating_point = 0, pow = 1;
-	bool in_floating_point = false;
-	int k = 0;
-	while (isdigit(c)) {
-		/* if base is 10 , and it is the first cycle of while , do not add char to text
-		 * because it's added before */
-		if (k++ == 0 && base == 10)
-			k++;
-		else
-			prosing_string_append_char(working_lexer->tok.text, c);
-
-		if (in_floating_point) {
-			pow *= 10;
-			floating_point = floating_point * 10 + CHAR_TO_NUM(c);
-		} else {
-			res = res * base + CHAR_TO_NUM(c);
-		}
-
-		c = next_char();
-		if (c == '.') {
-			in_floating_point = true;
-			prosing_string_append_char(working_lexer->tok.text, c);
-			c = next_char();
-		}
-	}
-	put_back(c);
-	if (in_floating_point) {
-		set_working_lexer_token_type(T_REALLIT);
-		return res + floating_point / pow;
-	}
-	set_working_lexer_token_type(T_INTLIT);
-	return res;
 }

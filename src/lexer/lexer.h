@@ -14,7 +14,7 @@
 #include "../token/token.h"
 #include <stdio.h>
 
-#define BUF_MAX_LEN 32
+#define LEXER_BUFFER_LENGTH 256
 
 struct lexer {
 	FILE *fp;
@@ -22,7 +22,8 @@ struct lexer {
 	char current_char;
 	char put_back_char;
 
-	string *buffer;
+	char buffer[LEXER_BUFFER_LENGTH];
+	int bufp;
 
 	struct position pos;
 	struct position prevpos;
@@ -36,6 +37,22 @@ struct lexer {
 
 #define get_lexer_put_back(l) (l->put_back_char)
 #define set_working_lexer_token_type(t) (working_lexer->tok.type = t)
+
+
+/*
+ *	@brief : append char to lexer buffer
+ */
+private void add_char_to_lexer_buffer(char);
+
+/*
+ *	@brief : add char to token text , also check for max length of token
+ */
+private void add_char_to_token(char);
+
+/*
+ *	@brief : clear text of working_lexer token, set bufp to 0
+ */
+private void reset_token_text();
 
 /*
  *	pointer to lexer that we are working with

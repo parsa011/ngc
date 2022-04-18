@@ -208,10 +208,13 @@ private char *token_type_str[] = {
 	"T_BAD"
 };
 
+#define TOKEN_BUF_SIZE 32
+
 struct token {
 	int type;
 	struct position pos;
-	string *text;
+	char buffer[TOKEN_BUF_SIZE];
+	int bufp;
 	union
 	{
 		string *str;
