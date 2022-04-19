@@ -30,7 +30,7 @@ private const char digits[] = {
 	'0'
 };
 
-/* every that we need them , we can decreaase each item by 32 , to get lowercase */
+/* every that we need them , we can decreaase each item by 32 , to get uppercase */
 private const char identifiers_chars[] = {
 	'a',
 	'b',
