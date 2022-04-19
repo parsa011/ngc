@@ -162,8 +162,10 @@ public void print_token(struct token *t)
 			break;
 		
 		case T_STRLIT :
+		case T_CHARLIT :
 			printf(" --> Value : %s", t->str->value);
 			break;
+
 
 		case T_REALLIT :
 			printf(" --> Value : %f", t->real);
