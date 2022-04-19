@@ -10,6 +10,57 @@
 #include "lexer_file.h"
 #include <ctype.h>
 
+private const char white_spaces[] = {
+	' ',
+	'\r',
+	'\n',
+	'\t'
+};
+
+private const char digits[] = {
+	'1',
+	'2',
+	'3',
+	'4',
+	'5',
+	'6',
+	'7',
+	'8',
+	'9',
+	'0'
+};
+
+/* every that we need them , we can decreaase each item by 32 , to get lowercase */
+private const char identifiers_chars[] = {
+	'a',
+	'b',
+	'c',
+	'd',
+	'e',
+	'f',
+	'g',
+	'h',
+	'i',
+	'j',
+	'k',
+	'l',
+	'm',
+	'n',
+	'o',
+	'p',
+	'q',
+	'r',
+	's',
+	't',
+	'u',
+	'v',
+	'w',
+	'x',
+	'y',
+	'z',
+	'_'
+};
+
 private struct lexer *working_lexer;
 
 public struct lexer *lexer_init()
@@ -62,10 +113,10 @@ private void add_char_to_token(char c)
 	int *bufp = &working_lexer->tok.bufp;
 	if (*bufp == TOKEN_BUF_SIZE - 1) {
 		show_lexer_error("Too Large Idnefier");
-		// GO to next space
-		while (!isspace(working_lexer->current_char)) {
-			next_char();
-		}
+		/* skip until next token */
+		c = next_char();
+		while (c != EOF || isdigit(c) || c == '_')
+			c = next_char();
 	}
 	working_lexer->tok.buffer[working_lexer->tok.bufp++] = c;
 	working_lexer->tok.buffer[working_lexer->tok.bufp] = '\0';
