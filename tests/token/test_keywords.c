@@ -28,7 +28,11 @@ void run_test()
 			printf("invalid text type : <'%s'> -----> %d (%s)\n", list[i].text, t, get_token_str(t));
 		}
 	}
-	printf("%d error occured when testing get text type\n", error);
+	if (error) {
+		printf("test_keywords -> \033[33mfaild\033[0m\n");
+	} else {
+		printf("test_keywords -> \033[32msuccess\033[0m\n");
+	}
 }
 
 int main(int argc, char **argv)

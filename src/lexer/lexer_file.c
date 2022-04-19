@@ -16,7 +16,6 @@ public void lexer_open_file(struct lexer *l, char *file_name)
 	l->fp = fopen(file_name, "r");
 	if (!l->fp) {
 		// TODO : panic here
-		panic("File <'%s'> Not Found", file_name);
 		return ;
 	}
 	l->file_name = basename(file_name);

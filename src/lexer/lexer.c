@@ -62,9 +62,10 @@ private void add_char_to_token(char c)
 	int *bufp = &working_lexer->tok.bufp;
 	if (*bufp == TOKEN_BUF_SIZE - 1) {
 		show_lexer_error("Too Large Idnefier");
-		// TODO : destry other lexer (in future that we have more lexer :)) )
-		lexer_destory(working_lexer);
-		panic(NULL);
+		// GO to next space
+		while (!isspace(working_lexer->current_char)) {
+			next_char();
+		}
 	}
 	working_lexer->tok.buffer[working_lexer->tok.bufp++] = c;
 	working_lexer->tok.buffer[working_lexer->tok.bufp] = '\0';
