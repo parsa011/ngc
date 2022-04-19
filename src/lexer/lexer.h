@@ -135,7 +135,9 @@ private void scan_ident();
 
 /*
  *	@brief : scan number from lexer , number can be decimal or octal or ....
+ *	and also we give toke_type as an input , so we can use this function everywhere that 
+ *	we want to sacn a number
  */
-private double scan_number(char);
+private double scan_number(char, token_type *);
 
 #endif

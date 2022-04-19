@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
 	if (argc == 1) {
 		usage(argv[0]);
 	}
-	struct lexer *l = lexer_init();
 	if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
 		panic("Given File is not a valid 'c' file : %s", argv[1]);
 	}
+	struct lexer *l = lexer_init();
 	l->open_file(l, argv[1]);
 	set_working_lexer(l);
 	lex(l);

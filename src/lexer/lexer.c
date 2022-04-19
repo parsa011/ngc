@@ -175,7 +175,7 @@ private void scan_ident()
 	put_back(c);
 }
 
-private double scan_number(char c)
+private double scan_number(char c, token_type *t)
 {
 	int base = 10;
 	double res = 0;
@@ -217,10 +217,10 @@ private double scan_number(char c)
 	}
 	put_back(c);
 	if (in_floating_point) {
-		set_working_lexer_token_type(T_REALLIT);
+		*t = T_REALLIT;
 		return res + floating_point / pow;
 	}
-	set_working_lexer_token_type(T_INTLIT);
+	*t = T_INTLIT;
 	return res;
 }
 
@@ -351,7 +351,9 @@ public void lex(struct lexer *l)
 		case '.' :
 			c = next_char();
 			if (c == '.') {
+				add_char_to_token(c);
 				c = next_char();
+				add_char_to_token(c);
 				if (c != '.') {
 					show_lexer_error("Bad Token");
 					set_working_lexer_token_type(T_BAD);
@@ -434,13 +436,20 @@ public void lex(struct lexer *l)
 			l->tok.str = prosing_string_init("");
 str_concat:
 			c = next_char();
+			char last;
 			while (c != '"') {
 				if (c == EOF) {
 					// TODO : Implement early_eof_error();
 					break;
 				}
 				prosing_string_append_char(l->tok.str, c);
+				last = c;
 				c = next_char();
+				if (last == '\\' ) {
+					prosing_string_append_char(l->tok.str, c);
+					last = c;
+					c = next_char();
+				}
 			}
 			if ((c = skip_whitespace()) == '"')
 				goto str_concat;
@@ -455,9 +464,19 @@ str_concat:
 			if (c == '\\') {
 				prosing_string_append_char(l->tok.str, c);
 				c = next_char();
+				if (isdigit(c)) {
+					while (isdigit(c) || c == 'x') {
+						prosing_string_append_char(l->tok.str, c);
+						c = next_char();
+					}
+				} else {
+					prosing_string_append_char(l->tok.str, c);
+					c = next_char();
+				}
+			} else {
+				prosing_string_append_char(l->tok.str, c);
+				c = next_char();
 			}
-			prosing_string_append_char(l->tok.str, c);
-			c = next_char();
 			if (c != '\'') {
 				set_working_lexer_token_type(T_BAD);
 				show_lexer_error("Unclosed Char Literal");
@@ -518,8 +537,9 @@ str_concat:
 				break;
 			}
 			if (isdigit(c)) {
-				double res = scan_number(c);
-				if (l->tok.type == T_REALLIT) {
+				token_type t;
+				double res = scan_number(c, &t);
+				if (t == T_REALLIT) {
 					l->tok.real = res;
 				} else {
 					l->tok.integer = (int) res;

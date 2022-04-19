@@ -1,19 +1,11 @@
-#include <stdio.h>
-
-void format(char *msg,...)
-{
-
+case '\'': fputs("\\'", f); break;
+case '"': fputs("\\\"", f); break;
+default:
+if (0x20 <= c && c <= 0x7f)
+	putc(c, f);
+	else
+	fprintf(f, "\\x%02x", c);
+	}
 }
+putc('"', f);
 
-int main()
-{
-	/*long int ageasdfasdfasjdfkasjdfkasjdfkjaskdfaksdfjaksdfk = 010;*/
-	double floatint_point = 10.1;
-	int age = 110;
-	int a;
-	char *name = "parsa " "mahmoudy" " sahebi";
-	// another comment
-	a--;
-	//int temp = `;
-	return 0x0;
-}
