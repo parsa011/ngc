@@ -442,13 +442,13 @@ str_concat:
 					// TODO : Implement early_eof_error();
 					break;
 				}
+add_again:
 				prosing_string_append_char(l->tok.str, c);
 				last = c;
 				c = next_char();
+				/* don tount \" as end of string , we should add it to string too */
 				if (last == '\\' ) {
-					prosing_string_append_char(l->tok.str, c);
-					last = c;
-					c = next_char();
+					goto add_again;
 				}
 			}
 			if ((c = skip_whitespace()) == '"')
