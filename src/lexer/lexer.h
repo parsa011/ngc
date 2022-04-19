@@ -137,12 +137,14 @@ private void scan_ident();
  *	@brief : call next_char until current char is one of given chars in given arrya
  *	we used array because sometimes we need to add many parameter like whitespaces , there
  *	is many type of whitespaces \n \r ' ' and ...
+ *	TODO : Implement
  */
 private void skip_until(char []);
 
 /*
  *	@brief : similar to skip_until() , but different is it will call next_char() until current char
  *	is a member of given array
+ *	TODO : Implement
  */
 private void skip_until_is(char []);
 

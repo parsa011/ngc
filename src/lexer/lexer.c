@@ -591,6 +591,7 @@ add_again:
 			if (isdigit(c)) {
 				token_type t;
 				double res = scan_number(c, &t);
+				l->tok.type = t;
 				if (t == T_REALLIT) {
 					l->tok.real = res;
 				} else {
