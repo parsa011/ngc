@@ -211,7 +211,7 @@ private char *token_type_str[] = {
 #define TOKEN_BUF_SIZE 64 
 
 struct token {
-	int type;
+	token_type type;
 	struct position pos;
 	char buffer[TOKEN_BUF_SIZE];
 	int bufp;

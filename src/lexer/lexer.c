@@ -589,10 +589,8 @@ add_again:
 				break;
 			}
 			if (isdigit(c)) {
-				token_type t;
-				double res = scan_number(c, &t);
-				l->tok.type = t;
-				if (t == T_REALLIT) {
+				double res = scan_number(c, &l->tok.type);
+				if (l->tok.type == T_REALLIT) {
 					l->tok.real = res;
 				} else {
 					l->tok.integer = (int) res;

@@ -1,1 +1,2 @@
-int maikfjaskdfjkasdjfkasjdfkasdfjaskdfjaksdfjkasdjasasdfkjasdfkj = 10;
+int age = 10;
+char *name = "parsa011";
