@@ -110,17 +110,6 @@ private char skip_whitespace()
 private char *get_pointer_to_buffer(struct position *pos)
 {
 	char *p = working_lexer->buffer;
-	// struct position current_pos = new_pos_struct;
-	// while (*p) {
-	// 	if (current_pos.line == pos->line && current_pos.col == pos->col)
-	// 		break;
-	// 	if (*p == '\n') {
-	// 		current_pos.col = 0;
-	// 		current_pos.line++;
-	// 	} else
-	// 		current_pos.col++;
-	// 	p++;
-	// }
 	return p + working_lexer->bufp;
 }
 
@@ -181,7 +170,6 @@ private void scan_ident()
 	int c = next_char();
 	while (isalnum(c) || c == '_') {
 		add_char_to_token(c);
-		//printf("%d\n", working_lexer->tok.bufp);
 		c = next_char();
 	}
 	put_back(c);

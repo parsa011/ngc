@@ -1,19 +1,19 @@
 #include <stdio.h>
 
-void format(char *msg,..!)
+void format(char *msg,...)
 {
 
 }
 
 int main()
 {
-	long int ageasdfasdfasjdfkasjdfkasjdfkjaskdfaksdfjaksdfk = 010;
+	/*long int ageasdfasdfasjdfkasjdfkasjdfkjaskdfaksdfjaksdfk = 010;*/
 	double floatint_point = 10.1;
 	int age = 110;
 	int a;
 	char *name = "parsa " "mahmoudy" " sahebi";
 	// another comment
 	a--;
-	int temp = `;
+	//int temp = `;
 	return 0x0;
 }
