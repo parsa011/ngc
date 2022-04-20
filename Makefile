@@ -24,11 +24,11 @@ PHONY = help build
 
 # check if used runned configure.sh or no (config.h file should exist)
 ifeq ($(wildcard $(CONFIG_FILE)),)
-info help:
+info help :
 	@echo "Please run 'bash $(CONFIGURE_FILE)' or 'make config' Before Building"
 else
 
-help:
+help :
 	$(call write_help,build,   build world, all of language)
 	$(call write_help,lexer,   build lexer)
 	$(call write_help,token,   build token)
@@ -47,9 +47,9 @@ help:
 world :
 	cd $(SRCDIR); make
 
-remake : clean build
+remake : clean world
 
-clean:
+clean :
 	cd $(BUILDDIR) ; rm -rfv *
 
 run : world
