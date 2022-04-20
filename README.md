@@ -19,7 +19,7 @@ First Clone the project :
 git clone https://github.com/parsa011/ngc
 cd ngc
 ```
-Now ,  You need to Run 'configure' script in scripts folder to check your Machine :
+Now ,  You need to Run 'configure' script in scripts folder To check if the required headers are on your machine or no:
 ```
 bash ./scripts/configure.sh
 ```
