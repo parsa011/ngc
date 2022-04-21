@@ -41,14 +41,5 @@ int main(int argc, char *argv[])
 	if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
 		panic("Given File is not a valid 'c' file : %s", argv[1]);
 	}
-	struct lexer *l = lexer_init();
-	l->open_file(l, argv[1]);
-	set_working_lexer(l);
-	lex(l);
-	while (l->tok.type != T_EOF) {
-		print_token(&l->tok);
-		lex(l);
-	}
-	lexer_destory(l);
 	return 0;
 }
