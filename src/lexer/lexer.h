@@ -40,6 +40,11 @@ struct lexer {
 
 
 /*
+ *	@brief : test if given char is valid in a hexadecimal sentence
+ */
+private bool is_hex_digit(char);
+
+/*
  *	@brief : append char to lexer buffer
  */
 private void add_char_to_lexer_buffer(char);

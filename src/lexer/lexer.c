@@ -28,6 +28,13 @@ private const char identifiers_chars[] = {
 	'w', 'x', 'y', 'z', '_'
 };
 
+private bool is_hex_digit(char c)
+{
+	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'f'))
+		return true;
+	return false;
+}
+
 private struct lexer *working_lexer;
 
 public struct lexer *lexer_init()
@@ -173,11 +180,16 @@ private void skip_ml_comment()
 	while (1) {
 		if (c == EOF) {
 			//TODO : EOF in comment
+			show_lexer_error("Early End of file In Comment");
+			put_back(c);
+			return;
 		}
 		if (c == '*') {
 			c = next_char();
 			if (c == '/')
 				break;
+			else
+    			put_back(c);
 		}
 		c = next_char();
 	}
@@ -212,7 +224,7 @@ private double scan_number(char c, token_type *t)
 	float floating_point = 0, pow = 1;
 	bool in_floating_point = false;
 	int k = 0;
-	while (isdigit(c)) {
+	while (isdigit(c) || (base == 16 && is_hex_digit(c))) {
 		/* if base is 10 , and it is the first cycle of while , do not add char to text
 		 * because it's added before */
 		if (k++ == 0 && base == 10)
