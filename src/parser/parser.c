@@ -16,10 +16,21 @@ private void select_lexer(struct lexer *l)
 	set_working_lexer(l);
 }
 
+private void statements(struct ASTnode *n)
+{
+
+}
+
 public struct ASTnode *compile(struct lexer *l)
 {
 	select_lexer(l);
 	next_token();
+	while (current_token.type != T_EOF) {
+		print_token(&current_token);
+		next_token();
+	}
+	printl("DONE");
 	struct ASTnode *n;
+	statements(n);
 	return n;
 }

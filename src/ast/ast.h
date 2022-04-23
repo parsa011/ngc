@@ -11,6 +11,7 @@
 #include "../ngc.h"
 
 struct ASTnode {
+	char *title;
 	int type;
 	struct ASTnode *left;
 	struct ASTnode *right;
@@ -26,13 +27,13 @@ struct ASTnode {
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-struct ASTnode *create_ast_node(int, struct ASTnode *, struct ASTnode *, struct position);
+struct ASTnode *create_ast_node(char *, int, struct ASTnode *, struct ASTnode *, struct position);
 
 /*
  *	@brief : create a left for abstract syntax tree
- *	leaf cane be something like variables that are defined everywhere 
+ *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-struct ASTnode *create_ast_leaf(int, struct position);
+struct ASTnode *create_ast_leaf(char *, int, struct position);
 
 #endif

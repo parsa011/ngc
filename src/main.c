@@ -8,8 +8,7 @@
 *	Entry pint of ngc compiler
 */
 
-#include "ngc.h"
-#include "lexer/lexer.h"
+#include "parser/parser.h"
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -26,7 +25,7 @@ void panic(const char *msg,...)
 		char buf[256];
 		va_list ap;
 		va_start(ap, msg);
-		vsprintf(buf, msg, ap);
+		vsnprintf(buf, 256,msg, ap);
 		va_end(ap);
 		fprintf(stderr, "%s\n", buf);
 	}
@@ -41,5 +40,8 @@ int main(int argc, char *argv[])
 	if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
 		panic("Given File is not a valid 'c' file : %s", argv[1]);
 	}
+	struct lexer *l = lexer_init();
+	l->open_file(l, argv[1]);
+	struct ASTnode *n = compile(l);
 	return 0;
 }

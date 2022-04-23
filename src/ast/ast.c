@@ -8,9 +8,10 @@
 
 #include "ast.h"
 
-struct ASTnode *create_ast_node(int type, struct ASTnode *left, struct ASTnode *right, struct position pos)
+struct ASTnode *create_ast_node(char *title, int type, struct ASTnode *left, struct ASTnode *right, struct position pos)
 {
 	struct ASTnode *n = ngc_malloc(sizeof(struct ASTnode));
+	n->title = title;
 	n->type = type;
 	n->left = left;
 	n->right = right;
@@ -18,7 +19,7 @@ struct ASTnode *create_ast_node(int type, struct ASTnode *left, struct ASTnode *
 	return n;
 }
 
-struct ASTnode *create_ast_leaf(int type, struct position pos)
+struct ASTnode *create_ast_leaf(char *title, int type, struct position pos)
 {
-	return create_ast_node(type, NULL, NULL, pos);
+	return create_ast_node(title, type, NULL, NULL, pos);
 }

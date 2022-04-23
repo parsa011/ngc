@@ -19,9 +19,10 @@
 private struct lexer *working_lexer;
 
 #define next_token() (lex(working_lexer))
+#define current_token working_lexer->tok
 
 /*
- *	@brief :  set working lexer to given lexer, and also activate given lexer in lexer phase
+ *	@brief : set working lexer to given lexer, and also activate given lexer in lexer phase
  *	by calling set_working_lexer()
  */
 private void select_lexer(struct lexer *);
@@ -30,6 +31,6 @@ private void select_lexer(struct lexer *);
  *	@brief : This is entry point of parser , we will call this everwhere that we need
  *	to compiler file
  */
-public struct ASTnode *compile();
+public struct ASTnode *compile(struct lexer *);
 
 #endif
