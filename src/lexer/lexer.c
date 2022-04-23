@@ -239,6 +239,10 @@ private double scan_number(char c, token_type *t)
 		*t = T_REALLIT;
 		return res + floating_point / pow;
 	}
+	// TODO : test if res is more than a int variabel
+	//if ((((long)res) & ( 1 << 33 )) >> 33) {
+	//	*t = T_LONGLIT;
+	//} else 
 	*t = T_INTLIT;
 	return res;
 }
