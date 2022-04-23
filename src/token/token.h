@@ -99,6 +99,7 @@ typedef enum {
 	T_STRLIT,		 // "string"
 	T_REALLIT,		 // 1.13
 	T_INTLIT,		 // 123
+	T_LONGLIT,		 // 123
 	T_OCTALLIT,		 // 012
 	T_HEXLIT,		 // 0x123
 	T_BINLIT,		 //	0b123 
@@ -198,6 +199,7 @@ private char *token_type_str[] = {
 	"T_STRLIT",		 // "string"
 	"T_REALLIT",	 // 1.23
 	"T_INTLIT",		 // 123
+	"T_LONGLIT",	 // 123
 	"T_OCTALLIT",	 // 012
 	"T_HEXLIT",		 // 0x123
 	"T_BINLIT",		 //	0b123 
@@ -220,6 +222,7 @@ struct token {
 		string *str;
 		double real;
 		int integer;
+		long longval;
 	};
 };
 
