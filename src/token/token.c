@@ -104,6 +104,8 @@ public token_type guess_text_type(char *text)
 				return T_RETURN;
 			else if (!strcmp(text, "register"))
 				return T_REGISTER;
+			else if (!strcmp(text, "restrict"));
+				return T_RESTRICT;
 			break;
 
 		case 's' :

@@ -87,6 +87,7 @@ typedef enum {
 	T_SIZEOF,
 	T_REGISTER,
 	T_TYPEDEF,
+	T_RESTRICT,
 	T_LABEL,
 
 	T_INT,
@@ -187,6 +188,7 @@ private char *token_type_str[] = {
 	"T_SIZEOF",
 	"T_REGISTER",
 	"T_TYPEDEF",
+	"T_RESTRICT",
 	"T_LABEL",
 
 	"T_INT",
@@ -208,6 +210,19 @@ private char *token_type_str[] = {
 	"T_IDENT",
 
 	"T_BAD"
+};
+
+struct type{
+	int type : 8;
+	bool is_unsigned : 1;
+	bool is_const : 1;
+	bool is_volatile : 1;
+	bool is_restrict : 1;
+	bool is_pointer : 1;
+	bool is_pointer_const : 1;
+	bool is_pointer_volatile : 1;
+	bool is_pointer_restrict : 1;
+	int ref : 16;
 };
 
 #define TOKEN_BUF_SIZE 64 
