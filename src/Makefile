@@ -4,7 +4,7 @@ CC = cc
 TARGET := ngc
 CFLAGS = 
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
-SUBDIRS := lexer token util ast ../lib
+SUBDIRS := lexer token util ast parser ../lib
 BUILD_DIR := ../build
 
 # Super dirty :)
@@ -29,6 +29,11 @@ UTIL_OBJS := $(UTIL_SRC:%=$(BUILD_DIR)/%.o)
 AST_SRC := $(shell find ast -name '*.c')
 AST_INCS := $(shell find ast -name '*.h')
 AST_OBJS := $(AST_SRC:%=$(BUILD_DIR)/%.o)
+
+PARSER_SRC := $(shell find parser -name '*.c')
+PARSER_INCS := $(shell find parser -name '*.h')
+PARSER_OBJS := $(PARSER_SRC:%=$(BUILD_DIR)/%.o)
+
 #==========================================
 
 $(TARGET) : $(OBJS)
@@ -41,6 +46,8 @@ token : $(TOKEN_OBJS) $(TOKEN_INCS)
 util : $(UTIL_OBJS) $(UTIL_INCS)
 
 ast : $(AST_SRC) $(AST_INCS)
+
+parser : $(PARSER_SRC) $(PARSER_INCS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
