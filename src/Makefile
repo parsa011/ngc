@@ -40,7 +40,7 @@ token : $(TOKEN_OBJS) $(TOKEN_INCS)
 
 util : $(UTIL_OBJS) $(UTIL_INCS)
 
-util : $(AST_SRC) $(AST_INCS)
+ast : $(AST_SRC) $(AST_INCS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
