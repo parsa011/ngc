@@ -25,6 +25,10 @@ TOKEN_OBJS := $(TOKEN_SRC:%=$(BUILD_DIR)/%.o)
 UTIL_SRC := $(shell find util -name '*.c')
 UTIL_INCS := $(shell find util -name '*.h')
 UTIL_OBJS := $(UTIL_SRC:%=$(BUILD_DIR)/%.o)
+
+AST_SRC := $(shell find ast -name '*.c')
+AST_INCS := $(shell find ast -name '*.h')
+AST_OBJS := $(AST_SRC:%=$(BUILD_DIR)/%.o)
 #==========================================
 
 $(TARGET) : $(OBJS)
@@ -35,6 +39,8 @@ lexer : $(LEX_OBJS) $(LEX_INCS)
 token : $(TOKEN_OBJS) $(TOKEN_INCS)
 
 util : $(UTIL_OBJS) $(UTIL_INCS)
+
+util : $(AST_SRC) $(AST_INCS)
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c $(INCS)
