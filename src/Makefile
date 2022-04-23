@@ -4,7 +4,7 @@ CC = cc
 TARGET := ngc
 CFLAGS = 
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
-SUBDIRS := lexer token util ../lib
+SUBDIRS := lexer token util ast ../lib
 BUILD_DIR := ../build
 
 # Super dirty :)
