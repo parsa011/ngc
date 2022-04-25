@@ -27,13 +27,18 @@ struct ASTnode {
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-struct ASTnode *create_ast_node(char *, int, struct ASTnode *, struct ASTnode *, struct position);
+public struct ASTnode *create_ast_node(char *, int, struct ASTnode *, struct ASTnode *, struct position);
 
 /*
  *	@brief : create a left for abstract syntax tree
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-struct ASTnode *create_ast_leaf(char *, int, struct position);
+public struct ASTnode *create_ast_leaf(char *, int, struct position);
+
+/*
+ *	@brief : Print given ast into human readable format
+ */
+public void print_ast(struct ASTnode *);
 
 #endif
