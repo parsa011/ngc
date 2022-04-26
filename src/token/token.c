@@ -27,8 +27,9 @@ public struct token *token_duplicate(struct token *n)
 {
 	struct token *t = ngc_malloc(sizeof(struct token));
 	t->type = n->type;
-	t->pos.line = n->pos.line;
-	t->pos.col = n->pos.col;
+	t->bufp = n->bufp;
+	memcpy(t->buffer, n->buffer, n->bufp);
+	pos_copy(n->pos, t->pos);
 	return t;
 }
 
@@ -173,5 +174,25 @@ public void print_token(struct token *t)
 			break;
 
 	}
+	printf (" (%d:%d)", t->pos.line, t->pos.col);
 	putchar('\n');
+}
+
+public int token_precedence(token_type type)
+{
+	switch (type) {
+
+		case T_PLUS :
+		case T_DASH :
+			return 5;
+
+		case T_STAR :
+		case T_SLASH :
+		case T_PERCENT :
+		case T_AND :
+		case T_EXCLAM :
+			return 6;
+	}
+
+	return -1;
 }

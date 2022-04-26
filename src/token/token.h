@@ -277,4 +277,9 @@ public token_type guess_text_type(char *);
  */
 public void print_token(struct token *);
 
+/*
+ *	@brief : return precedence of given token type, (token should be an operator)
+ */
+public int token_precedence(token_type);
+
 #endif
