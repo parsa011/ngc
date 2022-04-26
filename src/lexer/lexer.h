@@ -38,6 +38,10 @@ struct lexer {
 #define get_lexer_put_back(l) (l->put_back_char)
 #define set_working_lexer_token_type(t) (working_lexer->tok.type = t)
 
+/*
+ *	pointer to lexer that we are working with
+ */
+private struct lexer *working_lexer; 
 
 /*
  *	@brief : test if given char is valid in a hexadecimal sentence
@@ -60,13 +64,7 @@ private void add_char_to_token(char);
 private void reset_token_text();
 
 /*
- *	pointer to lexer that we are working with
- */
-private struct lexer *working_lexer; 
-
-/*
  *	@brief : Init new lexer, open file by give name and return pointer to lexer
- *		- name of file to open in lexer
  */
 public struct lexer *lexer_init();
 
@@ -79,7 +77,7 @@ public void lexer_destory(struct lexer *);
 /*
  *	@brief : set working_lexer variable to given lexer pointer
  */
-public void set_working_lexer(struct lexer *);
+public void lexer_set_working_lexer(struct lexer *);
 
 /*
  *	@brief : test if give lexer is working_lexer
@@ -87,11 +85,11 @@ public void set_working_lexer(struct lexer *);
 public bool is_current_lexer(struct lexer *l);
 
 /*
- *	@brief : lex given lexer and find new token of it
+ *	@brief : lex working_lexer and find new token of it
  *	> make sure that you set target lexer and working_lexer by calling set_working_lexer before
- *	  using this function, because it will panic if given lexer is not working_lexer
+ *	  using this function
  */
-public void lex(struct lexer *l);
+public void lex();
 
 /*
  *	@brief : print full line and show current char as a bad token

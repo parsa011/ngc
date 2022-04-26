@@ -57,7 +57,7 @@ public void lexer_destory(struct lexer *l)
 	ngc_free(l);
 }
 
-public void set_working_lexer(struct lexer *l)
+public void lexer_set_working_lexer(struct lexer *l)
 {
 	working_lexer = l;
 }
@@ -259,11 +259,12 @@ private double scan_number(char c, token_type *t)
 	return res;
 }
 
-public void lex(struct lexer *l)
+public void lex()
 {
-	if (!is_current_lexer(l)) {
-		//panic("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
-	}
+	//if (!is_current_lexer(l) || working_lexer == NULL) {
+	//	//lexer_set_working_lexer(l);
+	//	//printf("lexer->lex() : given lexer is not working lexer, lexer name : %s", l->file_name);
+	//}
 	int c = skip_whitespace();
 	
 	reset_token_text();
@@ -324,11 +325,11 @@ public void lex(struct lexer *l)
 				break;
 			} else if (c == '*') {
 				skip_ml_comment();
-				lex(l);
+				lex();
 				break;
 			} else if (c == '/') {
 				skip_ol_comment();
-				lex(l);
+				lex();
 				break;
 			} else 
 				put_back(c);
@@ -398,11 +399,11 @@ public void lex(struct lexer *l)
 				break;
 			} else
 				put_back(c);
-			l->tok.type = T_DOT;
+			set_working_lexer_token_type(T_DOT);
 			break;
 
 		case ',' :
-			l->tok.type = T_COMMA;
+			set_working_lexer_token_type(T_COMMA);
 			break;
 		
 		case '^' :
@@ -468,7 +469,7 @@ public void lex(struct lexer *l)
 			break;
 
 		case '"' :
-			l->tok.str = prosing_string_init("");
+			working_lexer->tok.str = prosing_string_init("");
 str_concat:
 			c = next_char();
 			char last;
@@ -478,7 +479,7 @@ str_concat:
 					break;
 				}
 add_again:
-				prosing_string_append_char(l->tok.str, c);
+				prosing_string_append_char(working_lexer->tok.str, c);
 				last = c;
 				c = next_char();
 				/* don tount \" as end of string , we should add it to string too */
@@ -494,22 +495,22 @@ add_again:
 			break;
 
 		case '\'' :
-			l->tok.str = prosing_string_init("");
+			working_lexer->tok.str = prosing_string_init("");
 			c = next_char();
 			if (c == '\\') {
-				prosing_string_append_char(l->tok.str, c);
+				prosing_string_append_char(working_lexer->tok.str, c);
 				c = next_char();
 				if (isdigit(c)) {
 					while (isdigit(c) || c == 'x') {
-						prosing_string_append_char(l->tok.str, c);
+						prosing_string_append_char(working_lexer->tok.str, c);
 						c = next_char();
 					}
 				} else {
-					prosing_string_append_char(l->tok.str, c);
+					prosing_string_append_char(working_lexer->tok.str, c);
 					c = next_char();
 				}
 			} else {
-				prosing_string_append_char(l->tok.str, c);
+				prosing_string_append_char(working_lexer->tok.str, c);
 				c = next_char();
 			}
 			if (c != '\'') {
@@ -568,15 +569,15 @@ add_again:
 			// TODO : scan keywords and identifirers and ...
 			if (isalpha(c) || c == '_') {
 				scan_ident();
-				set_working_lexer_token_type(guess_text_type(l->tok.buffer));
+				set_working_lexer_token_type(guess_text_type(working_lexer->tok.buffer));
 				break;
 			}
 			if (isdigit(c)) {
-				double res = scan_number(c, &l->tok.type);
-				if (l->tok.type == T_REALLIT) {
-					l->tok.real = res;
+				double res = scan_number(c, &working_lexer->tok.type);
+				if (working_lexer->tok.type == T_REALLIT) {
+					working_lexer->tok.real = res;
 				} else {
-					l->tok.integer = (int) res;
+					working_lexer->tok.integer = (int) res;
 				}
 				break;
 			}
