@@ -8,28 +8,28 @@
 
 #include "parser.h"
 
-private struct lexer *working_lexer;
-
-private void select_lexer(struct lexer *l)
-{
-	working_lexer = l;
-	set_working_lexer(l);
-}
-
 private void statements(struct ASTnode *n)
 {
-
+	while (!is_eof()) {
+		//switch (current_token.type) {
+		//	case T_HASHTAG :
+		//		skip_token_until(T_GT);
+		//		next_token();
+		//		break;
+		//}
+		print_token(&current_token);
+		next_token();
+	}
 }
 
 public struct ASTnode *compile(struct lexer *l)
 {
 	select_lexer(l);
 	next_token();
-	while (current_token.type != T_EOF) {
-		print_token(&current_token);
-		next_token();
-	}
-	printl("DONE");
+	//while (current_token.type != T_EOF) {
+	//	print_token(&current_token);
+	//	next_token();
+	//}
 	struct ASTnode *n;
 	statements(n);
 	return n;

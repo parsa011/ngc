@@ -213,15 +213,15 @@ private char *token_type_str[] = {
 };
 
 struct type{
-	int type : 8;
-	bool is_unsigned : 1;
-	bool is_const : 1;
-	bool is_volatile : 1;
-	bool is_restrict : 1;
-	bool is_pointer : 1;
-	bool is_pointer_const : 1;
-	bool is_pointer_volatile : 1;
-	bool is_pointer_restrict : 1;
+	int type;
+	bool is_unsigned;
+	bool is_const;
+	bool is_volatile;
+	bool is_restrict;
+	bool is_pointer;
+	bool is_pointer_const;
+	bool is_pointer_volatile;
+	bool is_pointer_restrict;
 	int ref : 16;
 };
 
