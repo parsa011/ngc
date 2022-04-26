@@ -522,7 +522,11 @@ add_again:
 			break;
 
 		case '#' :
-			set_working_lexer_token_type(T_HASHTAG);
+			// for now we skip directives
+			while (c != '\n')
+				c = next_char();
+			lex();
+			//set_working_lexer_token_type(T_HASHTAG);
 			break;
 		
 		case '\\' :
