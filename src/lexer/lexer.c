@@ -270,6 +270,7 @@ public void lex()
 	reset_token_text();
 	add_char_to_token(c);
 
+	pos_copy(working_lexer->pos, working_lexer->tok.pos);
 	switch (c) {
 
 		case EOF :

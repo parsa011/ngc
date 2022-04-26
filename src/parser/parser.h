@@ -10,6 +10,12 @@
 
 #include "parser_util.h"
 
+private void statements();
+
+private struct ASTnode *primary_factor();
+
+private struct ASTnode *parse_binary_expression(int);
+
 /*
  *	@brief : This is entry point of parser , we will call this everwhere that we need
  *	to compiler file
