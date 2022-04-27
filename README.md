@@ -1,6 +1,6 @@
 # NGC (new generation c compiler)
 
-This language is a superset of 'c' , the goal is to compiler c projects and also we will have some cool features
+This language is a superset of 'c' , the goal is to compile c projects and also we will have some cool features
 
 # Why
 
