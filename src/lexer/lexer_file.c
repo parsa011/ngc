@@ -28,7 +28,18 @@ public void lexer_close_file(struct lexer *l)
 	l->file_name = 0;
 }
 
-public char lexer_file_read_char(FILE *fp)
+public char lexer_file_read_char(struct lexer *l)
 {
-	return fgetc(fp);
+	l->char_offset++;
+	return fgetc(l->fp);
+}
+
+public bool lexer_file_prevchar(struct lexer *l)
+{
+	if (l->char_offset != 0) {
+		fseek(l->fp, -1, SEEK_CUR);
+		l->char_offset--;
+		return true;
+	}
+	return false;
 }

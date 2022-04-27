@@ -111,7 +111,7 @@ private char next_char()
 		put_back(0);
 		return c;
 	}
-	c = lexer_file_read_char(working_lexer->fp);
+	c = lexer_file_read_char(working_lexer);
 	if (c == '\n') {
 		working_lexer->pos.line++;
 		working_lexer->pos.col = 0;

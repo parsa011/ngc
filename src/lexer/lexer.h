@@ -21,6 +21,7 @@ struct lexer {
 	char *file_name;
 	char current_char;
 	char put_back_char;
+	int char_offset;
 
 	char buffer[LEXER_BUFFER_LENGTH];
 	int bufp;
