@@ -12,7 +12,7 @@
 
 private void statements();
 
-private struct ASTnode *primary_factor();
+private struct ASTnode *primary_factor(int);
 
 private struct ASTnode *parse_binary_expression(int);
 
