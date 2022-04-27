@@ -271,6 +271,23 @@ private double scan_number(char c, token_type *t)
 	return res;
 }
 
+public void lexer_mark_pos()
+{
+	pos_copy(working_lexer->pos, working_lexer->mark);
+	working_lexer->mark_offset = working_lexer->char_offset;
+	working_lexer->current_char = working_lexer->put_back_char = 0;
+	printf("Marked %d:%d %d\n", working_lexer->mark.line, working_lexer->mark.col, working_lexer->mark_offset);
+}
+
+public void lexer_restore_mark()
+{
+	pos_copy(working_lexer->mark, working_lexer->pos);
+	while (working_lexer->char_offset > working_lexer->mark_offset) {
+		lexer_file_prevchar(working_lexer);
+	}
+	printf("Restored %d:%d %d\n", working_lexer->pos.line, working_lexer->pos.col, working_lexer->mark_offset);
+}
+
 public void lex()
 {
 	//if (!is_current_lexer(l) || working_lexer == NULL) {

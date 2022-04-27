@@ -28,6 +28,8 @@ struct lexer {
 
 	struct position pos;
 	struct position prevpos;
+	struct position mark;
+	int mark_offset;
 
 	struct token tok;
 
@@ -84,13 +86,6 @@ public void lexer_set_working_lexer(struct lexer *);
  *	@brief : test if give lexer is working_lexer
  */
 public bool is_current_lexer(struct lexer *l);
-
-/*
- *	@brief : lex working_lexer and find new token of it
- *	> make sure that you set target lexer and working_lexer by calling set_working_lexer before
- *	  using this function
- */
-public void lex();
 
 /*
  *	@brief : print full line and show current char as a bad token
@@ -158,5 +153,22 @@ private void skip_until_is(char []);
  *	we want to sacn a number
  */
 private double scan_number(char, token_type *);
+
+/*
+ *	@brief : Mark current position of working_lexer
+ */
+public void lexer_mark_pos();
+
+/*
+ *	@brief : Move back to previous position that is marked
+ */ 
+public void lexer_restore_mark();
+
+/*
+ *	@brief : lex working_lexer and find new token of it
+ *	> make sure that you set target lexer and working_lexer by calling set_working_lexer before
+ *	  using this function
+ */
+public void lex();
 
 #endif

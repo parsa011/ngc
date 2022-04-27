@@ -39,6 +39,12 @@ struct position {
 	dest.line = src.line; \
 	dest.col = src.col;\
 }
+#define pos_decrease(pos) { \
+	if (pos.col == 0) \
+		pos.line-- \
+	else \
+		pos.col-- \
+}
 
 /*
  *	@brief : print usage and panic
