@@ -139,7 +139,7 @@ private char *get_pointer_to_buffer(struct position *pos)
 	return p + working_lexer->bufp;
 }
 
-private void show_lexer_error(char *msg)
+public void show_lexer_error(char *msg)
 {
 	char *p = get_pointer_to_buffer(&working_lexer->pos);
 
@@ -159,6 +159,18 @@ private void show_lexer_error(char *msg)
 		}
 		putchar('\n');
 	}
+	// printing caret
+	//printf("%d |", working_lexer->pos.line);
+	if (working_lexer->pos.col > 0) {
+		char *first_of_line = p - working_lexer->pos.col;
+		for (int i = 0; i < working_lexer->pos.col + 1; i++) {
+			if (isspace(*(first_of_line + i)))
+				putchar(*(first_of_line + i));
+			else
+				putchar(' ');
+		}
+	}
+	printf("^\n");
 }
 
 public void get_lexer_pos_string(struct lexer *l, char *buf)

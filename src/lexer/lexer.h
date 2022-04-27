@@ -94,7 +94,7 @@ public void lex();
 /*
  *	@brief : print full line and show current char as a bad token
  */
-private void show_lexer_error(char *msg);
+public void show_lexer_error(char *msg);
 
 /*
  *	@brief : return current position of given lexer as : file_name:line:col format
