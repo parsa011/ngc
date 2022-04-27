@@ -42,6 +42,14 @@ public ASTnode_type tokentype_to_nodetype(token_type type)
 	return 0;
 }
 
+public char *get_nodetype_str(ASTnode_type type)
+{
+	// last member of ASTnode_type enum
+	if (type > A_INTLIT)
+		return "BAD";
+	return ASTnode_type_str[type];
+}
+
 public int calculate_binary_tree(struct ASTnode *n)
 {
 	int left, right;
@@ -69,7 +77,7 @@ public void print_ast(struct ASTnode *n, int depth)
 	for (int i = 0; i < depth; i++) {
 		putchar(' ');
 	}
-	printf("%s (%d:%d)", ASTnode_type_str[n->type], n->pos.line, n->pos.col);
+	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_INTLIT) {
 		printf(" : %d", n->integer);
 	}
