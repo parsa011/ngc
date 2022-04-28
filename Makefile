@@ -56,6 +56,9 @@ run : world
 	@echo "============================="
 	@cd $(BUILDDIR); ./$(TARGET) ../example/main.c
 
+test :
+	@cd tests;make all
+
 test-lexer :
 	@cd tests; make lexer;
 

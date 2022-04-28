@@ -3,9 +3,9 @@ include ../scripts/colors.mk
 CC = cc
 CFLAGS = 
 #SUBDIRS := $(shell find . -maxdepth 1 -type d)
-SUBDIRS := lexer token
+SUBDIRS := lexer
 
-all : SUBDIRS 
+all : $(SUBDIRS) 
 
 .PHONY : lexer
 $(SUBDIRS): 
