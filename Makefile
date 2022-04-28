@@ -56,6 +56,9 @@ run : world
 	@echo "============================="
 	@cd $(BUILDDIR); ./$(TARGET) ../example/main.c
 
+test-lexer :
+	@cd tests; make lexer;
+
 SUBDIRS := ngc lexer token util ast parser
 $(SUBDIRS) :
 	@cd $(SRCDIR); make $@
