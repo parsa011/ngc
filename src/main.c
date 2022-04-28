@@ -12,6 +12,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+bool interp_mode = false;
+
 void usage(char *program_name)
 {
 	print("ngc compiler Usage :\n");
@@ -32,16 +34,24 @@ void panic(const char *msg,...)
 	exit(0);
 }
 
+public void print_prompt()
+{
+	printf(PROMPT);
+}
+
 int main(int argc, char *argv[])
 {
-	if (argc == 1) {
-		usage(argv[0]);
-	}
-	if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
-		panic("Given File is not a valid 'c' file : %s", argv[1]);
-	}
 	struct lexer *l = lexer_init();
-	l->open_file(l, argv[1]);
+	if (argc == 1) {
+		interp_mode = true;
+		l->fp = stdin;
+		l->file_name = "STDIN";
+	} else {
+		if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
+			panic("Given File is not a valid 'c' file : %s", argv[1]);
+		}
+		l->open_file(l, argv[1]);
+	}
 	struct ASTnode *n = compile(l);
 	return 0;
 }
