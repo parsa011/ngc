@@ -1,0 +1,8 @@
+int main(int argc, char *argv[]) 							{ int c;switch (
+		c) {
+	case 'z' ... case 'z' :
+		break;
+}
+return 123;
+
+}
