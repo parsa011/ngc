@@ -21,13 +21,13 @@ void usage(char *program_name)
 	panic(NULL);
 }
 
-void panic(const char *msg,...) 
+void panic(const char *msg, ...) 
 {
 	if (msg) {
 		char buf[256];
 		va_list ap;
 		va_start(ap, msg);
-		vsnprintf(buf, 256,msg, ap);
+		vsnprintf(buf, 256, msg, ap);
 		va_end(ap);
 		fprintf(stderr, "%s\n", buf);
 	}

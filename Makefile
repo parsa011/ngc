@@ -57,10 +57,10 @@ run : world
 	@cd $(BUILDDIR); ./$(TARGET) ../example/main.c
 
 test :
-	@cd tests;make all
+	@cd tests; make all
 
 test-lexer :
-	@cd tests; make lexer;
+	@cd tests; make lexer
 
 SUBDIRS := ngc lexer token util ast parser
 $(SUBDIRS) :

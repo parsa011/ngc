@@ -23,8 +23,6 @@ private char *ASTnode_type_str[] = {
 	"A_INTLIT"
 }; 
 
-
-
 struct ASTnode {
 	char *title;
 	ASTnode_type type;

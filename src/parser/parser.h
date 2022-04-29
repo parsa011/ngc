@@ -10,10 +10,19 @@
 
 #include "parser_util.h"
 
+/*
+ *	@brief : checks current token to determine what to do now
+ */
 private void statements();
 
+/*
+ *	@breif : return primay factor as a ASTnode tree
+ */
 private struct ASTnode *primary_factor(int);
 
+/*
+ *	@brief : parse binary expression by pratt parsing algorithm
+ */
 private struct ASTnode *parse_binary_expression(int);
 
 /*

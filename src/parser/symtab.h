@@ -11,6 +11,7 @@
 */
 
 #include "../ngc.h"
+#include "../ast/ast.h"
 #include "../lexer/lexer.h"
 
 #define SYMTAB_SIZE 40
@@ -19,14 +20,33 @@
  *	main data structure for symbol table
  */
 struct symbol_table {
-	struct symtab_entry **entries;
+	struct symtab_entry *entries;
 	int buflen;
 	int bufsize;
 };
 
+struct type {
+	int type;
+	bool is_unsigned;
+	bool is_const;
+	bool is_volatile;
+	bool is_restrict;
+	bool is_pointer;
+	bool is_pointer_const;
+	bool is_pointer_volatile;
+	bool is_pointer_restrict;
+	//int ref : 16;
+};
+
+/*
+ *	entries for symbol table
+ *	single-linked list
+ */
 struct symtab_entry {
-	char *name;
+	struct symtab_entry *next;
 	struct type entry_type;
+	struct position pos;
+	char *name;
 };
 
 #endif

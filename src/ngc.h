@@ -19,6 +19,8 @@
 
 #define NGC_FILE_TYPE "c"
 
+#define PROMPT	">> "
+
 /*
  *	These are some basic definitions, for readablity we define extern as public
  *	and private as static
@@ -46,10 +48,17 @@ struct position {
 		pos.col-- \
 }
 
+public bool interp_mode;
+
 /*
  *	@brief : print usage and panic
  */
 void usage();
+
+/*
+ *	@brief : print prompt when program is in interp mode
+ */
+public void print_prompt();
 
 /*
  *	@brief : write messages and exit()

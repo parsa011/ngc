@@ -14,8 +14,10 @@ private void statements(struct ASTnode *n)
 {
 	while (!is_eof()) {
 		struct ASTnode *n = parse_binary_expression(0);
-		print_ast(n, 0);
 		printf("%d\n", calculate_binary_tree(n));
+		if (interp_mode) {
+			print_prompt();
+		}
 		semi();
 	}
 }
@@ -70,6 +72,9 @@ private struct ASTnode *parse_binary_expression(int ptp)
 public struct ASTnode *compile(struct lexer *l)
 {
 	select_lexer(l);
+	if (interp_mode) {
+		print_prompt();
+	}
 	next_token();
 	struct ASTnode *n;
 	statements(n);

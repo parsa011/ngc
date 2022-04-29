@@ -212,19 +212,6 @@ private char *token_type_str[] = {
 	"T_BAD"
 };
 
-struct type{
-	int type;
-	bool is_unsigned;
-	bool is_const;
-	bool is_volatile;
-	bool is_restrict;
-	bool is_pointer;
-	bool is_pointer_const;
-	bool is_pointer_volatile;
-	bool is_pointer_restrict;
-	int ref : 16;
-};
-
 #define TOKEN_BUF_SIZE 64 
 
 struct token {
