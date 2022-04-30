@@ -14,15 +14,12 @@
 #include "../ast/ast.h"
 #include "../lexer/lexer.h"
 
-#define SYMTAB_SIZE 40
-
 /*
  *	main data structure for symbol table
  */
 struct symbol_table {
 	struct symtab_entry *entries;
 	int buflen;
-	int bufsize;
 };
 
 struct type {
@@ -48,5 +45,18 @@ struct symtab_entry {
 	struct position pos;
 	char *name;
 };
+
+public struct symbol_table *symtab;
+
+/*
+ *	@brief : Initialize our gloabal symbol table with default value of 
+ *	SYMTAB_SIZE
+ */
+public void symtab_init();
+
+/*
+ *	@brief : Create New entry for symbold table with value type
+ */
+public void symtab_create_integer(char *, int);
 
 #endif

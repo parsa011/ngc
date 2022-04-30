@@ -16,6 +16,11 @@
 private void statements();
 
 /*
+ *	@brief : Parse Declare variable statements
+ */
+public struct ASTnode *declare_varaiable();
+
+/*
  *	@breif : return primay factor as a ASTnode tree
  */
 private struct ASTnode *primary_factor(int);

@@ -29,6 +29,17 @@ public bool is_eof()
 	return current_token.type == T_EOF;
 }
 
+public bool is_type_keyword(bool go_next)
+{
+	bool res = false;
+	if (is_type_token(current_token.type)) {
+		res = true;
+	}
+	if (go_next)
+		next_token();
+	return res;
+}
+
 public void skip_token_until(token_type type)
 {
 	while (current_token.type != type) {

@@ -39,7 +39,7 @@ struct position {
 #define new_pos_struct ((struct position) { .line = 1, .col = 0 })
 #define pos_copy(src, dest) { \
 	dest.line = src.line; \
-	dest.col = src.col;\
+	dest.col = src.col; \
 }
 #define pos_decrease(pos) { \
 	if (pos.col == 0) \

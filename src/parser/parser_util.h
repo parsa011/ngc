@@ -40,6 +40,11 @@ public void match(token_type, char *);
 public bool is_eof();
 
 /*
+ *	@brief : checks if current token is a keyword of types like int, float and....
+ */
+public bool is_type_keyword(bool);
+
+/*
  *	@brief : Skip tokens , until we take something with given token type
  */
 public void skip_token_until(token_type);
