@@ -271,6 +271,14 @@ private double scan_number(char c, token_type *t)
 	return res;
 }
 
+public void lexer_go_prev_pos()
+{
+	pos_copy(working_lexer->prevpos, working_lexer->pos);
+	while (working_lexer->char_offset > working_lexer->prev_offset) {
+		lexer_file_prevchar(working_lexer);
+	}
+}
+
 public void lexer_mark_pos()
 {
 	pos_copy(working_lexer->pos, working_lexer->mark);
@@ -298,6 +306,10 @@ public void lex()
 	
 	reset_token_text();
 	add_char_to_token(c);
+
+	// TODO : save psotion of preveious token to use in lexer_go_prevpos()
+	//pos_copy(working_lexer->tok.pos, working_lexer->prevpos);
+	//working_lexer->prev_offset = working_lexer->char_offset;
 
 	pos_copy(working_lexer->pos, working_lexer->tok.pos);
 	switch (c) {

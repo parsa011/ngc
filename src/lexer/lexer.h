@@ -29,7 +29,7 @@ struct lexer {
 	struct position pos;
 	struct position prevpos;
 	struct position mark;
-	int mark_offset;
+	int mark_offset, prev_offset;
 
 	struct token tok;
 

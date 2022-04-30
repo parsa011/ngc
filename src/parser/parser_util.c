@@ -53,9 +53,10 @@ public void skip_token_until(token_type type)
 
 public void semi()
 {
-	//if (current_token.type != T_SEMI) {
-	//	show_lexer_error("Semicolon Expected");		
-	//}
-	//next_token();
-	match(T_SEMI, "Semicolon Expected");
+	if (current_token.type != T_SEMI) {
+		show_lexer_error("Semicolon Before Current Token");		
+		panic(NULL);
+	}
+	next_token();
+	//match(T_SEMI, "Semicolon Expected");
 }

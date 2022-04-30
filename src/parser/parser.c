@@ -47,12 +47,7 @@ decl_again:
 		value = parse_binary_expression(0);
 		//print_ast(n, 0);
 	}
-	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0);
-	print(text);
-	if (value) {
-		printf(" ---> %d", calculate_binary_tree(value));
-	}
-	putchar('\n');
+	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, current_token.pos);
 	if (current_token.type == T_COMMA) {
 		next_token();
 		goto decl_again;

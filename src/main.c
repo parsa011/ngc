@@ -9,6 +9,7 @@
 */
 
 #include "parser/parser.h"
+#include "parser/symtab.h"
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -52,6 +53,8 @@ int main(int argc, char *argv[])
 		}
 		l->open_file(l, argv[1]);
 	}
+	symtab_init();
 	struct ASTnode *n = compile(l);
+	print_symtab();
 	return 0;
 }

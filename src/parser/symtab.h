@@ -15,13 +15,9 @@
 #include "../lexer/lexer.h"
 
 /*
- *	main data structure for symbol table
+ *	basic struct of our types , it shows qualifiers and other things
+ *	related to the type
  */
-struct symbol_table {
-	struct symtab_entry *entries;
-	int buflen;
-};
-
 struct type {
 	int type;
 	bool is_unsigned;
@@ -32,7 +28,15 @@ struct type {
 	bool is_pointer_const;
 	bool is_pointer_volatile;
 	bool is_pointer_restrict;
-	//int ref : 16;
+};
+
+/*
+ *	main data structure for symbol table
+ */
+struct symbol_table {
+	struct symtab_entry *entries;
+	struct symtab_entry *last;	/* we hold last entry because its gonna be so slow to get last entry each time that */
+	int buflen;
 };
 
 /*
@@ -44,6 +48,9 @@ struct symtab_entry {
 	struct type entry_type;
 	struct position pos;
 	char *name;
+	union {
+		int integer;
+	};
 };
 
 public struct symbol_table *symtab;
@@ -55,8 +62,19 @@ public struct symbol_table *symtab;
 public void symtab_init();
 
 /*
+ *	@brief : Add given entry to global symbol table , it will add to
+ *	'next' of last entry, and if last is empty so it's gonna be first one
+ */	
+
+/*
  *	@brief : Create New entry for symbold table with value type
  */
-public void symtab_create_integer(char *, int);
+public void symtab_create_integer(char *, int, struct position);
+
+/*
+ *	@brief : print symbol table in human readable format (it will print 
+ *				'symtab' lobal symbol table by default)
+ */
+public void print_symtab();
 
 #endif
