@@ -32,6 +32,9 @@ struct type {
 
 /*
  *	main data structure for symbol table
+ *	for now our symbol table is simple based on single linked list
+ *	data structure 
+ *	TODO : Impelement a hashtable for symbol table
  */
 struct symbol_table {
 	struct symtab_entry *entries;

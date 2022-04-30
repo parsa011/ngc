@@ -74,6 +74,8 @@ public int calculate_binary_tree(struct ASTnode *n)
 
 public void print_ast(struct ASTnode *n, int depth)
 {
+	if (!n)
+		return;
 	for (int i = 0; i < depth; i++) {
 		putchar(' ');
 	}

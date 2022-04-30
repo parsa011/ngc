@@ -109,7 +109,7 @@ public struct ASTnode *compile(struct lexer *l)
 		print_prompt();
 	}
 	next_token();
-	struct ASTnode *n;
+	struct ASTnode *n = NULL;
 	statements(n);
 	return n;
 }
