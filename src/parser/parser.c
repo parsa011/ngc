@@ -38,17 +38,30 @@ decl_again:
 		show_lexer_error("Identifier Expected");
 		panic(NULL);
 	}
+	/* save current position because we will call next_token() and it will change our position 
+	 * this position is starting point of identifier
+	 *	int age = 10;
+	 *	    ^
+	 *	current position is here
+	 */
+	struct position pos;
+	pos_copy(current_token.pos, pos);
 	char *text = strdup(current_token.buffer);
 	next_token();
 	struct ASTnode *value = NULL;
 	/* TODO : parse Rvalue by considering typeof variable */
-	if (current_token.type == T_EQUAL) { 	/* token is '=' so we have to assign a value to variable */
+	if (current_token.type == T_EQUAL) { 	
+		/* token is '=' so we have to assign a value to variable */
 		next_token();
 		value = parse_binary_expression(0);
-		//print_ast(n, 0);
 	}
-	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, current_token.pos);
+	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, pos);
 	if (current_token.type == T_COMMA) {
+		/*
+		 * int age = 10, count;
+		 *             ^
+		 * we are here and we want to declare another variable again
+		 */
 		next_token();
 		goto decl_again;
 	}
