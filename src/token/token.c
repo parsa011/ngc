@@ -196,3 +196,15 @@ public int token_precedence(token_type type)
 
 	return -1;
 }
+
+public bool is_type_token(token_type type)
+{
+	switch (type) {
+		case T_INT :
+		case T_CHAR :
+		case T_DOUBLE :
+		case T_FLOAT :
+			return true;
+	}
+	return false;
+}

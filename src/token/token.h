@@ -269,4 +269,8 @@ public void print_token(struct token *);
  */
 public int token_precedence(token_type);
 
+/*
+ *	@brief : return true if given token type is a variable type
+ */
+public bool is_type_token(token_type);
 #endif
