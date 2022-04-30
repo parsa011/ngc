@@ -40,6 +40,12 @@ public bool is_type_keyword(bool go_next)
 	return res;
 }
 
+public bool is_endof_binexpr()
+{
+	int tokentype = current_token.type;
+	return tokentype == T_SEMI  || tokentype == T_CL_P || tokentype == T_COMMA;
+}
+
 public void skip_token_until(token_type type)
 {
 	while (current_token.type != type) {
@@ -54,7 +60,7 @@ public void skip_token_until(token_type type)
 public void semi()
 {
 	if (current_token.type != T_SEMI) {
-		show_lexer_error("Semicolon Before Current Token");		
+		show_lexer_error("Semicolon Expected Before Current Token");		
 		panic(NULL);
 	}
 	next_token();

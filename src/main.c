@@ -5,7 +5,7 @@
 *
 *	This file is part of ngc languge (new generation c)
 *
-*	Entry pint of ngc compiler
+*	Entry point of ngc compiler
 */
 
 #include "parser/parser.h"
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 	}
 	symtab_init();
 	struct ASTnode *n = compile(l);
-	print_symtab();
-	print_ast(n, 0);
+	//print_symtab();
+	//print_ast(n, 0);
 	return 0;
 }

@@ -11,6 +11,18 @@
 #include "../token/token.h"
 #include "../ast/ast.h"
 
+public struct ASTnode *compile(struct lexer *l)
+{
+	select_lexer(l);
+	if (interp_mode) {
+		print_prompt();
+	}
+	next_token();
+	struct ASTnode *n = NULL;
+	statements(n);
+	return n;
+}
+
 private void statements(struct ASTnode *n)
 {
 	while (!is_eof()) {
@@ -33,7 +45,23 @@ public struct ASTnode *declare_varaiable()
 		show_lexer_error("Error : Type Expected");
 		panic(NULL);
 	}
+	/*
+	 *	a helpful note : 
+	 *	we have to prepare our type here , because when we are declaring many variables in one line,
+	 *	they have same type, so it's usefule to declare our type here and use it when we are adding
+	 *	variable to symbol table
+	 *
+	 *		const int age, count;
+	 *
+	 *	our type is constant integer
+	 */
 decl_again:
+
+	/* here we should check for star , if current token is an star so our type is a pointer to 
+	 * then we have to edit our type but for now we skip them
+	 * TODO : check for star(pointer)
+	 */
+
 	if (current_token.type != T_IDENT) {
 		show_lexer_error("Identifier Expected");
 		panic(NULL);
@@ -48,6 +76,8 @@ decl_again:
 	pos_copy(current_token.pos, pos);
 	char *text = strdup(current_token.buffer);
 	next_token();
+	
+
 	struct ASTnode *value = NULL;
 	/* TODO : parse Rvalue by considering typeof variable */
 	if (current_token.type == T_EQUAL) { 	
@@ -98,7 +128,7 @@ private struct ASTnode *parse_binary_expression(int ptp)
 	struct ASTnode *right, *left;
 	left = primary_factor(ptp);
 	int tokentype = current_token.type;
-	if (tokentype == T_EOF || tokentype == T_SEMI || tokentype == T_CL_P || tokentype == T_COMMA)
+	if (is_endof_binexpr())
 		return left;
 	struct token *token_copy;
 	while (token_precedence(tokentype) > ptp) {
@@ -109,20 +139,8 @@ private struct ASTnode *parse_binary_expression(int ptp)
 		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.integer, left, right, token_copy->pos);
 
 		tokentype = current_token.type;
-		if (tokentype == T_EOF || tokentype == T_SEMI  || tokentype == T_CL_P || tokentype == T_COMMA)
+		if (is_endof_binexpr())
 			break;
 	}
 	return left;
-}
-
-public struct ASTnode *compile(struct lexer *l)
-{
-	select_lexer(l);
-	if (interp_mode) {
-		print_prompt();
-	}
-	next_token();
-	struct ASTnode *n = NULL;
-	statements(n);
-	return n;
 }

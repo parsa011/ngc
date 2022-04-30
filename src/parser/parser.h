@@ -11,6 +11,12 @@
 #include "parser_util.h"
 
 /*
+ *	@brief : This is entry point of parser , we will call this everwhere that we need
+ *	to compiler file
+ */
+public struct ASTnode *compile(struct lexer *);
+
+/*
  *	@brief : checks current token to determine what to do now
  */
 private void statements();
@@ -29,11 +35,5 @@ private struct ASTnode *primary_factor(int);
  *	@brief : parse binary expression by pratt parsing algorithm
  */
 private struct ASTnode *parse_binary_expression(int);
-
-/*
- *	@brief : This is entry point of parser , we will call this everwhere that we need
- *	to compiler file
- */
-public struct ASTnode *compile(struct lexer *);
 
 #endif

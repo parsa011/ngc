@@ -45,6 +45,12 @@ public bool is_eof();
 public bool is_type_keyword(bool);
 
 /*
+ *	@brief : checks if current token is end of a binary expression or no
+ *	token should be something like semicolon or comm or ...
+ */
+public bool is_endof_binexpr();
+
+/*
  *	@brief : Skip tokens , until we take something with given token type
  */
 public void skip_token_until(token_type);
