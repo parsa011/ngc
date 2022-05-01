@@ -7,7 +7,6 @@
 */
 
 #include "parser.h"
-#include "symtab.h"
 #include "../token/token.h"
 #include "../ast/ast.h"
 
@@ -28,10 +27,11 @@ private void statements(struct ASTnode *n)
 	while (!is_eof()) {
 		if (is_type_keyword(false)) {
 			declare_varaiable();
-		} else {
-			struct ASTnode *n = parse_binary_expression(0);
-			printf("%d\n", calculate_binary_tree(n));
-		}
+		} 
+		//else {
+		//	struct ASTnode *n = parse_binary_expression(0);
+		//	printf("%d\n", calculate_binary_tree(n));
+		//}
 		if (interp_mode) {
 			print_prompt();
 		}
@@ -41,6 +41,7 @@ private void statements(struct ASTnode *n)
 
 public struct ASTnode *declare_varaiable()
 {
+	int tokentype = current_token.type;
 	if (!is_type_keyword(true)) {
 		show_lexer_error("Error : Type Expected");
 		panic(NULL);
@@ -55,12 +56,22 @@ public struct ASTnode *declare_varaiable()
 	 *
 	 *	our type is constant integer
 	 */
+	struct type tp = {
+		.type = tokentype,
+		.is_pointer = false
+	};
+
 decl_again:
 
 	/* here we should check for star , if current token is an star so our type is a pointer to 
 	 * then we have to edit our type but for now we skip them
 	 * TODO : check for star(pointer)
 	 */
+	if (current_token.type == T_STAR) {
+		tp.is_pointer = true;
+		next_token();
+	} else
+		tp.is_pointer = false;
 
 	if (current_token.type != T_IDENT) {
 		show_lexer_error("Identifier Expected");
@@ -76,16 +87,16 @@ decl_again:
 	pos_copy(current_token.pos, pos);
 	char *text = strdup(current_token.buffer);
 	next_token();
-	
 
 	struct ASTnode *value = NULL;
 	/* TODO : parse Rvalue by considering typeof variable */
 	if (current_token.type == T_EQUAL) { 	
 		/* token is '=' so we have to assign a value to variable */
 		next_token();
-		value = parse_binary_expression(0);
+	
+		value = get_rvalue_for_type(tokentype, tp);
 	}
-	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, pos);
+	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, &tp, pos);
 	if (current_token.type == T_COMMA) {
 		/*
 		 * int age = 10, count;
@@ -96,6 +107,46 @@ decl_again:
 		goto decl_again;
 	}
 	free(text);
+}
+
+/*
+ *	get value for a type , for example for int literals and ...
+ *
+ *		int age = expr;
+ *
+ *		char ch = iden | 'c';
+ *
+ * 		char *name = "parsa";
+ *
+ *	also we need type for more information , for example we can get singend value
+ *	for unsinged variables , or we should take an memory address instead of a binexpr
+ *	for pointers
+ *	
+ * 	and then it will return an AST
+ */
+public struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
+{
+	struct ASTnode *res = NULL;
+	/*	TODO : check for pointers
+	 */
+	switch (type) {
+		case T_INT :
+		case T_DOUBLE :
+		case T_FLOAT :
+			res = parse_binary_expression(0);
+			break;
+
+		case T_CHAR :
+			res = parse_char_literal();
+			break;
+
+	}
+	return res;
+}
+
+public struct ASTnode *parse_char_literal()
+{
+	return NULL;
 }
 
 private struct ASTnode *primary_factor(int ptp)

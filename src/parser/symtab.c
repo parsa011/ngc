@@ -34,13 +34,13 @@ public void symtab_add(struct symtab_entry *entry)
  *		int age = 10;
  *	we need to add qualifers and ...
  */
-public void symtab_create_integer(char *text, int value, struct position pos)
+public void symtab_create_integer(char *text, int value, struct type *tp, struct position pos)
 {
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
 	entry->integer = value;
-	entry->entry_type.type = T_INT;
 	pos_copy(pos, entry->pos);
+	type_copy(tp, entry->entry_type);
 	symtab_add(entry);
 }
 
@@ -48,6 +48,10 @@ public void print_symtab()
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
 		printf("%s (%d:%d)", entry->name, entry->pos.line, entry->pos.col);
+		printf(" %d", entry->entry_type.is_pointer);
+		if (is_pointer(entry)) {
+			printf(" (pointer)");
+		}
 		printf(" ---> \033[33m%d\033[0m", entry->integer);
 		putchar('\n');
 	}

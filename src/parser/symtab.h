@@ -25,10 +25,15 @@ struct type {
 	bool is_volatile;
 	bool is_restrict;
 	bool is_pointer;
-	bool is_pointer_const;
-	bool is_pointer_volatile;
-	bool is_pointer_restrict;
 };
+#define type_copy(src, dest) { \
+	dest.type = src->type; \
+	dest.is_unsigned = src->is_unsigned; \
+	dest.is_const = src->is_const; \
+	dest.is_volatile = src->is_volatile; \
+	dest.is_restrict = src->is_restrict; \
+	dest.is_pointer = src->is_pointer; \
+}
 
 /*
  *	main data structure for symbol table
@@ -55,6 +60,8 @@ struct symtab_entry {
 		int integer;
 	};
 };
+#define is_pointer(e) (e->entry_type.is_pointer)
+#define is_const(e)	(e->entry_type.is_const)
 
 public struct symbol_table *symtab;
 
@@ -72,7 +79,7 @@ public void symtab_init();
 /*
  *	@brief : Create New entry for symbold table with value type
  */
-public void symtab_create_integer(char *, int, struct position);
+public void symtab_create_integer(char *, int, struct type *, struct position);
 
 /*
  *	@brief : print symbol table in human readable format (it will print 

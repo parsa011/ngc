@@ -108,6 +108,8 @@ typedef enum {
 
 	T_IDENT,
 
+	T_NEWLINE,
+
 	T_BAD
 } token_type;
 
@@ -208,6 +210,8 @@ private char *token_type_str[] = {
 	"T_CHARLIT",	 // 'c'
 
 	"T_IDENT",
+
+	"T_NEWLINE",
 
 	"T_BAD"
 };

@@ -9,6 +9,7 @@
 */
 
 #include "parser_util.h"
+#include "symtab.h"
 
 /*
  *	@brief : This is entry point of parser , we will call this everwhere that we need
@@ -25,6 +26,16 @@ private void statements();
  *	@brief : Parse Declare variable statements
  */
 public struct ASTnode *declare_varaiable();
+
+/*
+ *	@brief : get value by considering type kind and it's informations
+ */
+public struct ASTnode *get_rvalue_for_type(token_type, struct type);
+
+/*
+ *	@brief : return AST of a char expression
+ */
+public struct ASTnode *parse_char_literal();
 
 /*
  *	@breif : return primay factor as a ASTnode tree
