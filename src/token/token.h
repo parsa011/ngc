@@ -113,6 +113,7 @@ typedef enum {
 	T_BAD
 } token_type;
 
+// TODO : Create Dictionary-Like struct for this
 private char *token_type_str[] = {
 	"T_EOF",
 

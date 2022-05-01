@@ -48,7 +48,6 @@ public void print_symtab()
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
 		printf("%s (%d:%d)", entry->name, entry->pos.line, entry->pos.col);
-		printf(" %d", entry->entry_type.is_pointer);
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}

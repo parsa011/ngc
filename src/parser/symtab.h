@@ -75,6 +75,7 @@ public void symtab_init();
  *	@brief : Add given entry to global symbol table , it will add to
  *	'next' of last entry, and if last is empty so it's gonna be first one
  */	
+public void symtab_add(struct symtab_entry *);
 
 /*
  *	@brief : Create New entry for symbold table with value type

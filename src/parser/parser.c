@@ -129,7 +129,10 @@ public struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 	struct ASTnode *res = NULL;
 	/*	TODO : check for pointers
 	 */
+	if (info.is_pointer) {
+	}
 	switch (type) {
+
 		case T_INT :
 		case T_DOUBLE :
 		case T_FLOAT :
@@ -146,6 +149,8 @@ public struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 
 public struct ASTnode *parse_char_literal()
 {
+	print_token(&current_token);
+	next_token();
 	return NULL;
 }
 
