@@ -83,6 +83,11 @@ public void symtab_add(struct symtab_entry *);
 public void symtab_create_integer(char *, int, struct type *, struct position);
 
 /*
+ *	@brief : return entry by its name
+ */
+public struct symtab_entry *symtab_get_by_name(char *);
+
+/*
  *	@brief : print symbol table in human readable format (it will print 
  *				'symtab' lobal symbol table by default)
  */

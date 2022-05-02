@@ -19,7 +19,7 @@ public void select_lexer(struct lexer *l)
 public void match(token_type type, char *msg)
 {
 	if (current_token.type != type) {
-		printf("Error : %s\n", msg);
+		printf("Error (%s:%d:%d): %s\n", current_lexer->file_name, current_lexer->pos.line, current_lexer->pos.col, msg);
 	}
 	next_token();
 }

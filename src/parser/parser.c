@@ -25,13 +25,19 @@ public struct ASTnode *compile(struct lexer *l)
 private void statements(struct ASTnode *n)
 {
 	while (!is_eof()) {
-		if (is_type_keyword(false)) {
-			declare_varaiable();
-		} 
-		//else {
-		//	struct ASTnode *n = parse_binary_expression(0);
-		//	printf("%d\n", calculate_binary_tree(n));
-		//}
+		switch (current_token.type) {
+
+			case T_IDENT :
+				parse_assign_variable();
+				break;
+
+			default :
+				if (is_type_keyword(false)) {
+					declare_varaiable();
+				}
+				break;
+
+		}
 		if (interp_mode) {
 			print_prompt();
 		}
@@ -39,7 +45,7 @@ private void statements(struct ASTnode *n)
 	}
 }
 
-public struct ASTnode *declare_varaiable()
+private struct ASTnode *declare_varaiable()
 {
 	int tokentype = current_token.type;
 	if (!is_type_keyword(true)) {
@@ -65,7 +71,6 @@ decl_again:
 
 	/* here we should check for star , if current token is an star so our type is a pointer to 
 	 * then we have to edit our type but for now we skip them
-	 * TODO : check for star(pointer)
 	 */
 	if (current_token.type == T_STAR) {
 		tp.is_pointer = true;
@@ -79,9 +84,10 @@ decl_again:
 	}
 	/* save current position because we will call next_token() and it will change our position 
 	 * this position is starting point of identifier
+	 *
 	 *	int age = 10;
 	 *	    ^
-	 *	current position is here
+	 * current position is here
 	 */
 	struct position pos;
 	pos_copy(current_token.pos, pos);
@@ -109,6 +115,21 @@ decl_again:
 	free(text);
 }
 
+private struct ASTnode *parse_assign_variable()
+{
+	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
+	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->integer, current_token.pos);
+	match(T_IDENT, "Identifier Expected");
+	match(T_EQUAL, "'=' Expected For Assign");
+	int value = calculate_binary_tree(parse_binary_expression(0));
+	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_INTLIT, value, current_token.pos);
+	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, 0, left, rigth, current_token.pos);
+	// changin symbol integer value for now
+	// TODO
+	entry->integer = value;
+	return tree;
+}
+
 /*
  *	get value for a type , for example for int literals and ...
  *
@@ -124,7 +145,7 @@ decl_again:
  *	
  * 	and then it will return an AST
  */
-public struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
+private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 {
 	struct ASTnode *res = NULL;
 	/*	TODO : check for pointers
@@ -147,9 +168,9 @@ public struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 	return res;
 }
 
-public struct ASTnode *parse_char_literal()
+// TODO
+private struct ASTnode *parse_char_literal()
 {
-	print_token(&current_token);
 	next_token();
 	return NULL;
 }
@@ -169,6 +190,14 @@ private struct ASTnode *primary_factor(int ptp)
 			n = parse_binary_expression(0);
 			match(T_CL_P, "Unclosed Parenthesis");
 			return n;
+
+		case T_IDENT :
+			{
+				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
+				next_token();
+				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->integer, current_token.pos);
+				return n;
+			}
 
 		default :
 			show_lexer_error("Bad Token");

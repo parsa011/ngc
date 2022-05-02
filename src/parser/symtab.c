@@ -25,6 +25,7 @@ public void symtab_add(struct symtab_entry *entry)
 		symtab->last->next = entry;
 	}
 	symtab->last = entry;
+	symtab->last->next = NULL;
 }
 
 /*
@@ -42,6 +43,17 @@ public void symtab_create_integer(char *text, int value, struct type *tp, struct
 	pos_copy(pos, entry->pos);
 	type_copy(tp, entry->entry_type);
 	symtab_add(entry);
+}
+
+public struct symtab_entry *symtab_get_by_name(char *name)
+{
+	for (struct symtab_entry *entry = symtab->entries; entry != NULL; entry = entry->next){
+		if (STR_EQUAL(name, entry->name))
+			return entry;
+	}
+	show_lexer_error("Identifier Didn't found");
+	panic(NULL);
+	return NULL;
 }
 
 public void print_symtab()
