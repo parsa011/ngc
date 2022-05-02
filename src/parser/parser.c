@@ -120,11 +120,13 @@ private struct ASTnode *parse_assign_variable()
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->integer, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
-	match(T_EQUAL, "'=' Expected For Assign");
+	// TODO : all assign token should be valid like += , -= and ...
+	assign_token();
 	int value = calculate_binary_tree(parse_binary_expression(0));
 	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_INTLIT, value, current_token.pos);
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, 0, left, rigth, current_token.pos);
 	// changin symbol integer value for now
+	// TODO : check assign operator type , like -= , += and ...
 	// TODO
 	entry->integer = value;
 	return tree;
@@ -193,6 +195,7 @@ private struct ASTnode *primary_factor(int ptp)
 
 		case T_IDENT :
 			{
+				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
 				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->integer, current_token.pos);
@@ -214,7 +217,7 @@ private struct ASTnode *parse_binary_expression(int ptp)
 	left = primary_factor(ptp);
 	int tokentype = current_token.type;
 	if (is_endof_binexpr())
-		return left;
+		goto return_ast;
 	struct token *token_copy;
 	while (token_precedence(tokentype) > ptp) {
 
@@ -227,5 +230,6 @@ private struct ASTnode *parse_binary_expression(int ptp)
 		if (is_endof_binexpr())
 			break;
 	}
+return_ast:
 	return left;
 }

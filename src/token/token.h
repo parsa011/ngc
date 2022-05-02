@@ -278,4 +278,10 @@ public int token_precedence(token_type);
  *	@brief : return true if given token type is a variable type
  */
 public bool is_type_token(token_type);
+
+/*
+ *	@brief : return true if token is assign token 
+ */
+public bool is_assign_token(token_type);
+
 #endif

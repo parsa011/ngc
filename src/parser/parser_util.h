@@ -60,4 +60,9 @@ public void skip_token_until(token_type);
  */
 public void semi();
 
+/*
+ *	@brief : Check is current token is assign token or (assign token like = , += and ...)
+ */
+public void assign_token();
+
 #endif

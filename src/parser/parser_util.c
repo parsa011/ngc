@@ -66,3 +66,12 @@ public void semi()
 	next_token();
 	//match(T_SEMI, "Semicolon Expected");
 }
+
+public void assign_token()
+{
+	if (!is_assign_token(current_token.type)) {
+		show_lexer_error("Assign Token Expected");
+		panic(NULL);
+	}
+	next_token();
+}

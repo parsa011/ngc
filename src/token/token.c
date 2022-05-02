@@ -208,3 +208,23 @@ public bool is_type_token(token_type type)
 	}
 	return false;
 }
+
+public bool is_assign_token(token_type type)
+{
+	switch (type) {
+		case T_ISEQUAL :		// ==
+		case T_INCEQUAL :		// +=
+		case T_DECEQUAL :		// -=
+		case T_MUEQUAL :		// *=
+		case T_MODEQUAL :		// %=
+		case T_SHLEQUAL :		// <<=
+		case T_SHREQUAL :		// >>=
+		case T_DIVEQUAL :		// /=
+		case T_NOTEQUAL :		// !=
+		case T_ANDEQUAL :		// &=
+		case T_OREQUAL :		// |=
+		case T_XOREQUAL :		// ^=
+			return true;
+	}
+	return false;
+}
