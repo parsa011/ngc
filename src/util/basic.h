@@ -1,6 +1,8 @@
 #ifndef _A_LITTLE_BASICS_H
 # define _A_LITTLE_BASICS_H
 
+#include <string.h>
+
 #ifdef WIN32
 #include <io.h>
 #define F_OK 0
@@ -131,5 +133,7 @@ for(item = (array)+count; keep; keep = !keep)
 #define IS_ODD( num )   ((num) & 1)
 
 #define CHAR_TO_NUM(c) (c - '0')
+
+#define STR_EQUAL(s, t) (strcmp(s, t) == 0)
 
 #endif

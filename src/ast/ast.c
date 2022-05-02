@@ -45,7 +45,7 @@ public ASTnode_type tokentype_to_nodetype(token_type type)
 public char *get_nodetype_str(ASTnode_type type)
 {
 	// last member of ASTnode_type enum
-	if (type > A_INTLIT)
+	if (type > ARRAY_LENGTH(ASTnode_type_str))
 		return "BAD";
 	return ASTnode_type_str[type];
 }

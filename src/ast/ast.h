@@ -14,13 +14,22 @@
 typedef enum {
 	A_ADD, A_MINUS,
 	A_MULTIPLY, A_DIVIDE,
-	A_INTLIT
+	A_INTLIT,
+
+	A_ASSIGN,
+	A_LVAL,
+	A_IDENT
+
 } ASTnode_type; 
 
 private char *ASTnode_type_str[] = {
 	"A_ADD", "A_MINUS",
 	"A_MULTIPLY", "A_DIVIDE",
-	"A_INTLIT"
+	"A_INTLIT",
+
+	"A_ASSIGN",
+	"A_LVAL",
+	"A_IDENT"
 }; 
 
 struct ASTnode {

@@ -558,7 +558,7 @@ add_again:
 			if (c != '\'') {
 				set_working_lexer_token_type(T_BAD);
 				show_lexer_error("Unclosed Char Literal");
-				break;;
+				break;
 			}
 			set_working_lexer_token_type(T_CHARLIT);
 			break;

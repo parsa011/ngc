@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	if (argc == 1) {
 		interp_mode = true;
 		l->fp = stdin;
-		l->file_name = "STDIN";
+		l->file_name = "[STDIN]";
 	} else {
 		if (strcmp(file_extension(argv[1]), NGC_FILE_TYPE) != 0) {
 			panic("Given File is not a valid 'c' file : %s", argv[1]);
