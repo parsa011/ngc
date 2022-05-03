@@ -56,9 +56,7 @@ struct symtab_entry {
 	struct type entry_type;
 	struct position pos;
 	char *name;
-	union {
-		int integer;
-	};
+	union value val;
 };
 #define is_pointer(e) (e->entry_type.is_pointer)
 #define is_const(e)	(e->entry_type.is_const)

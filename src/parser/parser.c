@@ -118,7 +118,7 @@ decl_again:
 private struct ASTnode *parse_assign_variable()
 {
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
-	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->integer, current_token.pos);
+	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val.intval, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
 	// TODO : all assign token should be valid like += , -= and ...
 	assign_token();
@@ -127,8 +127,7 @@ private struct ASTnode *parse_assign_variable()
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, 0, left, rigth, current_token.pos);
 	// changin symbol integer value for now
 	// TODO : check assign operator type , like -= , += and ...
-	// TODO
-	entry->integer = value;
+	entry->val.intval = value;
 	return tree;
 }
 
@@ -183,7 +182,7 @@ private struct ASTnode *primary_factor(int ptp)
 	switch (current_token.type) {
 
 		case T_INTLIT :
-			n = create_ast_leaf(current_token.buffer, A_INTLIT, current_token.integer, current_token.pos);
+			n = create_ast_leaf(current_token.buffer, A_INTLIT, current_token.val.intval, current_token.pos);
 			next_token();
 			return n;
 
@@ -198,7 +197,7 @@ private struct ASTnode *primary_factor(int ptp)
 				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->integer, current_token.pos);
+				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->val.intval, current_token.pos);
 				return n;
 			}
 
@@ -224,7 +223,7 @@ private struct ASTnode *parse_binary_expression(int ptp)
 		token_copy = token_duplicate(&current_token);
 		next_token();
 		right = parse_binary_expression(token_precedence(tokentype));
-		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.integer, left, right, token_copy->pos);
+		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val.intval, left, right, token_copy->pos);
 
 		tokentype = current_token.type;
 		if (is_endof_binexpr())

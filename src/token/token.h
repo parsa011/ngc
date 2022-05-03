@@ -219,18 +219,25 @@ private char *token_type_str[] = {
 
 #define TOKEN_BUF_SIZE 64 
 
+/*
+ *	value union is used for everwhere that need to store input data , such as tokens or abstract syntax tree and symbol table
+ *	they can have different type of data, so they should be possible to store everykind of data.
+ *	but for using it , they should have a type field to store their data type
+ */
+union value {
+	string *str;
+	double realval;
+	int intval;
+	long longval;
+	char charval;
+};
+
 struct token {
 	token_type type;
 	struct position pos;
 	char buffer[TOKEN_BUF_SIZE];
 	int bufp;
-	union
-	{
-		string *str;
-		double real;
-		int integer;
-		long longval;
-	};
+	union value val;
 };
 
 /*

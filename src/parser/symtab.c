@@ -39,7 +39,7 @@ public void symtab_create_integer(char *text, int value, struct type *tp, struct
 {
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
-	entry->integer = value;
+	entry->val.intval = value;
 	pos_copy(pos, entry->pos);
 	type_copy(tp, entry->entry_type);
 	symtab_add(entry);
@@ -63,7 +63,7 @@ public void print_symtab()
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}
-		printf(" ---> \033[33m%d\033[0m", entry->integer);
+		printf(" ---> \033[33m%d\033[0m", entry->val.intval);
 		putchar('\n');
 	}
 }

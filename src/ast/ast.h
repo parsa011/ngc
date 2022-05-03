@@ -38,11 +38,7 @@ struct ASTnode {
 	struct ASTnode *left;
 	struct ASTnode *right;
 	struct position pos;
-	union {
-		string *str;
-		double real;
-		int integer;
-	};
+	union value val;
 };
 
 /*

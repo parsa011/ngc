@@ -17,7 +17,8 @@ public struct ASTnode *create_ast_node(char *title, int type, int value, struct 
 	n->type = type;
 	n->left = left;
 	n->right = right;
-	n->integer = value;
+	// TODO : change value argument type to value union type
+	//n->val.intval = value;
 	pos_copy(pos, n->pos);
 	return n;
 }
@@ -67,7 +68,7 @@ public int calculate_binary_tree(struct ASTnode *n)
 		case A_DIVIDE :
 			return left / right;
 		case A_INTLIT :
-			return n->integer;
+			return n->val.intval;
 	}
 	return -1;
 }
@@ -81,7 +82,7 @@ public void print_ast(struct ASTnode *n, int depth)
 	}
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_INTLIT) {
-		printf(" : %d", n->integer);
+		printf(" : %d", n->val.intval);
 	}
 	putchar('\n');
 	if (n->left) {
