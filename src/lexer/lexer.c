@@ -228,12 +228,11 @@ private double scan_number(char c, token_type *t)
 			add_char_to_token(c);
 			base = 16;
 			c = next_char();
-		}
-		else if (isdigit(c)) {
+		} else if (isdigit(c)) {
 			base = 8;
 		}
 	}
-	float floating_point = 0, pow = 1;
+	double floating_point = 0, pow = 1;
 	bool in_floating_point = false;
 	int k = 0;
 	while (isdigit(c) || (base == 16 && is_hex_digit(c))) {
@@ -623,6 +622,7 @@ add_again:
 				if (working_lexer->tok.type == T_REALLIT) {
 					working_lexer->tok.val.realval = res;
 				} else {
+					working_lexer->tok.val.realval = 0;
 					working_lexer->tok.val.intval = (int) res;
 				}
 				break;

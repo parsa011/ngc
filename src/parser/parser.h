@@ -9,6 +9,8 @@
 */
 
 #include "parser_util.h"
+#include "../type/types.h"
+#include "../ast/ast.h"
 #include "symtab.h"
 
 /*

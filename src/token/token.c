@@ -212,7 +212,7 @@ public bool is_type_token(token_type type)
 public bool is_assign_token(token_type type)
 {
 	switch (type) {
-		case T_ISEQUAL :		// ==
+		case T_EQUAL :
 		case T_INCEQUAL :		// +=
 		case T_DECEQUAL :		// -=
 		case T_MUEQUAL :		// *=

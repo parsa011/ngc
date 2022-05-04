@@ -48,6 +48,19 @@ struct position {
 		pos.col-- \
 }
 
+/*
+ *	value union is used for everwhere that need to store input data , such as tokens or abstract syntax tree and symbol table
+ *	they can have different type of data, so they should be possible to store everykind of data.
+ *	but for using it , they should have a type field to store their data type
+ */
+union value {
+	string *str;
+	double realval;
+	int intval;
+	long longval;
+	char charval;
+};
+
 public bool interp_mode;
 
 /*

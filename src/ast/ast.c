@@ -9,7 +9,7 @@
 #include "ast.h"
 #include <string.h>
 
-public struct ASTnode *create_ast_node(char *title, int type, int value, struct ASTnode *left, 
+public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct ASTnode *left, 
 		struct ASTnode *right, struct position pos)
 {
 	struct ASTnode *n = ngc_malloc(sizeof(struct ASTnode));
@@ -18,14 +18,15 @@ public struct ASTnode *create_ast_node(char *title, int type, int value, struct 
 	n->left = left;
 	n->right = right;
 	// TODO : change value argument type to value union type
-	//n->val.intval = value;
+	//value_copy(n->val, val);
 	pos_copy(pos, n->pos);
+	//set_val_by_type(n->val, val, &n->entry_type);
 	return n;
 }
 
-public struct ASTnode *create_ast_leaf(char *title, int type, int value, struct position pos)
+public struct ASTnode *create_ast_leaf(char *title, int type, union value val, struct position pos)
 {
-	return create_ast_node(title, type, value, NULL, NULL, pos);
+	return create_ast_node(title, type, val, NULL, NULL, pos);
 }
 
 public ASTnode_type tokentype_to_nodetype(token_type type)
@@ -49,6 +50,16 @@ public char *get_nodetype_str(ASTnode_type type)
 	if (type > ARRAY_LENGTH(ASTnode_type_str))
 		return "BAD";
 	return ASTnode_type_str[type];
+}
+
+public union value calculate_tree(struct ASTnode *n, int type)
+{
+	union value val;
+	if (type == TK_INT) {
+		int res = calculate_binary_tree(n);
+		val.intval = res;
+	}
+	return val;
 }
 
 public int calculate_binary_tree(struct ASTnode *n)

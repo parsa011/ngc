@@ -7,8 +7,6 @@
 */
 
 #include "parser.h"
-#include "../token/token.h"
-#include "../ast/ast.h"
 
 public struct ASTnode *compile(struct lexer *l)
 {
@@ -36,7 +34,6 @@ private void statements(struct ASTnode *n)
 					declare_varaiable();
 				}
 				break;
-
 		}
 		if (interp_mode) {
 			print_prompt();
@@ -91,18 +88,27 @@ decl_again:
 	 */
 	struct position pos;
 	pos_copy(current_token.pos, pos);
+	/*
+	 * have a copy of varaible name  because we gonna need that when we want to create a symbol for it
+	 */
 	char *text = strdup(current_token.buffer);
+	/* skip variabel name */
 	next_token();
-
-	struct ASTnode *value = NULL;
-	/* TODO : parse Rvalue by considering typeof variable */
-	if (current_token.type == T_EQUAL) { 	
-		/* token is '=' so we have to assign a value to variable */
+	/*
+	 * check if current token is assign token or no 
+	 * if it is , so we gonna parse right value
+	 */
+	struct ASTnode *rval_tree;
+	union value val;
+	val.intval = 0;
+	val.realval = 0;
+	if (current_token.type == T_EQUAL) {
 		next_token();
-	
-		value = get_rvalue_for_type(tokentype, tp);
+		/* TODO : parse Rvalue by considering typeof variable */
+		rval_tree = get_rvalue_for_type(tokentype, tp);
+		val = calculate_tree(rval_tree, tp.type);
 	}
-	symtab_create_integer(text, value ? calculate_binary_tree(value) : 0, &tp, pos);
+	symtab_create_entry(text, val, &tp, pos);
 	if (current_token.type == T_COMMA) {
 		/*
 		 * int age = 10, count;
@@ -118,16 +124,24 @@ decl_again:
 private struct ASTnode *parse_assign_variable()
 {
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
-	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val.intval, current_token.pos);
+	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
-	// TODO : all assign token should be valid like += , -= and ...
+	/* we can have some different type of assign token like =, += and ...
+	 */
 	assign_token();
-	int value = calculate_binary_tree(parse_binary_expression(0));
-	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_INTLIT, value, current_token.pos);
-	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, 0, left, rigth, current_token.pos);
+	/* parse rvalue of expression and calculate it to store in value union 
+	 */
+	union value val = calculate_tree(parse_binary_expression(0), entry->entry_type.type);
+	/* create AST leaf for our value
+	 */
+	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_INTLIT, val, current_token.pos);
+	// TODO : remove this redundant val arg
+	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, left, rigth, current_token.pos);
+
 	// changin symbol integer value for now
 	// TODO : check assign operator type , like -= , += and ...
-	entry->val.intval = value;
+	//value_copy(val, entry->val);
+	set_val_by_type(entry->val, val, &entry->entry_type);
 	return tree;
 }
 
@@ -182,7 +196,8 @@ private struct ASTnode *primary_factor(int ptp)
 	switch (current_token.type) {
 
 		case T_INTLIT :
-			n = create_ast_leaf(current_token.buffer, A_INTLIT, current_token.val.intval, current_token.pos);
+		case T_REALLIT :
+			n = create_ast_leaf(current_token.buffer, A_INTLIT, current_token.val, current_token.pos);
 			next_token();
 			return n;
 
@@ -197,7 +212,7 @@ private struct ASTnode *primary_factor(int ptp)
 				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->val.intval, current_token.pos);
+				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->val, current_token.pos);
 				return n;
 			}
 
@@ -223,7 +238,7 @@ private struct ASTnode *parse_binary_expression(int ptp)
 		token_copy = token_duplicate(&current_token);
 		next_token();
 		right = parse_binary_expression(token_precedence(tokentype));
-		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val.intval, left, right, token_copy->pos);
+		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, left, right, token_copy->pos);
 
 		tokentype = current_token.type;
 		if (is_endof_binexpr())
