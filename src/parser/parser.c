@@ -134,14 +134,14 @@ private struct ASTnode *parse_assign_variable()
 	union value val = calculate_tree(parse_binary_expression(0), entry->entry_type.type);
 	/* create AST leaf for our value
 	 */
-	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_INTLIT, val, current_token.pos);
+	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, current_token.pos);
 	// TODO : remove this redundant val arg
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, left, rigth, current_token.pos);
 
 	// changin symbol integer value for now
 	// TODO : check assign operator type , like -= , += and ...
 	//value_copy(val, entry->val);
-	set_val_by_type(entry->val, val, &entry->entry_type);
+	set_val_by_type(&entry->val, &val, &entry->entry_type);
 	return tree;
 }
 
@@ -197,7 +197,7 @@ private struct ASTnode *primary_factor(int ptp)
 
 		case T_INTLIT :
 		case T_REALLIT :
-			n = create_ast_leaf(current_token.buffer, A_INTLIT, current_token.val, current_token.pos);
+			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, current_token.pos);
 			next_token();
 			return n;
 
@@ -212,7 +212,7 @@ private struct ASTnode *primary_factor(int ptp)
 				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_INTLIT, entry->val, current_token.pos);
+				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, current_token.pos);
 				return n;
 			}
 
@@ -244,6 +244,7 @@ private struct ASTnode *parse_binary_expression(int ptp)
 		if (is_endof_binexpr())
 			break;
 	}
+	print_ast(left, 0);
 return_ast:
 	return left;
 }

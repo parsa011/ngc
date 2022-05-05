@@ -4,7 +4,7 @@ int count = 2, n = 10;
 char ch = '\n';
 float boobs = 10.2;
 //age = count + 10;
-count = count + 2;
+count = count + 12;
 // 1 + 123 * (((123 - 123))) / (12 + 2);
 // 1243 + 1234 - 123  * 2 /1;
 

@@ -39,7 +39,7 @@ public void symtab_create_entry(char *text, union value val, struct type *tp, st
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
 	// TODO set entry value by considering type
-	set_val_by_type(entry->val, val, tp);
+	set_val_by_type(&entry->val, &val, tp);
 	pos_copy(pos, entry->pos);
 	type_copy(tp, entry->entry_type);
 	symtab_add(entry);
@@ -66,7 +66,7 @@ public void print_symtab()
 		int type = symbol_entry_type(entry);
 		if (type == TK_INT)
 			printf(" ---> \033[33m%d\033[0m", entry->val.intval);
-		else if (type == TK_REAL)
+		else if (type == TK_REAL || type == TK_FLOAT)
 			printf(" ---> \033[33m%f\033[0m", entry->val.realval);
 		putchar('\n');
 	}

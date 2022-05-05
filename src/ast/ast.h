@@ -15,7 +15,7 @@
 typedef enum {
 	A_ADD, A_MINUS,
 	A_MULTIPLY, A_DIVIDE,
-	A_INTLIT,
+	A_CONST,
 
 	A_ASSIGN,
 	A_LVAL,
@@ -26,7 +26,7 @@ typedef enum {
 private char *ASTnode_type_str[] = {
 	"A_ADD", "A_MINUS",
 	"A_MULTIPLY", "A_DIVIDE",
-	"A_INTLIT",
+	"A_CONST",
 
 	"A_ASSIGN",
 	"A_LVAL",
@@ -40,6 +40,7 @@ struct ASTnode {
 	struct ASTnode *right;
 	struct position pos;
 	union value val;
+	struct type node_val_type;
 };
 
 /*
@@ -53,7 +54,7 @@ public struct ASTnode *create_ast_node(char *, ASTnode_type, union value, struct
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-public struct ASTnode *create_ast_leaf(char *, int, union value, struct position);
+public struct ASTnode *create_ast_leaf(char *, ASTnode_type, union value, struct position);
 
 /*
  *	@brief : Convert gien type to ast node type

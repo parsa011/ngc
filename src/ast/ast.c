@@ -9,6 +9,13 @@
 #include "ast.h"
 #include <string.h>
 
+private void set_val(union value *dest, union value *src, ASTnode_type type)
+{
+	if (type == A_CONST) {
+		dest->intval = src->intval;
+	}
+}
+
 public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct ASTnode *left, 
 		struct ASTnode *right, struct position pos)
 {
@@ -17,14 +24,14 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	n->type = type;
 	n->left = left;
 	n->right = right;
-	// TODO : change value argument type to value union type
-	//value_copy(n->val, val);
 	pos_copy(pos, n->pos);
-	//set_val_by_type(n->val, val, &n->entry_type);
+	// TODO : change value argument type to value union type
+	set_val(&n->val, &val, type);
 	return n;
 }
 
-public struct ASTnode *create_ast_leaf(char *title, int type, union value val, struct position pos)
+
+public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union value val, struct position pos)
 {
 	return create_ast_node(title, type, val, NULL, NULL, pos);
 }
@@ -78,7 +85,7 @@ public int calculate_binary_tree(struct ASTnode *n)
 			return left * right;
 		case A_DIVIDE :
 			return left / right;
-		case A_INTLIT :
+		case A_CONST :
 			return n->val.intval;
 	}
 	return -1;
@@ -92,7 +99,7 @@ public void print_ast(struct ASTnode *n, int depth)
 		putchar(' ');
 	}
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
-	if (n->type == A_INTLIT) {
+	if (n->type == A_CONST) {
 		printf(" : %d", n->val.intval);
 	}
 	putchar('\n');

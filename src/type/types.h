@@ -13,10 +13,11 @@
 
 typedef enum {
 	TK_INT = T_INT,
-	TK_REAL = T_REALLIT,
-	TK_LONG = T_LONGLIT,
+	TK_FLOAT = T_FLOAT,
+	TK_REAL = T_DOUBLE,
+	TK_LONG = T_LONG,
 	TK_STRING = T_STRLIT,
-	TK_CHAR = T_CHARLIT
+	TK_CHAR = T_CHAR
 } type_kind;
 
 /*
@@ -43,6 +44,6 @@ struct type {
 /*
  *	@brief : set value of dest by considering tp
  */
-public void set_val_by_type(union value, union value, struct type *);
+public void set_val_by_type(union value *, union value *, struct type *);
 
 #endif
