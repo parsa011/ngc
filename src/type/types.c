@@ -55,8 +55,6 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 		
 		case T_FLOAT :
 		case T_DOUBLE :
-			if (tok->type == T_CHARLIT || tok->type == T_INTLIT || tok->type == T_REALLIT)
-				return true;
-			return false;
+			return (tok->type == T_CHARLIT || tok->type == T_INTLIT || tok->type == T_REALLIT);
 	}
 }
