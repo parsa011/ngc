@@ -9,14 +9,8 @@
 #include "ast.h"
 #include <string.h>
 
-private void set_val(union value *dest, union value *src, ASTnode_type type)
-{
-	if (type == A_CONST) {
-		dest->intval = src->intval;
-	}
-}
 
-public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct ASTnode *left, 
+public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct type *val_type, struct ASTnode *left, 
 		struct ASTnode *right, struct position pos)
 {
 	struct ASTnode *n = ngc_malloc(sizeof(struct ASTnode));
@@ -25,15 +19,17 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	n->left = left;
 	n->right = right;
 	pos_copy(pos, n->pos);
+	struct type *entry_val_type = &n->node_val_type;
+	type_copy(val_type, entry_val_type);
 	// TODO : change value argument type to value union type
-	set_val(&n->val, &val, type);
+	set_val_by_type(&n->val, &val, val_type);
 	return n;
 }
 
 
-public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union value val, struct position pos)
+public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union value val, struct type *val_type, struct position pos)
 {
-	return create_ast_node(title, type, val, NULL, NULL, pos);
+	return create_ast_node(title, type, val, val_type, NULL, NULL, pos);
 }
 
 public ASTnode_type tokentype_to_nodetype(token_type type)
@@ -62,7 +58,7 @@ public char *get_nodetype_str(ASTnode_type type)
 public union value calculate_tree(struct ASTnode *n, int type)
 {
 	union value val;
-	if (type == TK_INT) {
+	if (type == T_INT) {
 		int res = calculate_binary_tree(n);
 		val.intval = res;
 	}

@@ -11,14 +11,18 @@
 public void set_val_by_type(union value *dest, union value *src, struct type *tp)
 {
 	switch (tp->type) {
-		case TK_INT :
+		case T_INT :
 			dest->intval = src->intval;
 			break;
 
-		case TK_FLOAT :
+		case T_FLOAT :
+		case T_DOUBLE :
 			dest->realval = src->realval;
-			printf("%f\n", dest->realval);
 			break;
 
+		case T_STRLIT :
+		case T_CHAR :
+			dest->str = src->str;
+			break;
 	}
 }

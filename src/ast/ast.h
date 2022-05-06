@@ -47,14 +47,14 @@ struct ASTnode {
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-public struct ASTnode *create_ast_node(char *, ASTnode_type, union value, struct ASTnode *, struct ASTnode *, struct position);
+public struct ASTnode *create_ast_node(char *, ASTnode_type, union value, struct type *, struct ASTnode *, struct ASTnode *, struct position);
 
 /*
  *	@brief : create a left for abstract syntax tree
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-public struct ASTnode *create_ast_leaf(char *, ASTnode_type, union value, struct position);
+public struct ASTnode *create_ast_leaf(char *, ASTnode_type, union value, struct type *, struct position);
 
 /*
  *	@brief : Convert gien type to ast node type

@@ -41,7 +41,8 @@ public void symtab_create_entry(char *text, union value val, struct type *tp, st
 	// TODO set entry value by considering type
 	set_val_by_type(&entry->val, &val, tp);
 	pos_copy(pos, entry->pos);
-	type_copy(tp, entry->entry_type);
+	struct type *entry_type = &entry->entry_type;
+	type_copy(tp, entry_type);
 	symtab_add(entry);
 }
 
@@ -64,10 +65,13 @@ public void print_symtab()
 			printf(" (pointer)");
 		}
 		int type = symbol_entry_type(entry);
-		if (type == TK_INT)
+		if (type == T_INT)
 			printf(" ---> \033[33m%d\033[0m", entry->val.intval);
-		else if (type == TK_REAL || type == TK_FLOAT)
+		else if (type == T_DOUBLE || type == T_FLOAT)
 			printf(" ---> \033[33m%f\033[0m", entry->val.realval);
+		//else if (type == T_STRING || T_CHAR) {
+		//	printf(" ---> \033[33m%s\033[0m", entry->val.str->value);
+		//}
 		putchar('\n');
 	}
 }

@@ -121,22 +121,30 @@ decl_again:
 	free(text);
 }
 
+/*
+ *	it will parse statements like :
+ *
+ *		age = 10;
+ *
+ *	detect symbol , parse it value then assign value to it by considering to assign token
+ *	assign token can be something like =, += and ...
+ */
 private struct ASTnode *parse_assign_variable()
 {
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
-	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, current_token.pos);
+	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, &entry->entry_type, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
 	/* we can have some different type of assign token like =, += and ...
 	 */
 	assign_token();
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
-	union value val = calculate_tree(parse_binary_expression(0), entry->entry_type.type);
+	union value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
 	/* create AST leaf for our value
 	 */
-	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, current_token.pos);
+	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, &entry->entry_type, current_token.pos);
 	// TODO : remove this redundant val arg
-	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, left, rigth, current_token.pos);
+	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, &entry->entry_type, left, rigth, current_token.pos);
 
 	// changin symbol integer value for now
 	// TODO : check assign operator type , like -= , += and ...
@@ -172,7 +180,7 @@ private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 		case T_INT :
 		case T_DOUBLE :
 		case T_FLOAT :
-			res = parse_binary_expression(0);
+			res = parse_binary_expression(0, &info);
 			break;
 
 		case T_CHAR :
@@ -190,20 +198,25 @@ private struct ASTnode *parse_char_literal()
 	return NULL;
 }
 
-private struct ASTnode *primary_factor(int ptp)
+/*
+ * return a leaf that contains a value corresponding to given type .
+ * for example if given type kind is string literal , so current token should be
+ * a strin literal , no numerical value
+ */
+private struct ASTnode *primary_factor(int ptp, struct type *tp)
 {
 	struct ASTnode *n;
 	switch (current_token.type) {
 
 		case T_INTLIT :
 		case T_REALLIT :
-			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, current_token.pos);
+			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
 			next_token();
 			return n;
 
 		case T_OP_P :
 			next_token();
-			n = parse_binary_expression(0);
+			n = parse_binary_expression(0, tp);
 			match(T_CL_P, "Unclosed Parenthesis");
 			return n;
 
@@ -212,7 +225,7 @@ private struct ASTnode *primary_factor(int ptp)
 				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, current_token.pos);
+				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, tp, current_token.pos);
 				return n;
 			}
 
@@ -225,22 +238,35 @@ private struct ASTnode *primary_factor(int ptp)
 	return NULL;
 }
 
-private struct ASTnode *parse_binary_expression(int ptp)
+private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 {
 	struct ASTnode *right, *left;
-	left = primary_factor(ptp);
+	/* get numerical part of expression
+	 * here, our token should be a valid numerical token, it can a be a symbol that contains a numeric value
+	 * or it can be constant
+	 */
+	left = primary_factor(ptp, tp);
 	int tokentype = current_token.type;
+	/* save type of current token , it can be open parenthesis or a operation token like + , - and ...
+	 */
 	if (is_endof_binexpr())
 		goto return_ast;
 	struct token *token_copy;
 	while (token_precedence(tokentype) > ptp) {
-
+		/* take a copy of current token , we need position and buffer of it for making ASTnode
+		 */
 		token_copy = token_duplicate(&current_token);
 		next_token();
-		right = parse_binary_expression(token_precedence(tokentype));
-		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, left, right, token_copy->pos);
-
+		/* parse continuationi of expression , it will just primary(number) if next operation token precedence is 
+		 * less than current operation token precedence
+		 */
+		right = parse_binary_expression(token_precedence(tokentype), tp);
+		/* join past trees with new tree from 'right'
+		 */
+		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, tp, left, right, token_copy->pos);
 		tokentype = current_token.type;
+		/* check if we can get out of this loop, chekcs if current token is like semi or comma or ...
+		 */
 		if (is_endof_binexpr())
 			break;
 	}

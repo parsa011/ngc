@@ -47,11 +47,11 @@ private struct ASTnode *parse_char_literal();
 /*
  *	@breif : return primay factor as a ASTnode tree
  */
-private struct ASTnode *primary_factor(int);
+private struct ASTnode *primary_factor(int, struct type *);
 
 /*
  *	@brief : parse binary expression by pratt parsing algorithm
  */
-private struct ASTnode *parse_binary_expression(int);
+private struct ASTnode *parse_binary_expression(int, struct type *);
 
 #endif
