@@ -2,6 +2,7 @@
 int age = 10 * 12 + 12 - 12, k = 123 * 12, s, a = 12;
 int count = 2, n = 10;
 char ch = '\n';
+double test2 = 1212.12;
 float test = 999.0; 
 //age = count + 10;
 count = count + 12;
