@@ -21,7 +21,6 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	pos_copy(pos, n->pos);
 	struct type *entry_val_type = &n->node_val_type;
 	type_copy(val_type, entry_val_type);
-	// TODO : change value argument type to value union type
 	set_val_by_type(&n->val, &val, val_type);
 	return n;
 }
@@ -59,19 +58,22 @@ public union value calculate_tree(struct ASTnode *n, int type)
 {
 	union value val;
 	if (type == T_INT) {
-		int res = calculate_binary_tree(n);
+		int res = (int)calculate_binary_tree(n, type);
 		val.intval = res;
+	} else if (type == T_FLOAT || type == T_DOUBLE) {
+		double res = calculate_binary_tree(n, type);
+		val.realval = res;
 	}
 	return val;
 }
 
-public int calculate_binary_tree(struct ASTnode *n)
+public double calculate_binary_tree(struct ASTnode *n, int type)
 {
-	int left, right;
+	double left, right;
 	if (n->left)
-		left = calculate_binary_tree(n->left);
+		left = calculate_binary_tree(n->left, type);
 	if (n->right)
-		right = calculate_binary_tree(n->right);
+		right = calculate_binary_tree(n->right, type);
 	switch (n->type) {
 		case A_ADD :
 			return left + right;
@@ -82,8 +84,12 @@ public int calculate_binary_tree(struct ASTnode *n)
 		case A_DIVIDE :
 			return left / right;
 		case A_CONST :
-			return n->val.intval;
+			if (type == T_INT)
+				return n->val.intval;
+			else if (type == T_FLOAT || type == T_DOUBLE)
+				return n->val.realval;
 	}
+	// TODO : report but , invalid operation
 	return -1;
 }
 

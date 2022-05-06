@@ -46,4 +46,10 @@ struct type {
  */
 public void set_val_by_type(union value *, union value *, struct type *);
 
+/*
+ *	@brief : checks if given token type (given token type should be a lietral token_type) is Equivalent to type
+ *	for example for a double type , we can have real lietrals or for a int we can have char or int and ...
+ */
+public bool check_literal_and_type(struct token *, struct type *);
+
 #endif

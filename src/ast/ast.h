@@ -69,7 +69,7 @@ public union value calculate_tree(struct ASTnode *, int);
 /*
  *	@brief : name of function is self-document bro XD
  */
-public int calculate_binary_tree(struct ASTnode *);
+public double calculate_binary_tree(struct ASTnode *, int);
 
 /*
  *	@brief : Print given ast into human readable format

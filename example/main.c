@@ -2,7 +2,7 @@
 int age = 10 * 12 + 12 - 12, k = 123 * 12, s, a = 12;
 int count = 2, n = 10;
 char ch = '\n';
-float boobs = 10.2;
+float test = 999.0; 
 //age = count + 10;
 count = count + 12;
 // 1 + 123 * (((123 - 123))) / (12 + 2);

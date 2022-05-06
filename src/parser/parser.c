@@ -205,6 +205,10 @@ private struct ASTnode *parse_char_literal()
  */
 private struct ASTnode *primary_factor(int ptp, struct type *tp)
 {
+	if (!check_literal_and_type(&current_token, tp)) {
+		show_lexer_error("Invalid Type");
+		panic(NULL);
+	}
 	struct ASTnode *n;
 	switch (current_token.type) {
 
@@ -222,7 +226,6 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 
 		case T_IDENT :
 			{
-				// TODO : type checking , we need that
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
 				next_token();
 				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, tp, current_token.pos);
@@ -270,7 +273,6 @@ private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 		if (is_endof_binexpr())
 			break;
 	}
-	print_ast(left, 0);
 return_ast:
 	return left;
 }
