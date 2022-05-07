@@ -191,9 +191,8 @@ private void skip_ml_comment()
 	int c = next_char();
 	while (1) {
 		if (c == EOF) {
-			//TODO : EOF in comment
 			show_lexer_error("Early End of file In Comment");
-			put_back(c);
+			panic(NULL);
 			return;
 		}
 		if (c == '*') {
@@ -305,10 +304,6 @@ public void lex()
 	
 	reset_token_text();
 	add_char_to_token(c);
-
-	// TODO : save psotion of preveious token to use in lexer_go_prevpos()
-	//pos_copy(working_lexer->tok.pos, working_lexer->prevpos);
-	//working_lexer->prev_offset = working_lexer->char_offset;
 
 	pos_copy(working_lexer->pos, working_lexer->tok.pos);
 	switch (c) {
@@ -611,7 +606,6 @@ add_again:
 			break;
 
 		default :
-			// TODO : scan keywords and identifirers and ...
 			if (isalpha(c) || c == '_') {
 				scan_ident();
 				set_working_lexer_token_type(guess_text_type(working_lexer->tok.buffer));

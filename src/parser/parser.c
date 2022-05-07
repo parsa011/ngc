@@ -146,9 +146,7 @@ private struct ASTnode *parse_assign_variable()
 	// TODO : remove this redundant val arg
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, &entry->entry_type, left, rigth, current_token.pos);
 
-	// changin symbol integer value for now
 	// TODO : check assign operator type , like -= , += and ...
-	//value_copy(val, entry->val);
 	set_val_by_type(&entry->val, &val, &entry->entry_type);
 	return tree;
 }
@@ -158,7 +156,7 @@ private struct ASTnode *parse_assign_variable()
  *
  *		int age = expr;
  *
- *		char ch = iden | 'c';
+ *		char ch = ident | 'c';
  *
  * 		char *name = "parsa";
  *
