@@ -100,8 +100,8 @@ decl_again:
 	 */
 	struct ASTnode *rval_tree;
 	union value val;
-	val.intval = 0;
-	val.realval = 0;
+	//val.intval = 0;
+	//val.realval = 0;
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		/* TODO : parse Rvalue by considering typeof variable */
@@ -176,6 +176,7 @@ private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 	switch (type) {
 
 		case T_INT :
+		case T_LONG :
 		case T_DOUBLE :
 		case T_FLOAT :
 			res = parse_binary_expression(0, &info);

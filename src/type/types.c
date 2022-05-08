@@ -16,6 +16,10 @@ public void set_val_by_type(union value *dest, union value *src, struct type *tp
 			dest->intval = src->intval;
 			break;
 
+		case T_LONG :
+			dest->longval = src->longval;
+			break;
+
 		case T_FLOAT :
 		case T_DOUBLE :
 			dest->realval = src->realval;
@@ -33,6 +37,7 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 {
 	switch (tp->type) {
 		case T_INT :
+		case T_LONG :
 			switch (tok->type) {
 
 				case T_INTLIT :
@@ -45,7 +50,6 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 						if (symbol_entry_type(entry) == T_INT || symbol_entry_type(entry) == T_CHAR)
 							return true;
 					}
-					
 			}
 			return false;
 

@@ -201,6 +201,7 @@ public bool is_type_token(token_type type)
 {
 	switch (type) {
 		case T_INT :
+		case T_LONG :
 		case T_CHAR :
 		case T_DOUBLE :
 		case T_FLOAT :
