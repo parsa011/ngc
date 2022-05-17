@@ -262,8 +262,6 @@ private double scan_number(char c, token_type *t)
 		*t = T_REALLIT;
 		return res + floating_point / pow;
 	}
-	// TODO : test if res is more than a int variabel
-	//if ((((long)res) & ( 1 << 33 )) >> 33) {
 	if (res > INT_MAX) {
 		*t = T_LONGLIT;
 	} else 
@@ -617,8 +615,9 @@ add_again:
 				double res = scan_number(c, &working_lexer->tok.type);
 				if (working_lexer->tok.type == T_REALLIT) {
 					working_lexer->tok.val.realval = res;
+				} else if (working_lexer->tok.type == T_LONGLIT) { 
+					working_lexer->tok.val.longval = (long) res;
 				} else {
-					working_lexer->tok.val.realval = 0;
 					working_lexer->tok.val.intval = (int) res;
 				}
 				break;
