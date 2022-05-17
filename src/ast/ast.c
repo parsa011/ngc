@@ -62,7 +62,6 @@ public union value calculate_tree(struct ASTnode *n, int type)
 		val.intval = res;
 	} else if (type == T_LONG) {
 		long res = (long)calculate_binary_tree(n, type);
-		printf("SDFSDF %ld\n", res);
 		val.longval = res;
 	} else if (type == T_FLOAT || type == T_DOUBLE) {
 		double res = calculate_binary_tree(n, type);

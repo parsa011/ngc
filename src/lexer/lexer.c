@@ -9,6 +9,7 @@
 #include "lexer.h"
 #include "lexer_file.h"
 #include <ctype.h>
+#include <limits.h>
 
 private const char white_spaces[] = {
 	' ',
@@ -263,9 +264,10 @@ private double scan_number(char c, token_type *t)
 	}
 	// TODO : test if res is more than a int variabel
 	//if ((((long)res) & ( 1 << 33 )) >> 33) {
-	//	*t = T_LONGLIT;
-	//} else 
-	*t = T_INTLIT;
+	if (res > INT_MAX) {
+		*t = T_LONGLIT;
+	} else 
+		*t = T_INTLIT;
 	return res;
 }
 

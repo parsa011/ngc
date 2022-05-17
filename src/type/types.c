@@ -41,6 +41,7 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 			switch (tok->type) {
 
 				case T_INTLIT :
+				case T_LONGLIT :
 				case T_CHARLIT :
 					return true;
 

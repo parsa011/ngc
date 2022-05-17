@@ -205,13 +205,15 @@ private struct ASTnode *parse_char_literal()
 private struct ASTnode *primary_factor(int ptp, struct type *tp)
 {
 	if (!check_literal_and_type(&current_token, tp)) {
-		show_lexer_error("Invalid Type");
-		panic(NULL);
+		//show_lexer_error("Invalid Type");
+		// TODO : enhance bug reporting
+		panic("Invalid Type");
 	}
 	struct ASTnode *n;
 	switch (current_token.type) {
 
 		case T_INTLIT :
+		case T_LONGLIT :
 		case T_REALLIT :
 			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
 			next_token();
