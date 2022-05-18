@@ -47,7 +47,7 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 
 				case T_IDENT :
 					{
-						struct symtab_entry *entry = symtab_get_by_name(tok->buffer);
+						struct symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
 						if (symbol_entry_type(entry) == T_INT || symbol_entry_type(entry) == T_CHAR)
 							return true;
 					}

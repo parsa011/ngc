@@ -131,7 +131,7 @@ decl_again:
  */
 private struct ASTnode *parse_assign_variable()
 {
-	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
+	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, &entry->entry_type, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
 	/* we can have some different type of assign token like =, += and ...
@@ -227,7 +227,7 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 
 		case T_IDENT :
 			{
-				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer);
+				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 				next_token();
 				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, tp, current_token.pos);
 				return n;

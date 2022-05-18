@@ -19,6 +19,10 @@ public void symtab_init()
 public void symtab_add(struct symtab_entry *entry)
 {
 	assert(symtab);
+	if (symtab_get_by_name(entry->name, false)) {
+		show_lexer_error("There is a entry with This name");
+		panic(NULL);
+	}
 	if (!symtab->entries) {
 		symtab->entries = entry;
 	} else {
@@ -46,14 +50,16 @@ public void symtab_create_entry(char *text, union value val, struct type *tp, st
 	symtab_add(entry);
 }
 
-public struct symtab_entry *symtab_get_by_name(char *name)
+public struct symtab_entry *symtab_get_by_name(char *name, bool show_error)
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next){
 		if (STR_EQUAL(name, entry->name))
 			return entry;
 	}
-	show_lexer_error("Identifier Didn't found");
-	panic(NULL);
+	if (show_error) {
+		show_lexer_error("Identifier Didn't found");
+		panic(NULL);
+	}
 	return NULL;
 }
 

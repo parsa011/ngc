@@ -67,7 +67,7 @@ public void symtab_create_entry(char *, union value, struct type *, struct posit
 /*
  *	@brief : return entry by its name
  */
-public struct symtab_entry *symtab_get_by_name(char *);
+public struct symtab_entry *symtab_get_by_name(char *, bool);
 
 /*
  *	@brief : print symbol table in human readable format (it will print 
