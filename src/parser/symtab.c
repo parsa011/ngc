@@ -66,17 +66,19 @@ public struct symtab_entry *symtab_get_by_name(char *name, bool show_error)
 public void print_symtab()
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
-		printf("%s (%d:%d)", entry->name, entry->pos.line, entry->pos.col);
+		int type = symbol_entry_type(entry);
+		printf("%s -> \033[04m%s\033[0m (%d:%d)", entry->name, get_token_str(type), entry->pos.line, entry->pos.col);
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}
-		int type = symbol_entry_type(entry);
 		if (type == T_INT)
 			printf(" ---> \033[33m%d\033[0m", entry->val.intval);
 		else if (type == T_LONG) 
 			printf(" ---> \033[33m%ld\033[0m", entry->val.longval);
 		else if (type == T_DOUBLE || type == T_FLOAT)
 			printf(" ---> \033[33m%f\033[0m", entry->val.realval);
+		//else if (type == T_STRLIT || type == T_CHAR)
+		//	printf(" ---> \033[33m%s\033[0m", entry->val.str->value);
 		putchar('\n');
 	}
 }

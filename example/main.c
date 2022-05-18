@@ -7,7 +7,6 @@ double test2 = 1212.12;
 float test = 999.0; 
 //age = count + 10;
 count = count + 12;
-int test = 124;
 // 1 + 123 * (((123 - 123))) / (12 + 2);
 // 1243 + 1234 - 123  * 2 /1;
 

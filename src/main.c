@@ -22,7 +22,7 @@ void usage(char *program_name)
 	panic(NULL);
 }
 
-void panic(const char *msg, ...) 
+void panic(const char *msg, ...)
 {
 	if (msg) {
 		char buf[256];
