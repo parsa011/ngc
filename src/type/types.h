@@ -8,6 +8,7 @@
 *	This file is part of ngc languge (new generation c)
 */
 
+#include "value.h"
 #include "../ngc.h"
 #include "../token/token.h"
 
