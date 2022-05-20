@@ -31,7 +31,7 @@ private void statements(struct ASTnode *n)
 
 			default :
 				if (is_type_keyword(false)) {
-					declare_varaiable();
+					declare_variable();
 				}
 				break;
 		}
@@ -42,7 +42,7 @@ private void statements(struct ASTnode *n)
 	}
 }
 
-private struct ASTnode *declare_varaiable()
+private struct ASTnode *declare_variable()
 {
 	int tokentype = current_token.type;
 	if (!is_type_keyword(true)) {

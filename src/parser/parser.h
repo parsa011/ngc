@@ -27,7 +27,7 @@ private void statements();
 /*
  *	@brief : Parse Declare variable statements
  */
-private struct ASTnode *declare_varaiable();
+private struct ASTnode *declare_variable();
 
 /*
  *	@brief : process and assign values to variables
