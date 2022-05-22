@@ -9,6 +9,7 @@
 */
 
 #include "../ngc.h"
+#include "type_def.h"
 
 /*
  *	value union is used for everwhere that need to store input data , such as tokens or abstract syntax tree and symbol table
@@ -16,6 +17,7 @@
  *	but for using it , they should have a type field to store their data type
  */
 union value {
+	struct type val_type;
 	string *str;
 	double realval;
 	int intval;
@@ -32,5 +34,7 @@ union value {
 #define LONG_VAL(value) ((union value) {.longval = value})
 #define CHAR_VAL(value) ((union value) {.charval = value})
 #define REAL_VAL(value) ((union value) {.realval = value})
+
+
 
 #endif

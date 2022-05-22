@@ -41,6 +41,7 @@ public bool is_eof();
 
 /*
  *	@brief : checks if current token is a keyword of types like int, float and....
+ *	takes a boolean to check if need to call next token or no
  */
 public bool is_type_keyword(bool);
 

@@ -481,6 +481,9 @@ public void lex()
 					put_back(c);
 				set_working_lexer_token_type(T_SHIFT_R);
 				break;
+			} else if (c == '=') {
+				set_working_lexer_token_type(T_GREAEQ);
+				break;
 			} else
 				put_back(c);
 			set_working_lexer_token_type(T_GT);
@@ -499,6 +502,9 @@ public void lex()
 				} else
 					put_back(c);
 				set_working_lexer_token_type(T_SHIFT_L);
+			} else if (c == '=') {
+				set_working_lexer_token_type(T_LOWEQ);
+				break;
 			} else
 				put_back(c);
 			set_working_lexer_token_type(T_LT);

@@ -17,6 +17,11 @@ typedef enum {
 	A_MULTIPLY, A_DIVIDE,
 	A_CONST,
 
+	// comparison
+	A_LOWER, A_GREATER,
+	A_ISEQUAL, A_LOWER_EQUAL,
+	A_GREATER_EQUAL,
+
 	A_ASSIGN,
 	A_LVAL,
 	A_IDENT
@@ -27,6 +32,12 @@ private char *ASTnode_type_str[] = {
 	"A_ADD", "A_MINUS",
 	"A_MULTIPLY", "A_DIVIDE",
 	"A_CONST",
+
+	// comparison
+	"A_LOWER", "A_GREATER",
+	"A_ISEQUAL", "A_LOWER_EQUAL",
+	"A_GREATER_EQUAL",
+
 
 	"A_ASSIGN",
 	"A_LVAL",

@@ -23,18 +23,20 @@ public struct ASTnode *compile(struct lexer *l)
 private void statements(struct ASTnode *n)
 {
 	while (!is_eof()) {
-		switch (current_token.type) {
+		//switch (current_token.type) {
 
-			case T_IDENT :
-				parse_assign_variable();
-				break;
+		//	case T_IDENT :
+		//		parse_assign_variable();
+		//		break;
 
-			default :
-				if (is_type_keyword(false)) {
-					declare_variable();
-				}
-				break;
-		}
+		//	default :
+		//		if (is_type_keyword(false)) {
+		//			declare_variable();
+		//		}
+		//		break;
+		//}
+		struct type tp = (struct type) {.type = T_INT};
+		print_ast(parse_binary_expression(0, &tp), 0);
 		if (interp_mode) {
 			print_prompt();
 		}
@@ -74,11 +76,15 @@ decl_again:
 		next_token();
 	} else
 		tp.is_pointer = false;
-
+	
+	/* check if current token is identifier or no 
+	 * it should be ident because we want to use it as variable name
+	 */
 	if (current_token.type != T_IDENT) {
 		show_lexer_error("Identifier Expected");
 		panic(NULL);
 	}
+
 	/* save current position because we will call next_token() and it will change our position 
 	 * this position is starting point of identifier
 	 *
@@ -98,16 +104,14 @@ decl_again:
 	 * check if current token is assign token or no 
 	 * if it is , so we gonna parse right value
 	 */
-	struct ASTnode *rval_tree;
 	union value val;
-	//val.intval = 0;
-	//val.realval = 0;
 	if (current_token.type == T_EQUAL) {
 		next_token();
-		/* TODO : parse Rvalue by considering typeof variable */
-		rval_tree = get_rvalue_for_type(tokentype, tp);
+		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
 		val = calculate_tree(rval_tree, tp.type);
 	}
+	/* Add parsed variable to global symbol table
+	 */
 	symtab_create_entry(text, val, &tp, pos);
 	if (current_token.type == T_COMMA) {
 		/*
@@ -204,10 +208,12 @@ private struct ASTnode *parse_char_literal()
  */
 private struct ASTnode *primary_factor(int ptp, struct type *tp)
 {
-	if (!check_literal_and_type(&current_token, tp)) {
-		//show_lexer_error("Invalid Type");
+	/* Do not check types if current token is open parenthesis
+	 */
+	if (!check_literal_and_type(&current_token, tp) && current_token.type != T_OP_P) {
 		// TODO : enhance bug reporting
-		panic("Invalid Type");
+		show_lexer_error("Invalid Type");
+		panic(NULL);
 	}
 	struct ASTnode *n;
 	switch (current_token.type) {
@@ -215,6 +221,7 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 		case T_INTLIT :
 		case T_LONGLIT :
 		case T_REALLIT :
+			current_token.val.val_type.type = tp->type;
 			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
 			next_token();
 			return n;

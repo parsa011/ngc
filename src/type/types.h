@@ -8,39 +8,9 @@
 *	This file is part of ngc languge (new generation c)
 */
 
-#include "value.h"
 #include "../ngc.h"
+#include "value.h"
 #include "../token/token.h"
-
-//typedef enum {
-//	TK_INT = T_INT,
-//	TK_FLOAT = T_FLOAT,
-//	TK_REAL = T_DOUBLE,
-//	TK_LONG = T_LONG,
-//	TK_STRING = T_STRLIT,
-//	TK_CHAR = T_CHAR
-//} type_kind;
-
-/*
- *	basic struct of our types , it shows qualifiers and other things
- *	related to the type
- */
-struct type {
-	int type;
-	bool is_unsigned;
-	bool is_const;
-	bool is_volatile;
-	bool is_restrict;
-	bool is_pointer;
-};
-#define type_copy(src, dest) { \
-	dest->type = src->type; \
-	dest->is_unsigned = src->is_unsigned; \
-	dest->is_const = src->is_const; \
-	dest->is_volatile = src->is_volatile; \
-	dest->is_restrict = src->is_restrict; \
-	dest->is_pointer = src->is_pointer; \
-}
 
 /*
  *	@brief : set value of dest by considering tp

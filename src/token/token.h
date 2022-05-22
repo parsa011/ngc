@@ -9,6 +9,7 @@
 */
 
 #include "../ngc.h"
+#include "../type/value.h"
 
 typedef enum {
 	T_EOF,
@@ -52,6 +53,8 @@ typedef enum {
 	T_DECEQUAL,		// -=
 	T_MUEQUAL,		// *=
 	T_MODEQUAL,		// %=
+	T_GREAEQ,		// >=
+	T_LOWEQ,		// <=
 	T_SHLEQUAL,		// <<=
 	T_SHREQUAL,		// >>=
 	T_DIVEQUAL,		// /=
@@ -156,6 +159,8 @@ private char *token_type_str[] = {
 	"T_DECEQUAL",		// -=
 	"T_MUEQUAL",		// *=
 	"T_MODEQUAL",		// %=
+	"T_GREAEQ",			// >=
+	"T_LOWEQ",			// <=
 	"T_SHLEQUAL",		// <<=
 	"T_SHREQUAL",		// >>=
 	"T_DIVEQUAL",		// /=

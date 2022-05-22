@@ -9,7 +9,6 @@
 #include "ast.h"
 #include <string.h>
 
-
 public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct type *val_type, struct ASTnode *left, 
 		struct ASTnode *right, struct position pos)
 {
@@ -25,7 +24,6 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	return n;
 }
 
-
 public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union value val, struct type *val_type, struct position pos)
 {
 	return create_ast_node(title, type, val, val_type, NULL, NULL, pos);
@@ -34,6 +32,16 @@ public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union val
 public ASTnode_type tokentype_to_nodetype(token_type type)
 {
 	switch (type) {
+		case T_GT :
+			return A_GREATER;
+		case T_LT :
+			return A_LOWER;
+		case T_ISEQUAL :
+			return A_ISEQUAL;
+		case T_LOWEQ :
+			return A_LOWER_EQUAL;
+		case T_GREAEQ :
+			return A_GREATER_EQUAL;
 		case T_STAR :
 			return A_MULTIPLY;
 		case T_SLASH :
@@ -43,6 +51,7 @@ public ASTnode_type tokentype_to_nodetype(token_type type)
 		case T_PLUS :
 			return A_ADD;
 	}
+	panic("Invalid token type (for convert to node type)");
 	return 0;
 }
 
@@ -58,15 +67,16 @@ public union value calculate_tree(struct ASTnode *n, int type)
 {
 	union value val;
 	if (type == T_INT) {
-		int res = (int)calculate_binary_tree(n, type);
+		int res = (int) calculate_binary_tree(n, type);
 		val.intval = res;
 	} else if (type == T_LONG) {
-		long res = (long)calculate_binary_tree(n, type);
+		long res = (long) calculate_binary_tree(n, type);
 		val.longval = res;
 	} else if (type == T_FLOAT || type == T_DOUBLE) {
 		double res = calculate_binary_tree(n, type);
 		val.realval = res;
 	}
+	val.val_type.type = type;
 	return val;
 }
 
@@ -89,10 +99,21 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 		case A_CONST :
 			if (type == T_INT)
 				return n->val.intval;
-			else if (type == T_LONG)
+			else if (type == T_LONG) {
+				if (n->val.val_type.type == T_INT) 
+					return n->val.intval;
 				return n->val.longval;
-			else if (type == T_FLOAT || type == T_DOUBLE)
+			}
+			else if (type == T_DOUBLE) {
+				if (n->val.val_type.type == T_INT) 
+					return n->val.intval;
 				return n->val.realval;
+			}
+			else if (type == T_FLOAT) {
+				if (n->val.val_type.type == T_INT) 
+					return n->val.intval;
+				return n->val.realval;
+			}
 	}
 	// TODO : report but , invalid operation
 	return -1;
@@ -108,6 +129,7 @@ public void print_ast(struct ASTnode *n, int depth)
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_CONST) {
 		printf(" : %d", n->val.intval);
+		printf(" --> %s", get_token_str(n->val.val_type.type));
 	}
 	putchar('\n');
 	if (n->left) {

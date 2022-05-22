@@ -182,6 +182,13 @@ public int token_precedence(token_type type)
 {
 	switch (type) {
 
+		case T_GT :
+		case T_LT :
+		case T_ISEQUAL :
+		case T_LOWEQ :
+		case T_GREAEQ :
+			return 4;
+
 		case T_PLUS :
 		case T_DASH :
 			return 5;

@@ -16,6 +16,10 @@ public void symtab_init()
 	symtab->buflen = 0;
 }
 
+/*
+ *	@brief : Append given entry to end of chain
+ *	do panic when there is an entry with given entry name
+ */
 public void symtab_add(struct symtab_entry *entry)
 {
 	assert(symtab);
@@ -33,10 +37,7 @@ public void symtab_add(struct symtab_entry *entry)
 }
 
 /*
- *	very simple now , for now we just support simple variables like
- *	this :
- *		int age = 10;
- *	we need to add qualifers and ...
+ *	@brief : Create a symbol table entry with given informations
  */
 public void symtab_create_entry(char *text, union value val, struct type *tp, struct position pos)
 {
