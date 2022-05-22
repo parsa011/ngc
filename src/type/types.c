@@ -9,9 +9,12 @@
 #include "types.h"
 #include "../parser/symtab.h"
 
-public void set_val_by_type(union value *dest, union value *src, struct type *tp)
+public void set_val_by_type(union value *dest, union value *src)//, struct type *tp)
 {
-	switch (tp->type) {
+	struct type *src_type = &src->val_type;
+	struct type *dest_type = &dest->val_type;
+	type_copy(src_type, dest_type);
+	switch (src->val_type.type) {
 		case T_INT :
 			dest->intval = src->intval;
 			break;
@@ -31,7 +34,6 @@ public void set_val_by_type(union value *dest, union value *src, struct type *tp
 			break;
 	}
 }
-
 
 public bool check_literal_and_type(struct token *tok, struct type *tp)
 {

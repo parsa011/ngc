@@ -23,20 +23,20 @@ public struct ASTnode *compile(struct lexer *l)
 private void statements(struct ASTnode *n)
 {
 	while (!is_eof()) {
-		//switch (current_token.type) {
+		switch (current_token.type) {
 
-		//	case T_IDENT :
-		//		parse_assign_variable();
-		//		break;
+			case T_IDENT :
+				parse_assign_variable();
+				break;
 
-		//	default :
-		//		if (is_type_keyword(false)) {
-		//			declare_variable();
-		//		}
-		//		break;
-		//}
-		struct type tp = (struct type) {.type = T_INT};
-		print_ast(parse_binary_expression(0, &tp), 0);
+			default :
+				if (is_type_keyword(false)) {
+					declare_variable();
+				}
+				break;
+		}
+		//struct type tp = (struct type) {.type = T_INT};
+		//print_ast(parse_binary_expression(0, &tp), 0);
 		if (interp_mode) {
 			print_prompt();
 		}
@@ -109,6 +109,7 @@ decl_again:
 		next_token();
 		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
 		val = calculate_tree(rval_tree, tp.type);
+		//printf("%d\n", val.intval);
 	}
 	/* Add parsed variable to global symbol table
 	 */
@@ -147,11 +148,10 @@ private struct ASTnode *parse_assign_variable()
 	/* create AST leaf for our value
 	 */
 	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, &entry->entry_type, current_token.pos);
-	// TODO : remove this redundant val arg
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, &entry->entry_type, left, rigth, current_token.pos);
 
 	// TODO : check assign operator type , like -= , += and ...
-	set_val_by_type(&entry->val, &val, &entry->entry_type);
+	set_val_by_type(&entry->val, &val);
 	return tree;
 }
 
@@ -212,7 +212,7 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 	 */
 	if (!check_literal_and_type(&current_token, tp) && current_token.type != T_OP_P) {
 		// TODO : enhance bug reporting
-		show_lexer_error("Invalid Type");
+		show_lexer_error("Value And Type Are Not Match");
 		panic(NULL);
 	}
 	struct ASTnode *n;
@@ -221,7 +221,6 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 		case T_INTLIT :
 		case T_LONGLIT :
 		case T_REALLIT :
-			current_token.val.val_type.type = tp->type;
 			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
 			next_token();
 			return n;

@@ -20,7 +20,7 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	pos_copy(pos, n->pos);
 	struct type *entry_val_type = &n->node_val_type;
 	type_copy(val_type, entry_val_type);
-	set_val_by_type(&n->val, &val, val_type);
+	set_val_by_type(&n->val, &val);
 	return n;
 }
 
@@ -66,6 +66,7 @@ public char *get_nodetype_str(ASTnode_type type)
 public union value calculate_tree(struct ASTnode *n, int type)
 {
 	union value val;
+	val.val_type.type = type;
 	if (type == T_INT) {
 		int res = (int) calculate_binary_tree(n, type);
 		val.intval = res;
@@ -76,7 +77,6 @@ public union value calculate_tree(struct ASTnode *n, int type)
 		double res = calculate_binary_tree(n, type);
 		val.realval = res;
 	}
-	val.val_type.type = type;
 	return val;
 }
 
@@ -97,8 +97,9 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 		case A_DIVIDE :
 			return left / right;
 		case A_CONST :
-			if (type == T_INT)
+			if (type == T_INT) {
 				return n->val.intval;
+			}
 			else if (type == T_LONG) {
 				if (n->val.val_type.type == T_INT) 
 					return n->val.intval;
@@ -129,7 +130,7 @@ public void print_ast(struct ASTnode *n, int depth)
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_CONST) {
 		printf(" : %d", n->val.intval);
-		printf(" --> %s", get_token_str(n->val.val_type.type));
+		//printf(" --> %s", get_token_str(n->val.val_type.type));
 	}
 	putchar('\n');
 	if (n->left) {

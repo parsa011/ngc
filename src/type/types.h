@@ -15,7 +15,7 @@
 /*
  *	@brief : set value of dest by considering tp
  */
-public void set_val_by_type(union value *, union value *, struct type *);
+public void set_val_by_type(union value *, union value *);//, struct type *);
 
 /*
  *	@brief : checks if given token type (given token type should be a lietral token_type) is Equivalent to type

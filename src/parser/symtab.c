@@ -43,7 +43,7 @@ public void symtab_create_entry(char *text, union value val, struct type *tp, st
 {
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
-	set_val_by_type(&entry->val, &val, tp);
+	set_val_by_type(&entry->val, &val);
 	pos_copy(pos, entry->pos);
 	struct type *entry_type = &entry->entry_type;
 	type_copy(tp, entry_type);
