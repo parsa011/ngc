@@ -35,8 +35,6 @@ private void statements(struct ASTnode *n)
 				}
 				break;
 		}
-		//struct type tp = (struct type) {.type = T_INT};
-		//print_ast(parse_binary_expression(0, &tp), 0);
 		if (interp_mode) {
 			print_prompt();
 		}
@@ -55,11 +53,15 @@ private struct ASTnode *declare_variable()
 		qualifer_type = current_token.type;
 		next_token();
 	}
+	
+	/* save type of current token ('type' token type)
+	 */
 	int tokentype = current_token.type;
 	if (!is_type_keyword(true)) {
 		show_lexer_error("Error : Type Expected");
 		panic(NULL);
 	}
+
 	/*
 	 *	a helpful note : 
 	 *	we have to prepare our type here , because when we are declaring many variables in one line,
@@ -129,7 +131,6 @@ decl_again:
 		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
 		val.val_type.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
-		//printf("%d\n", val.intval);
 	}
 	/* Add parsed variable to global symbol table
 	 */
@@ -249,6 +250,13 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 		panic(NULL);
 	}
 	struct ASTnode *n;
+	
+	/* Set given type (tp) for current token, so we can detect right type when we want to to
+	 * use set_val_by_type() function, means when we want to set value for ast node
+	 */
+	struct type *token_tp = &current_token.val.val_type;
+	type_copy(tp, token_tp);
+
 	switch (current_token.type) {
 
 		case T_INTLIT :
@@ -300,7 +308,7 @@ private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 		 */
 		token_copy = token_duplicate(&current_token);
 		next_token();
-		/* parse continuationi of expression , it will just primary(number) if next operation token precedence is 
+		/* parse continuation of expression , it will parse just primary(number) if next operation token precedence is 
 		 * less than current operation token precedence
 		 */
 		right = parse_binary_expression(token_precedence(tokentype), tp);

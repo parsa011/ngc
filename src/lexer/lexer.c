@@ -619,6 +619,7 @@ add_again:
 			}
 			if (isdigit(c)) {
 				double res = scan_number(c, &working_lexer->tok.type);
+				working_lexer->tok.val.val_type.type = working_lexer->tok.type;
 				if (working_lexer->tok.type == T_REALLIT) {
 					working_lexer->tok.val.val.realval = res;
 				} else if (working_lexer->tok.type == T_LONGLIT) {

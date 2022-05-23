@@ -54,15 +54,15 @@ int main(int argc, char *argv[])
 		l->open_file(l, argv[1]);
 	}
 	symtab_init();
-	lexer_set_working_lexer(l);
-	lex();
-	while (l->tok.type != T_EOF) {
-		print_token(&l->tok);
-		lex();
-	}
-	// struct ASTnode *n = compile(l);
-	// print_symtab();
-	// l->close_file(l);
-	// ngc_free(l);
+	//lexer_set_working_lexer(l);
+	//lex();
+	//while (l->tok.type != T_EOF) {
+	//	print_token(&l->tok);
+	//	lex();
+	//}
+	struct ASTnode *n = compile(l);
+	//print_symtab();
+	l->close_file(l);
+	ngc_free(l);
 	return 0;
 }

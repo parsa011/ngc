@@ -129,9 +129,13 @@ public void print_ast(struct ASTnode *n, int depth)
 	}
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_CONST) {
-		/* TODO : print value by considering type */
-		printf(" : %d", n->val.val.intval);
-		//printf(" --> %s", get_token_str(n->val.val_type.type));
+		printf(" : ");
+		if (n->val.val_type.type == T_INT)
+			printf("%d", n->val.val.intval);
+		else if (n->val.val_type.type == T_LONG)
+			printf("%ld", n->val.val.longval);
+		else if (n->val.val_type.type == T_FLOAT || n->val.val_type.type == T_DOUBLE)
+			printf("%f", n->val.val.realval);
 	}
 	putchar('\n');
 	if (n->left) {

@@ -23,27 +23,23 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 	struct type *src_type = &src->val_type;
 	struct type *dest_type = &dest->val_type;
 	type_copy(src_type, dest_type);
-	//printf("%d\n", (src->val_type.type));
+
 	switch (src->val_type.type) {
 		case T_INT :
 			SET_VAL(dest->val.intval, src->val.intval, operation_type);
-			//dest->intval = src->intval;
 			break;
 
 		case T_LONG :
 			SET_VAL(dest->val.longval, src->val.longval, operation_type);
-			//dest->longval = src->longval;
 			break;
 
 		case T_FLOAT :
 		case T_DOUBLE :
 			SET_VAL(dest->val.realval, src->val.realval, operation_type);
-			//dest->realval = src->realval;
 			break;
 
 		case T_STRLIT :
 		case T_CHAR :
-			//dest->str = src->str;
 			break;
 	}
 #undef SET_VAL
