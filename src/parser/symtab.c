@@ -39,11 +39,11 @@ public void symtab_add(struct symtab_entry *entry)
 /*
  *	@brief : Create a symbol table entry with given informations
  */
-public void symtab_create_entry(char *text, union value val, struct type *tp, struct position pos)
+public void symtab_create_entry(char *text, value val, struct type *tp, struct position pos)
 {
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
-	set_val_by_type(&entry->val, &val);
+	set_val_by_type(&entry->val, &val, T_EQUAL);
 	pos_copy(pos, entry->pos);
 	struct type *entry_type = &entry->entry_type;
 	type_copy(tp, entry_type);
@@ -74,11 +74,11 @@ public void print_symtab()
 		}
 		printf("\033[33m");
 		if (type == T_INT)
-			printf(" ---> %d", entry->val.intval);
+			printf(" ---> %d", entry->val.val.intval);
 		else if (type == T_LONG) 
-			printf(" ---> %ld", entry->val.longval);
+			printf(" ---> %ld", entry->val.val.longval);
 		else if (type == T_DOUBLE || type == T_FLOAT)
-			printf(" ---> %f", entry->val.realval);
+			printf(" ---> %f", entry->val.val.realval);
 		printf("\033[0m");
 		if (entry->entry_type.is_const) {
 			printf(" CONST");

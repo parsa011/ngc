@@ -511,7 +511,7 @@ public void lex()
 			break;
 
 		case '"' :
-			working_lexer->tok.val.str = prosing_string_init("");
+			working_lexer->tok.val.val.str = prosing_string_init("");
 str_concat:
 			c = next_char();
 			char last;
@@ -521,7 +521,7 @@ str_concat:
 					break;
 				}
 add_again:
-				prosing_string_append_char(working_lexer->tok.val.str, c);
+				prosing_string_append_char(working_lexer->tok.val.val.str, c);
 				last = c;
 				c = next_char();
 				/* don tount \" as end of string , we should add it to string too */
@@ -537,22 +537,22 @@ add_again:
 			break;
 
 		case '\'' :
-			working_lexer->tok.val.str = prosing_string_init("");
+			working_lexer->tok.val.val.str = prosing_string_init("");
 			c = next_char();
 			if (c == '\\') {
-				prosing_string_append_char(working_lexer->tok.val.str, c);
+				prosing_string_append_char(working_lexer->tok.val.val.str, c);
 				c = next_char();
 				if (isdigit(c)) {
 					while (isdigit(c) || c == 'x') {
-						prosing_string_append_char(working_lexer->tok.val.str, c);
+						prosing_string_append_char(working_lexer->tok.val.val.str, c);
 						c = next_char();
 					}
 				} else {
-					prosing_string_append_char(working_lexer->tok.val.str, c);
+					prosing_string_append_char(working_lexer->tok.val.val.str, c);
 					c = next_char();
 				}
 			} else {
-				prosing_string_append_char(working_lexer->tok.val.str, c);
+				prosing_string_append_char(working_lexer->tok.val.val.str, c);
 				c = next_char();
 			}
 			if (c != '\'') {
@@ -620,11 +620,11 @@ add_again:
 			if (isdigit(c)) {
 				double res = scan_number(c, &working_lexer->tok.type);
 				if (working_lexer->tok.type == T_REALLIT) {
-					working_lexer->tok.val.realval = res;
+					working_lexer->tok.val.val.realval = res;
 				} else if (working_lexer->tok.type == T_LONGLIT) { 
-					working_lexer->tok.val.longval = (long) res;
+					working_lexer->tok.val.val.longval = (long) res;
 				} else {
-					working_lexer->tok.val.intval = (int) res;
+					working_lexer->tok.val.val.intval = (int) res;
 				}
 				break;
 			}

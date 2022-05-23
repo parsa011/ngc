@@ -123,10 +123,11 @@ decl_again:
 	 * check if current token is assign token or no 
 	 * if it is , so we gonna parse right value
 	 */
-	union value val;
+	value val;
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
+		val.val_type.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
 		//printf("%d\n", val.intval);
 	}
@@ -156,21 +157,34 @@ decl_again:
 private struct ASTnode *parse_assign_variable()
 {
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
+	/* Show error if given entry is a Const variable
+	 */
+	if (IS_CONST_TYPE(entry->entry_type)) {
+		show_lexer_error("Can't Change Const Obj Value");
+		panic(NULL);
+	}
 	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, &entry->entry_type, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
+
 	/* we can have some different type of assign token like =, += and ...
 	 */
+	int operation_type = current_token.type;
 	assign_token();
+
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
-	union value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
+	value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
+	val.val_type.type = entry->entry_type.type;
+
 	/* create AST leaf for our value
 	 */
 	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, &entry->entry_type, current_token.pos);
+	/* Final tree
+	 */
 	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, &entry->entry_type, left, rigth, current_token.pos);
 
 	// TODO : check assign operator type , like -= , += and ...
-	set_val_by_type(&entry->val, &val);
+	set_val_by_type(&entry->val, &val, operation_type);
 	return tree;
 }
 

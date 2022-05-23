@@ -229,7 +229,7 @@ struct token {
 	struct position pos;
 	char buffer[TOKEN_BUF_SIZE];
 	int bufp;
-	union value val;
+	value val;
 };
 
 /*

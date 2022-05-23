@@ -9,7 +9,7 @@
 #include "ast.h"
 #include <string.h>
 
-public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union value val, struct type *val_type, struct ASTnode *left, 
+public struct ASTnode *create_ast_node(char *title, ASTnode_type type, value val, struct type *val_type, struct ASTnode *left, 
 		struct ASTnode *right, struct position pos)
 {
 	struct ASTnode *n = ngc_malloc(sizeof(struct ASTnode));
@@ -20,11 +20,11 @@ public struct ASTnode *create_ast_node(char *title, ASTnode_type type, union val
 	pos_copy(pos, n->pos);
 	struct type *entry_val_type = &n->node_val_type;
 	type_copy(val_type, entry_val_type);
-	set_val_by_type(&n->val, &val);
+	set_val_by_type(&n->val, &val, T_EQUAL);
 	return n;
 }
 
-public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, union value val, struct type *val_type, struct position pos)
+public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, value val, struct type *val_type, struct position pos)
 {
 	return create_ast_node(title, type, val, val_type, NULL, NULL, pos);
 }
@@ -63,19 +63,19 @@ public char *get_nodetype_str(ASTnode_type type)
 	return ASTnode_type_str[type];
 }
 
-public union value calculate_tree(struct ASTnode *n, int type)
+public value calculate_tree(struct ASTnode *n, int type)
 {
-	union value val;
+	value val;
 	val.val_type.type = type;
 	if (type == T_INT) {
 		int res = (int) calculate_binary_tree(n, type);
-		val.intval = res;
+		val.val.intval = res;
 	} else if (type == T_LONG) {
 		long res = (long) calculate_binary_tree(n, type);
-		val.longval = res;
+		val.val.longval = res;
 	} else if (type == T_FLOAT || type == T_DOUBLE) {
 		double res = calculate_binary_tree(n, type);
-		val.realval = res;
+		val.val.realval = res;
 	}
 	return val;
 }
@@ -98,22 +98,22 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 			return left / right;
 		case A_CONST :
 			if (type == T_INT) {
-				return n->val.intval;
+				return n->val.val.intval;
 			}
 			else if (type == T_LONG) {
 				if (n->val.val_type.type == T_INT) 
-					return n->val.intval;
-				return n->val.longval;
+					return n->val.val.intval;
+				return n->val.val.longval;
 			}
 			else if (type == T_DOUBLE) {
 				if (n->val.val_type.type == T_INT) 
-					return n->val.intval;
-				return n->val.realval;
+					return n->val.val.intval;
+				return n->val.val.realval;
 			}
 			else if (type == T_FLOAT) {
 				if (n->val.val_type.type == T_INT) 
-					return n->val.intval;
-				return n->val.realval;
+					return n->val.val.intval;
+				return n->val.val.realval;
 			}
 	}
 	// TODO : report but , invalid operation
@@ -129,7 +129,8 @@ public void print_ast(struct ASTnode *n, int depth)
 	}
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	if (n->type == A_CONST) {
-		printf(" : %d", n->val.intval);
+		/* TODO : print value by considering type */
+		printf(" : %d", n->val.val.intval);
 		//printf(" --> %s", get_token_str(n->val.val_type.type));
 	}
 	putchar('\n');

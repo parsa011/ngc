@@ -16,14 +16,16 @@
  *	they can have different type of data, so they should be possible to store everykind of data.
  *	but for using it , they should have a type field to store their data type
  */
-union value {
+typedef struct value_t {
 	struct type val_type;
-	string *str;
-	double realval;
-	int intval;
-	long longval;
-	char charval;
-};
+	union {
+		string *str;
+		double realval;
+		int intval;
+		long longval;
+		char charval;
+	} val;
+} value;
 
 #define VALUE_AS_INT(val)  (val->intval)
 #define VALUE_AS_LONG(val) (val->longval)

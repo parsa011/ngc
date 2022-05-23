@@ -31,4 +31,6 @@ struct type {
 	dest->is_pointer = src->is_pointer; \
 }
 
+#define IS_CONST_TYPE(type) (type.is_const)
+
 #endif

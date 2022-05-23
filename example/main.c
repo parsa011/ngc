@@ -9,8 +9,7 @@ char ch = '\n';
 double test2 = 1212.1 * 2.1;
 float test = 999.0; 
 age = count + 10;
-count = count + 12;
-boom = 1;
+count += 1;
 
 /************************ statistics *************************
  * this is  a test comment

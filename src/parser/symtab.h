@@ -34,7 +34,7 @@ struct symbol_table {
 struct symtab_entry {
 	struct symtab_entry *next;
 	char *name;
-	union value val;
+	value val;
 	struct type entry_type;
 	struct position pos;
 };
@@ -62,7 +62,7 @@ public void symtab_add(struct symtab_entry *);
 /*
  *	@brief : Create New entry for symbold table with value type
  */
-public void symtab_create_entry(char *, union value, struct type *, struct position);
+public void symtab_create_entry(char *, value, struct type *, struct position);
 
 /*
  *	@brief : return entry by its name

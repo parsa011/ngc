@@ -50,7 +50,7 @@ struct ASTnode {
 	struct ASTnode *left;
 	struct ASTnode *right;
 	struct position pos;
-	union value val;
+	value val;
 	struct type node_val_type;
 };
 
@@ -58,14 +58,14 @@ struct ASTnode {
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-public struct ASTnode *create_ast_node(char *, ASTnode_type, union value, struct type *, struct ASTnode *, struct ASTnode *, struct position);
+public struct ASTnode *create_ast_node(char *, ASTnode_type, value, struct type *, struct ASTnode *, struct ASTnode *, struct position);
 
 /*
  *	@brief : create a left for abstract syntax tree
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-public struct ASTnode *create_ast_leaf(char *, ASTnode_type, union value, struct type *, struct position);
+public struct ASTnode *create_ast_leaf(char *, ASTnode_type, value, struct type *, struct position);
 
 /*
  *	@brief : Convert gien type to ast node type
@@ -75,7 +75,7 @@ public ASTnode_type tokentype_to_nodetype(token_type);
 /*
  *	@brief : calculate tree by considering type
  */
-public union value calculate_tree(struct ASTnode *, int);
+public value calculate_tree(struct ASTnode *, int);
 
 /*
  *	@brief : name of function is self-document bro XD
