@@ -10,22 +10,22 @@
 
 #else
 
-#define COLORDEFAULT "\x1b[0m"
-#define COLORBOLD 	"\x1b[1m"
-#define COLORDIM		"\x1b[2m"
-#define COLORITALIC	"\x1b[3m"
-#define COLORUNDLINE "\x1b[4m"
-#define COLORBLINK	"\x1b[5m"
-#define COLORINVERT 	"\x1b[7m"
-#define COLORRED 	"\x1b[31m"
-#define COLORGREEN   "\x1b[32m"
-#define COLORYELLOW  "\x1b[33m"
-#define COLORBLUE	"\x1b[34m"
-#define COLORMAGENTA "\x1b[35m"
-#define COLORCYAN    "\x1b[36m"
-#define COLORNORMAL  "\x1b[39m"
-#define COLOROVLINE	"\x1b[53m"
-#define COLORGRAY	"\x1b[90m"
+#define COLORDEFAULT   "\x1b[0m"
+#define COLORBOLD      "\x1b[1m"
+#define COLORDIM       "\x1b[2m"
+#define COLORITALIC    "\x1b[3m"
+#define COLORUNDLINE   "\x1b[4m"
+#define COLORBLINK     "\x1b[5m"
+#define COLORINVERT    "\x1b[7m"
+#define COLORRED       "\x1b[31m"
+#define COLORGREEN     "\x1b[32m"
+#define COLORYELLOW    "\x1b[33m"
+#define COLORBLUE      "\x1b[34m"
+#define COLORMAGENTA   "\x1b[35m"
+#define COLORCYAN      "\x1b[36m"
+#define COLORNORMAL    "\x1b[39m"
+#define COLOROVLINE	   "\x1b[53m"
+#define COLORGRAY      "\x1b[90m"
 
 #endif
 

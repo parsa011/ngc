@@ -72,14 +72,14 @@ public void print_symtab()
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}
-		printf("\033[33m");
+		printf(COLORYELLOW);
 		if (type == T_INT)
 			printf(" ---> %d", entry->val.val.intval);
 		else if (type == T_LONG) 
 			printf(" ---> %ld", entry->val.val.longval);
 		else if (type == T_DOUBLE || type == T_FLOAT)
 			printf(" ---> %f", entry->val.val.realval);
-		printf("\033[0m");
+		printf(COLORDEFAULT);
 		if (entry->entry_type.is_const) {
 			printf(" CONST");
 		}

@@ -621,7 +621,7 @@ add_again:
 				double res = scan_number(c, &working_lexer->tok.type);
 				if (working_lexer->tok.type == T_REALLIT) {
 					working_lexer->tok.val.val.realval = res;
-				} else if (working_lexer->tok.type == T_LONGLIT) { 
+				} else if (working_lexer->tok.type == T_LONGLIT) {
 					working_lexer->tok.val.val.longval = (long) res;
 				} else {
 					working_lexer->tok.val.val.intval = (int) res;

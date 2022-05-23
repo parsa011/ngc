@@ -161,6 +161,10 @@ public void print_token(struct token *t)
 	switch (t->type) {
 
 		case T_INTLIT :
+			printf(" --> Value : %s%d%s" , COLORUNDLINE, t->val.val.intval, COLORDEFAULT);
+			break;
+
+		case T_LONGLIT :
 			printf(" --> Value : %s%ld%s" , COLORUNDLINE, t->val.val.longval, COLORDEFAULT);
 			break;
 		
