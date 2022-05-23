@@ -40,6 +40,19 @@ public bool is_type_keyword(bool go_next)
 	return res;
 }
 
+public bool is_qualifier(bool go_next)
+{
+	bool res = false;
+	switch (current_token.type) {
+		case T_CONST :
+		case T_VOLATILE :
+			res = true;
+	}
+	if (go_next)
+		next_token();
+	return res;
+}
+
 public bool is_endof_binexpr()
 {
 	int tokentype = current_token.type;

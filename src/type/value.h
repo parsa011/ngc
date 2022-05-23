@@ -25,16 +25,14 @@ union value {
 	char charval;
 };
 
-#define VALUE_AS_INT(val) (val->intval)
+#define VALUE_AS_INT(val)  (val->intval)
 #define VALUE_AS_LONG(val) (val->longval)
 #define VALUE_AS_CHAR(val) (val->charval)
 #define VALUE_AS_REAL(val) (val->realval)
 
-#define INT_VAL(value) ((union value) {.intval = value})
+#define INT_VAL(value)  ((union value) {.intval = value})
 #define LONG_VAL(value) ((union value) {.longval = value})
 #define CHAR_VAL(value) ((union value) {.charval = value})
 #define REAL_VAL(value) ((union value) {.realval = value})
-
-
 
 #endif

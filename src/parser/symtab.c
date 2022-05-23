@@ -80,6 +80,9 @@ public void print_symtab()
 		else if (type == T_DOUBLE || type == T_FLOAT)
 			printf(" ---> %f", entry->val.realval);
 		printf("\033[0m");
+		if (entry->entry_type.is_const) {
+			printf(" CONST");
+		}
 		putchar('\n');
 	}
 }

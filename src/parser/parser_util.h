@@ -46,6 +46,11 @@ public bool is_eof();
 public bool is_type_keyword(bool);
 
 /*
+ *	@brief : checks if current token is const or volatile (a qualifier)
+ */
+public bool is_qualifier(bool);
+
+/*
  *	@brief : checks if current token is end of a binary expression or no
  *	token should be something like semicolon or comm or ...
  */

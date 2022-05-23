@@ -30,7 +30,7 @@ private void statements(struct ASTnode *n)
 				break;
 
 			default :
-				if (is_type_keyword(false)) {
+				if (is_type_keyword(false) || is_qualifier(false)) {
 					declare_variable();
 				}
 				break;
@@ -46,6 +46,15 @@ private void statements(struct ASTnode *n)
 
 private struct ASTnode *declare_variable()
 {
+	/* check for qualifier at first of declerations
+	 * default value for 'qualifer_type' is -1 , because we dont have any token with that id
+	 * so in type decleration we can detect that we have a qualifier or no
+	 */
+	int qualifer_type = -1;
+	if (is_qualifier(false)) {
+		qualifer_type = current_token.type;
+		next_token();
+	}
 	int tokentype = current_token.type;
 	if (!is_type_keyword(true)) {
 		show_lexer_error("Error : Type Expected");
@@ -65,6 +74,16 @@ private struct ASTnode *declare_variable()
 		.type = tokentype,
 		.is_pointer = false
 	};
+
+	/* Set type qualifers with detected qualifier
+	 */
+	if (qualifer_type) {
+		switch (qualifer_type) {
+			case T_CONST :
+				tp.is_const = true;
+				break;
+		}
+	}
 
 decl_again:
 
