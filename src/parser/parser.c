@@ -121,11 +121,19 @@ decl_again:
 	char *text = strdup(current_token.buffer);
 	/* skip variabel name */
 	next_token();
+	value val;
+	/* This is important , because when we are declaring many variables in one line, those variable that
+	 * dont have any right value will take the last rvalue ,  like this :
+	 *
+	 *		int my_age = 18, your_age;
+	 *
+	 *	here your_age should be 0 , but it will be 18 , so we have to reset the value
+	 */
+	val.val.intval = 0;
 	/*
 	 * check if current token is assign token or no 
 	 * if it is , so we gonna parse right value
 	 */
-	value val;
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);

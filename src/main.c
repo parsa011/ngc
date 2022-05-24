@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	//	lex();
 	//}
 	struct ASTnode *n = compile(l);
-	//print_symtab();
+	print_symtab();
 	l->close_file(l);
 	ngc_free(l);
 	return 0;
