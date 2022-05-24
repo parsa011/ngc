@@ -96,6 +96,14 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 			return left * right;
 		case A_DIVIDE :
 			return left / right;
+		case A_GREATER :
+			return left > right;
+		case A_LOWER :
+			return left < right;
+		case A_LOWER_EQUAL :
+			return left <= right;
+		case A_GREATER_EQUAL :
+			return left >= right;
 		case A_CONST :
 			if (type == T_INT) {
 				return n->val.val.intval;
@@ -117,6 +125,7 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 			}
 	}
 	// TODO : report but , invalid operation
+	panic("Invalid Or Not-Implemented operation");
 	return -1;
 }
 

@@ -1,5 +1,6 @@
 //uint64_t l_1105 = 0x91D4915A589A5327LL;
 //(12 >= 12);
+int is_bigger = 1 < 2;
 int not_zero = 1, should_be_zero;
 const int boom = (12 + 8 * 2 + (2 - 1)) * 2 / 1 * 2;
 int age = 10 * 12 + 12 - 12, k = 123 * 12, s, a = 12;
