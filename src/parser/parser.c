@@ -45,12 +45,29 @@ private void statements(struct ASTnode *n)
 private struct ASTnode *declare_variable()
 {
 	/* check for qualifier at first of declerations
-	 * default value for 'qualifer_type' is -1 , because we dont have any token with that id
-	 * so in type decleration we can detect that we have a qualifier or no
+	 * we use of a temp 'type' struct to hold qualifiers like 'const' and  ...
+	 * then we copy it to the finall 'type'
 	 */
-	int qualifer_type = -1;
-	if (is_qualifier(false)) {
-		qualifer_type = current_token.type;
+	struct type qualifiers;
+	while (is_qualifier(false)) {
+		switch (current_token.type) {
+
+			case T_CONST :
+				if (qualifiers.is_const) {
+					show_lexer_error("Variable Is Constant Already");
+					panic(NULL);
+				}
+				qualifiers.is_const = true;
+				break;
+
+			case T_UNSIGNED : 
+				if (qualifiers.is_unsigned) {
+					show_lexer_error("Variable Is Unsigned Already");
+					panic(NULL);
+				}
+				qualifiers.is_unsigned = true;
+				break;
+		}
 		next_token();
 	}
 	
@@ -72,20 +89,10 @@ private struct ASTnode *declare_variable()
 	 *
 	 *	our type is constant integer
 	 */
-	struct type tp = {
-		.type = tokentype,
-		.is_pointer = false
-	};
-
-	/* Set type qualifers with detected qualifier
-	 */
-	if (qualifer_type) {
-		switch (qualifer_type) {
-			case T_CONST :
-				tp.is_const = true;
-				break;
-		}
-	}
+	struct type tp;
+	type_copy(((struct type *)&qualifiers), ((struct type *)&tp));
+	/* set type for 'type' here , because if we set that before type_copy we will lose our type-specifier */
+	tp.type = tokentype;
 
 decl_again:
 
@@ -169,7 +176,7 @@ private struct ASTnode *parse_assign_variable()
 	/* Show error if given entry is a Const variable
 	 */
 	if (IS_CONST_TYPE(entry->entry_type)) {
-		show_lexer_error("Can't Change Const Obj Value");
+		show_lexer_error("Can't Change Const Value");
 		panic(NULL);
 	}
 	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, &entry->entry_type, current_token.pos);
@@ -183,7 +190,7 @@ private struct ASTnode *parse_assign_variable()
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
 	value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
-	val.val_type.type = entry->entry_type.type;
+	//val.val_type.type = entry->entry_type.type;
 
 	/* create AST leaf for our value
 	 */
