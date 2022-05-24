@@ -124,7 +124,6 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 				return n->val.val.realval;
 			}
 	}
-	// TODO : report but , invalid operation
 	panic("Invalid Or Not-Implemented operation");
 	return -1;
 }

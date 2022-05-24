@@ -49,24 +49,20 @@ private struct ASTnode *declare_variable()
 	 * then we copy it to the finall 'type'
 	 */
 	struct type qualifiers;
+	qualifiers.is_const = qualifiers.is_unsigned = false;
 	while (is_qualifier(false)) {
-		switch (current_token.type) {
-
-			case T_CONST :
-				if (qualifiers.is_const) {
-					show_lexer_error("Variable Is Constant Already");
-					panic(NULL);
-				}
-				qualifiers.is_const = true;
-				break;
-
-			case T_UNSIGNED : 
-				if (qualifiers.is_unsigned) {
-					show_lexer_error("Variable Is Unsigned Already");
-					panic(NULL);
-				}
-				qualifiers.is_unsigned = true;
-				break;
+		if (current_token.type == T_CONST) {
+			if (qualifiers.is_const) {
+			show_lexer_error("Variable Is Constant Already");
+				panic(NULL);
+			}
+			qualifiers.is_const = true;
+		} else if (current_token.type == T_UNSIGNED) {
+			if (qualifiers.is_unsigned) {
+				show_lexer_error("Variable Is Unsigned Already");
+				panic(NULL);
+			}
+			qualifiers.is_unsigned = true;
 		}
 		next_token();
 	}

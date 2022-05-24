@@ -46,6 +46,7 @@ public bool is_qualifier(bool go_next)
 	switch (current_token.type) {
 		case T_CONST :
 		case T_VOLATILE :
+		case T_UNSIGNED :
 			res = true;
 	}
 	if (go_next)
