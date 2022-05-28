@@ -65,15 +65,18 @@ public char *get_nodetype_str(ASTnode_type type)
 public value calculate_tree(struct ASTnode *n, int type)
 {
 	value val;
-	val.val_type.type = type;
+	//printf("type is : %s\n", get_token_str(type));
 	if (type == T_INT) {
 		int res = (int) calculate_binary_tree(n, type);
+		val.val_type.type = T_INTLIT;
 		val.val.intval = res;
 	} else if (type == T_LONG) {
 		long res = (long) calculate_binary_tree(n, type);
+		val.val_type.type = T_LONGLIT;
 		val.val.longval = res;
 	} else if (type == T_FLOAT || type == T_DOUBLE) {
 		double res = calculate_binary_tree(n, type);
+		val.val_type.type = T_REALLIT;
 		val.val.realval = res;
 	}
 	return val;
@@ -110,19 +113,19 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 					return n->val.val.intval;
 				}
 				else if (type == T_LONG) {
-					if (val_type == T_INT) 
+					if (val_type == T_INTLIT) 
 						return n->val.val.intval;
 					return n->val.val.longval;
 				}
 				else if (type == T_DOUBLE) {
-					if (val_type == T_INT) 
+					if (val_type == T_INTLIT) 
 						return n->val.val.intval;
-					else if (val_type == T_LONG)
+					else if (val_type == T_LONGLIT)
 						return (double) n->val.val.longval;
 					return n->val.val.realval;
 				}
 				else if (type == T_FLOAT) {
-					if (val_type == T_INT) 
+					if (val_type == T_INTLIT) 
 						return n->val.val.intval;
 					return n->val.val.realval;
 				}

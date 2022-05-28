@@ -15,6 +15,9 @@
 #include "util/file_util.h"
 #include "../lib/prosing.h"
 
+#define NGC_DEBUG
+#define DEBUG_LEXER 0
+
 #define VERSION "0.0.1"
 
 #define NGC_FILE_TYPE "c"

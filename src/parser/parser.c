@@ -270,8 +270,8 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 	/* Set given type (tp) for current token, so we can detect right type when we want to to
 	 * use set_val_by_type() function, means when we want to set value for ast node
 	 */
-	struct type *token_tp = &current_token.val.val_type;
-	type_copy(tp, token_tp);
+	//struct type *token_tp = &current_token.val.val_type;
+	//type_copy(tp, token_tp);
 
 	switch (current_token.type) {
 

@@ -25,16 +25,15 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 	type_copy(src_type, dest_type);
 
 	switch (src->val_type.type) {
-		case T_INT :
+		case T_INTLIT :
 			SET_VAL(dest->val.intval, src->val.intval, operation_type);
 			break;
 
-		case T_LONG :
+		case T_LONGLIT :
 			SET_VAL(dest->val.longval, src->val.longval, operation_type);
 			break;
 
-		case T_FLOAT :
-		case T_DOUBLE :
+		case T_REALLIT :
 			SET_VAL(dest->val.realval, src->val.realval, operation_type);
 			break;
 

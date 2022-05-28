@@ -3,7 +3,6 @@
 int is_bigger = 1 < 2;
 int not_zero = 1, should_be_zero;
 const double not_valued, valued = 1;
-const int boom = (12 + 8 * 2 + (2 - 1)) * 2 / 1 * 2;
 unsigned int unsigned_int = 234;
 int age = 10 * 12 + 12 - 12, k = 123 * 12, s, a = 12;
 int count = 2 + 2 * 2 + 2, n = 10;

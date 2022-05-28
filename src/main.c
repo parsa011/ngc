@@ -53,11 +53,19 @@ int main(int argc, char *argv[])
 		}
 		l->open_file(l, argv[1]);
 	}
+#if DEBUG_LEXER
+	lexer_set_working_lexer(l);
+	lex();
+	while (l->tok.type != T_EOF) {
+		print_token(&l->tok);
+		lex();
+	}
+#else
 	symtab_init();
 	struct ASTnode *n = compile(l);
-	print_ast(n, 0);
 	print_symtab();
 	l->close_file(l);
+#endif
 	ngc_free(l);
 	return 0;
 }
