@@ -57,7 +57,6 @@ public ASTnode_type tokentype_to_nodetype(token_type type)
 
 public char *get_nodetype_str(ASTnode_type type)
 {
-	// last member of ASTnode_type enum
 	if (type > ARRAY_LENGTH(ASTnode_type_str))
 		return "BAD";
 	return ASTnode_type_str[type];
@@ -105,23 +104,28 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 		case A_GREATER_EQUAL :
 			return left >= right;
 		case A_CONST :
-			if (type == T_INT) {
-				return n->val.val.intval;
-			}
-			else if (type == T_LONG) {
-				if (n->val.val_type.type == T_INT) 
+			{
+				int val_type = n->val.val_type.type;
+				if (type == T_INT) {
 					return n->val.val.intval;
-				return n->val.val.longval;
-			}
-			else if (type == T_DOUBLE) {
-				if (n->val.val_type.type == T_INT) 
-					return n->val.val.intval;
-				return n->val.val.realval;
-			}
-			else if (type == T_FLOAT) {
-				if (n->val.val_type.type == T_INT) 
-					return n->val.val.intval;
-				return n->val.val.realval;
+				}
+				else if (type == T_LONG) {
+					if (val_type == T_INT) 
+						return n->val.val.intval;
+					return n->val.val.longval;
+				}
+				else if (type == T_DOUBLE) {
+					if (val_type == T_INT) 
+						return n->val.val.intval;
+					else if (val_type == T_LONG)
+						return (double) n->val.val.longval;
+					return n->val.val.realval;
+				}
+				else if (type == T_FLOAT) {
+					if (val_type == T_INT) 
+						return n->val.val.intval;
+					return n->val.val.realval;
+				}
 			}
 	}
 	panic("Invalid Or Not-Implemented operation");

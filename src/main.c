@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 	}
 	symtab_init();
 	struct ASTnode *n = compile(l);
+	print_ast(n, 0);
 	print_symtab();
 	l->close_file(l);
 	ngc_free(l);

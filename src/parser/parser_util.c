@@ -19,7 +19,22 @@ public void select_lexer(struct lexer *l)
 public void match(token_type type, char *msg)
 {
 	if (current_token.type != type) {
+		show_lexer_error(msg);
 		printf("Error (%s:%d:%d): %s\n", current_lexer->file_name, current_lexer->pos.line, current_lexer->pos.col, msg);
+	}
+	next_token();
+}
+
+public void semi()
+{
+	match(T_SEMI, "Semicolon Expected Before Current Token");
+}
+
+public void assign_token()
+{
+	if (!is_assign_token(current_token.type)) {
+		show_lexer_error("Assign Token Expected");
+		panic(NULL);
 	}
 	next_token();
 }
@@ -69,23 +84,4 @@ public void skip_token_until(token_type type)
 		}
 		next_token();
 	}
-}
-
-public void semi()
-{
-	if (current_token.type != T_SEMI) {
-		show_lexer_error("Semicolon Expected Before Current Token");		
-		panic(NULL);
-	}
-	next_token();
-	//match(T_SEMI, "Semicolon Expected");
-}
-
-public void assign_token()
-{
-	if (!is_assign_token(current_token.type)) {
-		show_lexer_error("Assign Token Expected");
-		panic(NULL);
-	}
-	next_token();
 }

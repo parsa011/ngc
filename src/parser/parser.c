@@ -15,15 +15,19 @@ public struct ASTnode *compile(struct lexer *l)
 		print_prompt();
 	}
 	next_token();
-	struct ASTnode *n = NULL;
-	statements(n);
+	struct ASTnode *n =	statements(n);
 	return n;
 }
 
-private void statements(struct ASTnode *n)
+private struct ASTnode *statements(struct ASTnode *n)
 {
+    struct ASTnode *ast = NULL;
 	while (!is_eof()) {
 		switch (current_token.type) {
+
+			case T_IF :
+				parse_if_statement();
+				break;
 
 			case T_IDENT :
 				parse_assign_variable();
@@ -40,6 +44,7 @@ private void statements(struct ASTnode *n)
 		}
 		semi();
 	}
+	return ast;
 }
 
 private struct ASTnode *declare_variable()
@@ -66,7 +71,7 @@ private struct ASTnode *declare_variable()
 		}
 		next_token();
 	}
-	
+
 	/* save type of current token ('type' token type)
 	 */
 	int tokentype = current_token.type;
@@ -334,4 +339,10 @@ private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 	}
 return_ast:
 	return left;
+}
+
+private struct ASTnode *parse_if_statement()
+{
+	struct ASTnode *condition_tree, *if_tree, *else_tree;
+	return NULL;
 }

@@ -67,11 +67,12 @@ public void print_symtab()
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
 		int type = symbol_entry_type(entry);
-		printf("%s -> \033[04m%s\033[0m (%d:%d)", entry->name, get_token_str(type), 
+		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_token_str(type), COLORDEFAULT, 
 				entry->pos.line, entry->pos.col);
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}
+		
 		printf(COLORYELLOW);
 		if (type == T_INT)
 			printf(" ---> %d", entry->val.val.intval);
@@ -80,6 +81,7 @@ public void print_symtab()
 		else if (type == T_DOUBLE || type == T_FLOAT)
 			printf(" ---> %f", entry->val.val.realval);
 		printf(COLORDEFAULT);
+
 		if (entry->entry_type.is_const) {
 			printf(" CONST");
 		}

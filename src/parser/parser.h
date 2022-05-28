@@ -22,7 +22,7 @@ public struct ASTnode *compile(struct lexer *);
 /*
  *	@brief : checks current token to determine what to do now
  */
-private void statements();
+private struct ASTnode *statements();
 
 /*
  *	@brief : Parse Declare variable statements
@@ -53,5 +53,7 @@ private struct ASTnode *primary_factor(int, struct type *);
  *	@brief : parse binary expression by pratt parsing algorithm
  */
 private struct ASTnode *parse_binary_expression(int, struct type *);
+
+private struct ASTnode *parse_if_statement();
 
 #endif
