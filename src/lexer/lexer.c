@@ -627,12 +627,16 @@ add_again:
 				working_lexer->tok.val.type = working_lexer->tok.type;
 				if (working_lexer->tok.type == T_DOUBLELIT) {
 					working_lexer->tok.val.doubleval = res;
+					working_lexer->tok.val.type = VALUE_DOUBLE;
 				} else if (working_lexer->tok.type == T_FLOATLIT) {
 					working_lexer->tok.val.floatval = (float) res;
+					working_lexer->tok.val.type = VALUE_FLOAT;
 				} else if (working_lexer->tok.type == T_LONGLIT) {
 					working_lexer->tok.val.longval = (long) res;
+					working_lexer->tok.val.type = VALUE_LONG;
 				} else {
 					working_lexer->tok.val.intval = (int) res;
+					working_lexer->tok.val.type = VALUE_INT;
 				}
 				break;
 			}

@@ -194,7 +194,7 @@ private ASTnode *parse_assign_variable()
 	/* create AST leaf for our value
 	 */
 	ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, current_token.pos);
-	/* Final tree
+	/* Build Final tree
 	 */
 	ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, left, rigth, current_token.pos);
 
