@@ -137,7 +137,7 @@ decl_again:
 	 *
 	 *	here your_age should be 0 , but it will be 18 , so we have to reset the value
 	 */
-	val.val.intval = 0;
+	val.intval = 0;
 	/*
 	 * check if current token is assign token or no 
 	 * if it is , so we gonna parse right value
@@ -145,7 +145,7 @@ decl_again:
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
-		val.val_type.type = tp.type;
+		val.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
 	}
 	/* Add parsed variable to global symbol table
@@ -191,7 +191,6 @@ private struct ASTnode *parse_assign_variable()
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
 	value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
-	//val.val_type.type = entry->entry_type.type;
 
 	/* create AST leaf for our value
 	 */
@@ -237,18 +236,20 @@ private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 			break;
 
 		case T_CHAR :
-			res = parse_char_literal();
+			if (info.is_pointer)
+				res = parse_str_literal();
 			break;
 
 	}
 	return res;
 }
 
-// TODO
-private struct ASTnode *parse_char_literal()
+private struct ASTnode *parse_str_literal()
 {
+	struct type tp = STR_TYPE();
+	struct ASTnode *n = create_ast_leaf(current_token.buffer, A_STR, current_token.val, &tp, current_token.pos);
 	next_token();
-	return NULL;
+	return n;
 }
 
 /*
@@ -265,19 +266,14 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 		show_lexer_error("Value And Type Are Not Match");
 		panic(NULL);
 	}
-	struct ASTnode *n;
-	
-	/* Set given type (tp) for current token, so we can detect right type when we want to to
-	 * use set_val_by_type() function, means when we want to set value for ast node
-	 */
-	//struct type *token_tp = &current_token.val.val_type;
-	//type_copy(tp, token_tp);
 
+	struct ASTnode *n;
 	switch (current_token.type) {
 
 		case T_INTLIT :
 		case T_LONGLIT :
 		case T_REALLIT :
+		case T_STRLIT :
 			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
 			next_token();
 			return n;

@@ -16,6 +16,7 @@ typedef enum {
 	A_ADD, A_MINUS,
 	A_MULTIPLY, A_DIVIDE,
 	A_CONST,
+	A_STR,
 
 	// comparison
 	A_LOWER, A_GREATER,
@@ -32,6 +33,7 @@ private char *ASTnode_type_str[] = {
 	"A_ADD", "A_MINUS",
 	"A_MULTIPLY", "A_DIVIDE",
 	"A_CONST",
+	"A_STR",
 
 	// comparison
 	"A_LOWER", "A_GREATER",
@@ -66,6 +68,11 @@ public struct ASTnode *create_ast_node(char *, ASTnode_type, value, struct type 
  *	like in function or in list of function arguments
  */
 public struct ASTnode *create_ast_leaf(char *, ASTnode_type, value, struct type *, struct position);
+
+/*
+ *	@brief : free ast node (given node with it childrens)
+ */
+public void ast_free(struct ASTnode *);
 
 /*
  *	@brief : Convert gien type to ast node type

@@ -40,9 +40,9 @@ private struct ASTnode *parse_assign_variable();
 private struct ASTnode *get_rvalue_for_type(token_type, struct type);
 
 /*
- *	@brief : return AST of a char expression
+ *	@brief : return AST of a str expression
  */
-private struct ASTnode *parse_char_literal();
+private struct ASTnode *parse_str_literal();
 
 /*
  *	@breif : return primay factor as a ASTnode tree

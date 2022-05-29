@@ -66,22 +66,22 @@ public struct symtab_entry *symtab_get_by_name(char *name, bool show_error)
 public void print_symtab()
 {
 	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
+
 		int type = symbol_entry_type(entry);
-		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_token_str(type), COLORDEFAULT, 
-				entry->pos.line, entry->pos.col);
+		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_token_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}
-		
 		printf(COLORYELLOW);
 		if (type == T_INT)
-			printf(" ---> %d", entry->val.val.intval);
+			printf(" ---> %d", VALUE_AS_INT(entry->val));
 		else if (type == T_LONG) 
-			printf(" ---> %ld", entry->val.val.longval);
+			printf(" ---> %ld", VALUE_AS_LONG(entry->val));
 		else if (type == T_DOUBLE || type == T_FLOAT)
-			printf(" ---> %f", entry->val.val.realval);
+			printf(" ---> %f", VALUE_AS_REAL(entry->val));
+		else if (type == T_STRLIT)
+			printf(" ---> %s", VALUE_AS_STRING(entry->val)->value);
 		printf(COLORDEFAULT);
-
 		if (entry->entry_type.is_const) {
 			printf(" CONST");
 		}

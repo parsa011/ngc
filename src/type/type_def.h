@@ -31,6 +31,9 @@ struct type {
 	dest->is_pointer = src->is_pointer; \
 }
 
+#define STR_TYPE() ((struct type) {.type = T_STRLIT})
+
 #define IS_CONST_TYPE(type) (type.is_const)
+
 
 #endif
