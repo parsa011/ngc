@@ -101,7 +101,8 @@ typedef enum {
 	T_LONG,
 
 	T_STRLIT,		 // "string"
-	T_REALLIT,		 // 1.13
+	T_DOUBLELIT,	 // 1.13
+	T_FLOATLIT,	     // 1.13
 	T_INTLIT,		 // 123
 	T_LONGLIT,		 // 123
 	T_OCTALLIT,		 // 012
@@ -207,7 +208,8 @@ private char *token_type_str[] = {
 	"T_LONG",
 
 	"T_STRLIT",		 // "string"
-	"T_REALLIT",	 // 1.23
+	"T_DOUBLELIT",	 // 1.23
+	"T_FLOATLIT",	 // 1.23
 	"T_INTLIT",		 // 123
 	"T_LONGLIT",	 // 123
 	"T_OCTALLIT",	 // 012
@@ -224,13 +226,13 @@ private char *token_type_str[] = {
 
 #define TOKEN_BUF_SIZE 64 
 
-struct token {
+typedef struct token_t {
 	token_type type;
 	struct position pos;
 	char buffer[TOKEN_BUF_SIZE];
 	int bufp;
 	value val;
-};
+} token;
 
 /*
  *	@brief : return Token string from token_type_str array , panic if token id was not valid
@@ -241,17 +243,17 @@ public char *get_token_str(int);
  *	@brief : create and return new token
  *	> dont forget to make token free after use :)
  */
-public struct token *token_init(token_type type);
+public token *token_init(token_type type);
 
 /*
  *	@brief : make a duplicate of given token
  */
-public struct token *token_duplicate(struct token *);
+public token *token_duplicate(token *);
 
 /*
  *	@brief : free given token
  */
-public void token_free(struct token *);
+public void token_free(token *);
 
 /*
  *	@brief : return precedenf of given token type
@@ -266,7 +268,7 @@ public token_type guess_text_type(char *);
 /*
  *	@brief : print token with data and ...
  */
-public void print_token(struct token *);
+public void print_token(token *);
 
 /*
  *	@brief : return precedence of given token type, (token should be an operator)

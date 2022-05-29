@@ -9,28 +9,27 @@
 #include "ast.h"
 #include <string.h>
 
-public struct ASTnode *create_ast_node(char *title, ASTnode_type type, value val, struct type *val_type, struct ASTnode *left, 
-		struct ASTnode *right, struct position pos)
+public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTnode *left, ASTnode *right, struct position pos)
 {
-	struct ASTnode *n = ngc_malloc(sizeof(struct ASTnode));
+	ASTnode *n = ngc_malloc(sizeof(ASTnode));
 	n->title = strdup(title);
 	n->type = type;
 	n->left = left;
 	n->right = right;
 	pos_copy(pos, n->pos);
-	struct type *entry_val_type = &n->node_val_type;
-	type_copy(val_type, entry_val_type);
+	//type *entry_node_type = &n->node_type_type;
+	//type_copy(node_type, entry_node_type);
 	set_val_by_type(&n->val, &val, T_EQUAL);
 	return n;
 }
 
-public struct ASTnode *create_ast_leaf(char *title, ASTnode_type type, value val, struct type *val_type, struct position pos)
+public ASTnode *create_ast_leaf(char *title, ASTnode_type type, value val, struct position pos)
 {
-	return create_ast_node(title, type, val, val_type, NULL, NULL, pos);
+	return create_ast_node(title, type, val, NULL, NULL, pos);
 }
 
 // TODO
-public void ast_free(struct ASTnode *n)
+public void ast_free(ASTnode *n)
 {
 
 }
@@ -68,27 +67,31 @@ public char *get_nodetype_str(ASTnode_type type)
 	return ASTnode_type_str[type];
 }
 
-public value calculate_tree(struct ASTnode *n, int type)
+public value calculate_tree(ASTnode *n, value_type type)
 {
 	value val;
 	//printf("type is : %s\n", get_token_str(type));
-	if (type == T_INT) {
+	if (type == VALUE_INT) {
 		int res = (int) calculate_binary_tree(n, type);
-		val.type = T_INTLIT;
+		val.type = VALUE_INT;
 		val.intval = res;
-	} else if (type == T_LONG) {
+	} else if (type == VALUE_LONG) {
 		long res = (long) calculate_binary_tree(n, type);
-		val.type = T_LONGLIT;
+		val.type = VALUE_LONG;
 		val.longval = res;
-	} else if (type == T_FLOAT || type == T_DOUBLE) {
+	} else if (type == VALUE_DOUBLE) {
 		double res = calculate_binary_tree(n, type);
-		val.type = T_REALLIT;
-		val.realval = res;
+		val.type = VALUE_DOUBLE;
+		val.doubleval = res;
+	} else if (type == VALUE_FLOAT) {
+		double res = calculate_binary_tree(n, type);
+		val.type = VALUE_FLOAT;
+		val.floatval = (float) res;
 	}
 	return val;
 }
 
-public double calculate_binary_tree(struct ASTnode *n, int type)
+public double calculate_binary_tree(ASTnode *n, value_type type)
 {
 	double left, right;
 	if (n->left)
@@ -115,25 +118,27 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 		case A_CONST :
 			{
 				int val_type = n->val.type;
-				if (type == T_INT) {
+				if (type == VALUE_INT) {
 					return VALUE_AS_INT(n->val);
 				}
-				else if (type == T_LONG) {
-					if (val_type == T_INTLIT) 
+				else if (type == VALUE_LONG) {
+					if (val_type == VALUE_INT) 
 						return VALUE_AS_INT(n->val);
 					return VALUE_AS_LONG(n->val);
 				}
-				else if (type == T_DOUBLE) {
-					if (val_type == T_INTLIT) 
+				else if (type == VALUE_DOUBLE) {
+					if (val_type == VALUE_INT) 
 						return VALUE_AS_INT(n->val);
-					else if (val_type == T_LONGLIT)
+					else if (val_type == VALUE_LONG)
 						return (double) VALUE_AS_LONG(n->val);
-					return VALUE_AS_REAL(n->val);
+					else if (val_type == VALUE_FLOAT)
+						return VALUE_AS_FLOAT(n->val);
+					return VALUE_AS_DOUBLE(n->val);
 				}
-				else if (type == T_FLOAT) {
-					if (val_type == T_INTLIT) 
+				else if (type == VALUE_FLOAT) {
+					if (val_type == VALUE_INT) 
 						return VALUE_AS_INT(n->val);
-					return VALUE_AS_REAL(n->val);
+					return VALUE_AS_FLOAT(n->val);
 				}
 			}
 	}
@@ -141,7 +146,7 @@ public double calculate_binary_tree(struct ASTnode *n, int type)
 	return -1;
 }
 
-public void print_ast(struct ASTnode *n, int depth)
+public void print_ast(ASTnode *n, int depth)
 {
 	if (!n)
 		return;
@@ -154,12 +159,12 @@ public void print_ast(struct ASTnode *n, int depth)
 		printf(" : ");
 		int val_type = n->val.type;
 
-		if (val_type == T_INT)
+		if (val_type == VALUE_INT)
 			printf("%d", VALUE_AS_INT(n->val));
-		else if (val_type == T_LONG)
+		else if (val_type == VALUE_LONG)
 			printf("%ld", VALUE_AS_LONG(n->val));
-		else if (val_type == T_FLOAT || val_type == T_DOUBLE)
-			printf("%f", VALUE_AS_REAL(n->val));
+		else if (val_type == VALUE_FLOAT || val_type == VALUE_LONG)
+			printf("%f", val_type == VALUE_DOUBLE ? VALUE_AS_DOUBLE(n->val) : VALUE_AS_FLOAT(n->val));
 
 	} else if (n->type == A_STR)
 		printf("%s", VALUE_AS_STRING(n->val)->value);

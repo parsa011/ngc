@@ -18,12 +18,12 @@
  * 	and ...
  */
 typedef enum value_type {
-	TYPE_INT,
-	TYPE_LONG,
-	TYPE_DOUBLE,
-	TYPE_FLOAT,
-	TYPE_CHAR,
-	TYPE_STRING
+	VALUE_INT,
+	VALUE_LONG,
+	VALUE_DOUBLE,
+	VALUE_FLOAT,
+	VALUE_STRING,
+	VALUE_CHAR
 } value_type;
 
 /*
@@ -34,7 +34,8 @@ typedef struct value_t {
 	value_type type;
 	union {
 		string *str;
-		double realval;
+		double doubleval;
+		float floatval;
 		int intval;
 		long longval;
 		char charval;
@@ -43,9 +44,10 @@ typedef struct value_t {
 
 #define VALUE_AS_INT(val)    (val.intval)
 #define VALUE_AS_LONG(val)   (val.longval)
-#define VALUE_AS_CHAR(val)   (val.charval)
-#define VALUE_AS_REAL(val)   (val.realval)
+#define VALUE_AS_DOUBLE(val) (val.doubleval)
+#define VALUE_AS_FLOAT(val)  (val.floatval)
 #define VALUE_AS_STRING(val) (val.str)
+#define VALUE_AS_CHAR(val)   (val.str)        /* this is just for code readability */
 
 #define INT_VAL(value)  ((value) {.intval = value})
 #define LONG_VAL(value) ((value) {.longval = value})

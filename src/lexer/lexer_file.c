@@ -11,7 +11,7 @@
 #include "lexer_file.h"
 #include <assert.h>
 
-public void lexer_open_file(struct lexer *l, char *file_name)
+public void lexer_open_file(lexer *l, char *file_name)
 {
 	l->fp = fopen(file_name, "r");
 	if (!l->fp) {
@@ -21,20 +21,20 @@ public void lexer_open_file(struct lexer *l, char *file_name)
 	l->file_name = basename(file_name);
 }
 
-public void lexer_close_file(struct lexer *l)
+public void lexer_close_file(lexer *l)
 {
 	assert(l->fp);
 	fclose(l->fp);
 	l->file_name = 0;
 }
 
-public char lexer_file_read_char(struct lexer *l)
+public char lexer_file_read_char(lexer *l)
 {
 	l->char_offset++;
 	return fgetc(l->fp);
 }
 
-public bool lexer_file_prevchar(struct lexer *l)
+public bool lexer_file_prevchar(lexer *l)
 {
 	if (l->char_offset != 0) {
 		fseek(l->fp, -1, SEEK_CUR);

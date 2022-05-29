@@ -39,13 +39,13 @@ public void symtab_add(struct symtab_entry *entry)
 /*
  *	@brief : Create a symbol table entry with given informations
  */
-public void symtab_create_entry(char *text, value val, struct type *tp, struct position pos)
+public void symtab_create_entry(char *text, value val, type *tp, struct position pos)
 {
 	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
 	entry->name = strdup(text);
 	set_val_by_type(&entry->val, &val, T_EQUAL);
 	pos_copy(pos, entry->pos);
-	struct type *entry_type = &entry->entry_type;
+	type *entry_type = &entry->entry_type;
 	type_copy(tp, entry_type);
 	symtab_add(entry);
 }
@@ -73,13 +73,15 @@ public void print_symtab()
 			printf(" (pointer)");
 		}
 		printf(COLORYELLOW);
-		if (type == T_INT)
+		if (type == TYPE_INT)
 			printf(" ---> %d", VALUE_AS_INT(entry->val));
-		else if (type == T_LONG) 
+		else if (type == TYPE_LONG) 
 			printf(" ---> %ld", VALUE_AS_LONG(entry->val));
-		else if (type == T_DOUBLE || type == T_FLOAT)
-			printf(" ---> %f", VALUE_AS_REAL(entry->val));
-		else if (type == T_STRLIT)
+		else if (type == TYPE_FLOAT)
+			printf(" ---> %f", VALUE_AS_FLOAT(entry->val));
+		else if (type == TYPE_DOUBLE)
+			printf(" ---> %lf", VALUE_AS_DOUBLE(entry->val));
+		else if (type == TYPE_STRING)
 			printf(" ---> %s", VALUE_AS_STRING(entry->val)->value);
 		printf(COLORDEFAULT);
 		if (entry->entry_type.is_const) {

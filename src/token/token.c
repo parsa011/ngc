@@ -16,16 +16,16 @@ public char *get_token_str(int id)
 	return token_type_str[id];
 }
 
-public struct token *token_init(token_type type)
+public token *token_init(token_type type)
 {
-	struct token *t = ngc_malloc(sizeof(struct token));
+	token *t = ngc_malloc(sizeof(token));
 	t->type = type;
 	return t;
 }
 
-public struct token *token_duplicate(struct token *n)
+public token *token_duplicate(token *n)
 {
-	struct token *t = ngc_malloc(sizeof(struct token));
+	token *t = ngc_malloc(sizeof(token));
 	t->type = n->type;
 	t->bufp = n->bufp;
 	memcpy(t->buffer, n->buffer, n->bufp);
@@ -33,7 +33,7 @@ public struct token *token_duplicate(struct token *n)
 	return t;
 }
 
-public void token_free(struct token *p)
+public void token_free(token *p)
 {
 	ngc_free(p);
 }
@@ -155,7 +155,7 @@ public token_type guess_text_type(char *text)
 	return T_IDENT;
 }
 
-public void print_token(struct token *t)
+public void print_token(token *t)
 {
 	printf("%s --> %s%s%s (%d)", get_token_str(t->type), COLORCYAN, t->buffer, COLORDEFAULT, t->bufp);
 	switch (t->type) {
@@ -173,8 +173,9 @@ public void print_token(struct token *t)
 			printf(" --> Value : %s%s%s", COLORUNDLINE, VALUE_AS_STRING(t->val)->value, COLORDEFAULT);
 			break;
 
-		case T_REALLIT :
-			printf(" --> Value : %s%f%s", COLORUNDLINE, VALUE_AS_REAL(t->val), COLORDEFAULT);
+		case T_DOUBLELIT :
+		case T_FLOATLIT :
+			printf(" --> Value : %s%f%s", COLORUNDLINE, t->type == T_DOUBLELIT ? VALUE_AS_DOUBLE(t->val) : VALUE_AS_FLOAT(t->val), COLORDEFAULT);
 			break;
 
 	}

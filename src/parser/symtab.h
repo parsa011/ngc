@@ -35,7 +35,7 @@ struct symtab_entry {
 	struct symtab_entry *next;
 	char *name;
 	value val;
-	struct type entry_type;
+	type entry_type;
 	struct position pos;
 };
 #define is_pointer(e) (e->entry_type.is_pointer)
@@ -62,7 +62,7 @@ public void symtab_add(struct symtab_entry *);
 /*
  *	@brief : Create New entry for symbold table with value type
  */
-public void symtab_create_entry(char *, value, struct type *, struct position);
+public void symtab_create_entry(char *, value, type *, struct position);
 
 /*
  *	@brief : return entry by its name

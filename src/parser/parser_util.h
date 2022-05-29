@@ -17,7 +17,7 @@
  *	this is like our lexer, it will point to our working lexer , so we can have access
  *	to lexer taht we are working with , in all parsing function
  */
-public struct lexer *current_lexer;
+public lexer *current_lexer;
 
 #define next_token() (lex())
 #define current_token (current_lexer->tok)
@@ -26,7 +26,7 @@ public struct lexer *current_lexer;
  *	@brief : set working lexer to given lexer, and also activate given lexer in lexer phase
  *	by calling lexer_set_working_lexer()
  */
-public void select_lexer(struct lexer *);
+public void select_lexer(lexer *);
 
 /*
  *	@brief : check if current token type is equals to given type , if is's not , will print

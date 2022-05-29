@@ -16,7 +16,9 @@
 
 #define LEXER_BUFFER_LENGTH 256
 
-struct lexer {
+typedef struct lexer_t lexer;
+
+struct lexer_t {
 	FILE *fp;
 	char *file_name;
 	char current_char;
@@ -31,11 +33,11 @@ struct lexer {
 	struct position mark;
 	int mark_offset, prev_offset;
 
-	struct token tok;
+	token tok;
 
 	/* I/O functions */
-	void (*open_file)(struct lexer *, char *);
-	void (*close_file)(struct lexer *);
+	void (*open_file)(lexer *, char *);
+	void (*close_file)(lexer *);
 };
 
 #define get_lexer_put_back(l) (l->put_back_char)
@@ -44,7 +46,7 @@ struct lexer {
 /*
  *	pointer to lexer that we are working with
  */
-private struct lexer *working_lexer; 
+private lexer *working_lexer; 
 
 /*
  *	@brief : test if given char is valid in a hexadecimal sentence
@@ -69,23 +71,23 @@ private void reset_token_text();
 /*
  *	@brief : Init new lexer, open file by give name and return pointer to lexer
  */
-public struct lexer *lexer_init();
+public lexer *lexer_init();
 
 /*
  *	@brief : close lexer file and make lexer memory free , also check if given lexer is working_lexer
  *	if it's , it will change working_lexer (for now it will make if free)
  */
-public void lexer_destory(struct lexer *);
+public void lexer_destory(lexer *);
 
 /*
  *	@brief : set working_lexer variable to given lexer pointer
  */
-public void lexer_set_working_lexer(struct lexer *);
+public void lexer_set_working_lexer(lexer *);
 
 /*
  *	@brief : test if give lexer is working_lexer
  */
-public bool is_current_lexer(struct lexer *l);
+public bool is_current_lexer(lexer *l);
 
 /*
  *	@brief : print full line and show current char as a bad token
@@ -95,12 +97,12 @@ public void show_lexer_error(char *msg);
 /*
  *	@brief : return current position of given lexer as : file_name:line:col format
  */
-public void get_lexer_pos_string(struct lexer *, char *);
+public void get_lexer_pos_string(lexer *, char *);
 
 /*
  *	@brief : Clsoe given lexer
  */
-public void lexer_close(struct lexer *);
+public void lexer_close(lexer *);
 
 /*
  *	@brief : Return new char from given file, but If There isn't Anything Saved Char

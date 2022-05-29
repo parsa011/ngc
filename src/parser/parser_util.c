@@ -8,9 +8,9 @@
 
 #include "parser_util.h"
 
-struct lexer *current_lexer;
+lexer *current_lexer;
 
-public void select_lexer(struct lexer *l)
+public void select_lexer(lexer *l)
 {
 	current_lexer = l;
 	lexer_set_working_lexer(l);

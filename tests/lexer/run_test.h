@@ -4,5 +4,5 @@
 
 #define array_length(a) sizeof(a)/ sizeof(a[0])
 
-void lexer_expect(struct lexer *, struct token[], int, char *, bool);
+void lexer_expect(lexer *, token[], int, char *, bool);
 

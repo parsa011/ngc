@@ -4,8 +4,8 @@
 
 int main()
 {
-	struct lexer *l = lexer_init();
-	struct token toks[] = {
+	lexer *l = lexer_init();
+	token toks[] = {
 		{.type = T_OP_P},
 		{.type = T_CL_P},
 		{.type = T_CL_P},

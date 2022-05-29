@@ -9,6 +9,7 @@
 #include "lexer.h"
 #include "lexer_file.h"
 #include <ctype.h>
+#include <float.h>
 #include <limits.h>
 
 private const char white_spaces[] = {
@@ -36,11 +37,11 @@ private bool is_hex_digit(char c)
 	return false;
 }
 
-private struct lexer *working_lexer;
+private lexer *working_lexer;
 
-public struct lexer *lexer_init()
+public lexer *lexer_init()
 {
-	struct lexer *l = ngc_malloc(sizeof(struct lexer));
+	lexer *l = ngc_malloc(sizeof(lexer));
 	l->open_file = &lexer_open_file;
 	l->close_file = &lexer_close_file;
 	l->put_back_char = 0;
@@ -50,7 +51,7 @@ public struct lexer *lexer_init()
 	return l;
 }
 
-public void lexer_destory(struct lexer *l)
+public void lexer_destory(lexer *l)
 {
 	l->close_file(l);
 	if (working_lexer == l)
@@ -58,12 +59,12 @@ public void lexer_destory(struct lexer *l)
 	ngc_free(l);
 }
 
-public void lexer_set_working_lexer(struct lexer *l)
+public void lexer_set_working_lexer(lexer *l)
 {
 	working_lexer = l;
 }
 
-public bool is_current_lexer(struct lexer *l)
+public bool is_current_lexer(lexer *l)
 {
 	return working_lexer == l;
 }
@@ -174,7 +175,7 @@ public void show_lexer_error(char *msg)
 	printf("^\n");
 }
 
-public void get_lexer_pos_string(struct lexer *l, char *buf)
+public void get_lexer_pos_string(lexer *l, char *buf)
 {
 	snprintf(buf, 64, "%s:%d:%d", l->file_name, l->pos.line, l->pos.col);
 }
@@ -259,8 +260,12 @@ private double scan_number(char c, token_type *t)
 	}
 	put_back(c);
 	if (in_floating_point) {
-		*t = T_REALLIT;
-		return res + floating_point / pow;
+		double float_res = res + floating_point / pow;
+		if (float_res > FLT_MAX)
+			*t = T_DOUBLELIT;
+		else
+			*t = T_FLOATLIT;
+		return float_res;
 	}
 	if (res > INT_MAX) {
 		*t = T_LONGLIT;
@@ -620,8 +625,10 @@ add_again:
 			if (isdigit(c)) {
 				double res = scan_number(c, &working_lexer->tok.type);
 				working_lexer->tok.val.type = working_lexer->tok.type;
-				if (working_lexer->tok.type == T_REALLIT) {
-					working_lexer->tok.val.realval = res;
+				if (working_lexer->tok.type == T_DOUBLELIT) {
+					working_lexer->tok.val.doubleval = res;
+				} else if (working_lexer->tok.type == T_FLOATLIT) {
+					working_lexer->tok.val.floatval = (float) res;
 				} else if (working_lexer->tok.type == T_LONGLIT) {
 					working_lexer->tok.val.longval = (long) res;
 				} else {

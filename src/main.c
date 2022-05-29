@@ -42,7 +42,7 @@ public void print_prompt()
 
 int main(int argc, char *argv[])
 {
-	struct lexer *l = lexer_init();
+	lexer *l = lexer_init();
 	if (argc == 1) {
 		interp_mode = true;
 		l->fp = stdin;
@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
 	}
 #else
 	symtab_init();
-	struct ASTnode *n = compile(l);
+	ASTnode *n = compile(l);
 	print_symtab();
 	l->close_file(l);
 #endif
-	ast_free(n);
+	//ast_free(n);
 	ngc_free(l);
 	return 0;
 }

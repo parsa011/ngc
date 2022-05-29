@@ -1,8 +1,7 @@
 #include "run_test.h"
 
-void lexer_expect(struct lexer *l, struct token toks[], int len, char *test_name, bool trace)
+void lexer_expect(lexer *l, token toks[], int len, char *test_name, bool trace)
 {
-	//int len = sizeof(struct token) / sizeof(toks[0]);
 	bool error = false;
 	for (int i = 0; i < len; i++) {
 		lex(l);

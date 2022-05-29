@@ -8,20 +8,20 @@
 
 #include "parser.h"
 
-public struct ASTnode *compile(struct lexer *l)
+public ASTnode *compile(lexer *l)
 {
 	select_lexer(l);
 	if (interp_mode) {
 		print_prompt();
 	}
 	next_token();
-	struct ASTnode *n =	statements(n);
+	ASTnode *n =	statements(n);
 	return n;
 }
 
-private struct ASTnode *statements(struct ASTnode *n)
+private ASTnode *statements(ASTnode *n)
 {
-    struct ASTnode *ast = NULL;
+    ASTnode *ast = NULL;
 	while (!is_eof()) {
 		switch (current_token.type) {
 
@@ -47,13 +47,13 @@ private struct ASTnode *statements(struct ASTnode *n)
 	return ast;
 }
 
-private struct ASTnode *declare_variable()
+private ASTnode *declare_variable()
 {
 	/* check for qualifier at first of declerations
 	 * we use of a temp 'type' struct to hold qualifiers like 'const' and  ...
 	 * then we copy it to the finall 'type'
 	 */
-	struct type qualifiers;
+	type qualifiers;
 	qualifiers.is_const = qualifiers.is_unsigned = false;
 	while (is_qualifier(false)) {
 		if (current_token.type == T_CONST) {
@@ -90,8 +90,8 @@ private struct ASTnode *declare_variable()
 	 *
 	 *	our type is constant integer
 	 */
-	struct type tp;
-	type_copy(((struct type *)&qualifiers), ((struct type *)&tp));
+	type tp;
+	type_copy(((type *)&qualifiers), ((type *)&tp));
 	/* set type for 'type' here , because if we set that before type_copy we will lose our type-specifier */
 	tp.type = tokentype;
 
@@ -144,7 +144,7 @@ decl_again:
 	 */
 	if (current_token.type == T_EQUAL) {
 		next_token();
-		struct ASTnode *rval_tree = get_rvalue_for_type(tokentype, tp);
+		ASTnode *rval_tree = get_rvalue_for_type(tp);
 		val.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
 	}
@@ -171,7 +171,7 @@ decl_again:
  *	detect symbol , parse it value then assign value to it by considering to assign token
  *	assign token can be something like =, += and ...
  */
-private struct ASTnode *parse_assign_variable()
+private ASTnode *parse_assign_variable()
 {
 	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 	/* Show error if given entry is a Const variable
@@ -180,7 +180,7 @@ private struct ASTnode *parse_assign_variable()
 		show_lexer_error("Can't Change Const Value");
 		panic(NULL);
 	}
-	struct ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, &entry->entry_type, current_token.pos);
+	ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, current_token.pos);
 	match(T_IDENT, "Identifier Expected");
 
 	/* we can have some different type of assign token like =, += and ...
@@ -194,10 +194,10 @@ private struct ASTnode *parse_assign_variable()
 
 	/* create AST leaf for our value
 	 */
-	struct ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, &entry->entry_type, current_token.pos);
+	ASTnode *rigth = create_ast_leaf("RVALUE", A_CONST, val, current_token.pos);
 	/* Final tree
 	 */
-	struct ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, &entry->entry_type, left, rigth, current_token.pos);
+	ASTnode *tree = create_ast_node("ASSIGN", A_ASSIGN, val, left, rigth, current_token.pos);
 
 	// TODO : check assign operator type , like -= , += and ...
 	set_val_by_type(&entry->val, &val, operation_type);
@@ -219,24 +219,20 @@ private struct ASTnode *parse_assign_variable()
  *	
  * 	and then it will return an AST
  */
-private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
+private ASTnode *get_rvalue_for_type(type tp)
 {
-	struct ASTnode *res = NULL;
-	/*	TODO : check for pointers
-	 */
-	if (info.is_pointer) {
-	}
-	switch (type) {
+	ASTnode *res = NULL;
+	switch (tp.type) {
 
-		case T_INT :
-		case T_LONG :
-		case T_DOUBLE :
-		case T_FLOAT :
-			res = parse_binary_expression(0, &info);
+		case TYPE_INT :
+		case TYPE_LONG:
+		case TYPE_DOUBLE:
+		case TYPE_FLOAT:
+			res = parse_binary_expression(0, &tp);
 			break;
 
 		case T_CHAR :
-			if (info.is_pointer)
+			if (tp.is_pointer)
 				res = parse_str_literal();
 			break;
 
@@ -244,10 +240,9 @@ private struct ASTnode *get_rvalue_for_type(token_type type, struct type info)
 	return res;
 }
 
-private struct ASTnode *parse_str_literal()
+private ASTnode *parse_str_literal()
 {
-	struct type tp = STR_TYPE();
-	struct ASTnode *n = create_ast_leaf(current_token.buffer, A_STR, current_token.val, &tp, current_token.pos);
+	ASTnode *n = create_ast_leaf(current_token.buffer, A_STR, current_token.val, current_token.pos);
 	next_token();
 	return n;
 }
@@ -257,7 +252,7 @@ private struct ASTnode *parse_str_literal()
  * for example if given type kind is string literal , so current token should be
  * a strin literal , no numerical value
  */
-private struct ASTnode *primary_factor(int ptp, struct type *tp)
+private ASTnode *primary_factor(int ptp, type *tp)
 {
 	/* Do not check types if current token is open parenthesis
 	 */
@@ -267,14 +262,15 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 		panic(NULL);
 	}
 
-	struct ASTnode *n;
+	ASTnode *n;
 	switch (current_token.type) {
 
 		case T_INTLIT :
 		case T_LONGLIT :
-		case T_REALLIT :
+		case T_DOUBLELIT :
+		case T_FLOATLIT :
 		case T_STRLIT :
-			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, tp, current_token.pos);
+			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, current_token.pos);
 			next_token();
 			return n;
 
@@ -288,7 +284,7 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 			{
 				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, tp, current_token.pos);
+				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, current_token.pos);
 				return n;
 			}
 
@@ -301,9 +297,9 @@ private struct ASTnode *primary_factor(int ptp, struct type *tp)
 	return NULL;
 }
 
-private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
+private ASTnode *parse_binary_expression(int ptp, type *tp)
 {
-	struct ASTnode *right, *left;
+	ASTnode *right, *left;
 	/* get numerical part of expression
 	 * here, our token should be a valid numerical token, it can a be a symbol that contains a numeric value
 	 * or it can be constant
@@ -314,7 +310,7 @@ private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 	 */
 	if (is_endof_binexpr())
 		goto return_ast;
-	struct token *token_copy;
+	token *token_copy;
 	while (token_precedence(tokentype) > ptp) {
 		/* take a copy of current token , we need position and buffer of it for making ASTnode
 		 */
@@ -326,7 +322,7 @@ private struct ASTnode *parse_binary_expression(int ptp, struct type *tp)
 		right = parse_binary_expression(token_precedence(tokentype), tp);
 		/* join past trees with new tree from 'right'
 		 */
-		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, tp, left, right, token_copy->pos);
+		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, left, right, token_copy->pos);
 		tokentype = current_token.type;
 		/* check if we can get out of this loop, chekcs if current token is like semi or comma or ...
 		 */
@@ -337,8 +333,8 @@ return_ast:
 	return left;
 }
 
-private struct ASTnode *parse_if_statement()
+private ASTnode *parse_if_statement()
 {
-	struct ASTnode *condition_tree, *if_tree, *else_tree;
+	ASTnode *condition_tree, *if_tree, *else_tree;
 	return NULL;
 }

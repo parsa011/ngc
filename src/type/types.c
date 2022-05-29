@@ -23,31 +23,35 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 	dest->type = src->type;
 
 	switch (src->type) {
-		case T_INTLIT :
+		case VALUE_INT :
 			SET_VAL(dest->intval, src->intval, operation_type);
 			break;
 
-		case T_LONGLIT :
+		case VALUE_LONG :
 			SET_VAL(dest->longval, src->longval, operation_type);
 			break;
-
-		case T_REALLIT :
-			SET_VAL(dest->realval, src->realval, operation_type);
+		
+		case VALUE_DOUBLE :
+			SET_VAL(dest->doubleval, src->doubleval, operation_type);
 			break;
 
-		case T_STRLIT :
-		case T_CHAR :
+		case VALUE_FLOAT :
+			SET_VAL(dest->floatval, src->floatval, operation_type);
+			break;
+
+		case VALUE_STRING :
+		case VALUE_CHAR:
 			dest->str = src->str;
 			break;
 	}
 #undef SET_VAL
 }
 
-public bool check_literal_and_type(struct token *tok, struct type *tp)
+public bool check_literal_and_type(token *tok, type *tp)
 {
 	switch (tp->type) {
-		case T_INT :
-		case T_LONG :
+		case TYPE_INT :
+		case TYPE_LONG :
 			switch (tok->type) {
 
 				case T_INTLIT :
@@ -58,18 +62,17 @@ public bool check_literal_and_type(struct token *tok, struct type *tp)
 				case T_IDENT :
 					{
 						struct symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
-						if (symbol_entry_type(entry) == T_INT || symbol_entry_type(entry) == T_CHAR)
+						if (symbol_entry_type(entry) == TYPE_INT || symbol_entry_type(entry) == TYPE_CHAR)
 							return true;
 					}
 			}
 			return false;
 
-		case T_CHAR :
-			if (tp->is_pointer && tok->type == T_STRLIT)
-				return true;
+		case TYPE_STRING:
+			return false;
 		
-		case T_FLOAT :
-		case T_DOUBLE :
-			return (tok->type == T_CHARLIT || tok->type == T_INTLIT || tok->type == T_REALLIT);
+		case TYPE_FLOAT :
+		case TYPE_DOUBLE :
+			return (tok->type == T_CHARLIT || tok->type == T_INTLIT || tok->type == T_DOUBLELIT || tok->type == T_FLOATLIT);
 	}
 }

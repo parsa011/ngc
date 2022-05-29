@@ -46,33 +46,34 @@ private char *ASTnode_type_str[] = {
 	"A_IDENT"
 }; 
 
-struct ASTnode {
+typedef struct ASTnode_t ASTnode;
+
+struct ASTnode_t {
 	char *title;
 	ASTnode_type type;
-	struct ASTnode *left;
-	struct ASTnode *right;
+	ASTnode *left;
+	ASTnode *right;
 	struct position pos;
 	value val;
-	struct type node_val_type;
 };
 
 /*
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-public struct ASTnode *create_ast_node(char *, ASTnode_type, value, struct type *, struct ASTnode *, struct ASTnode *, struct position);
+public ASTnode *create_ast_node(char *, ASTnode_type, value, ASTnode *, ASTnode *, struct position);
 
 /*
  *	@brief : create a left for abstract syntax tree
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-public struct ASTnode *create_ast_leaf(char *, ASTnode_type, value, struct type *, struct position);
+public ASTnode *create_ast_leaf(char *, ASTnode_type, value, struct position);
 
 /*
  *	@brief : free ast node (given node with it childrens)
  */
-public void ast_free(struct ASTnode *);
+public void ast_free(ASTnode *);
 
 /*
  *	@brief : Convert gien type to ast node type
@@ -82,16 +83,16 @@ public ASTnode_type tokentype_to_nodetype(token_type);
 /*
  *	@brief : calculate tree by considering type
  */
-public value calculate_tree(struct ASTnode *, int);
+public value calculate_tree(ASTnode *, value_type);
 
 /*
  *	@brief : name of function is self-document bro XD
  */
-public double calculate_binary_tree(struct ASTnode *, int);
+public double calculate_binary_tree(ASTnode *, value_type);
 
 /*
  *	@brief : Print given ast into human readable format
  */
-public void print_ast(struct ASTnode *, int);
+public void print_ast(ASTnode *, int);
 
 #endif

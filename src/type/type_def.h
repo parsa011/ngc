@@ -10,18 +10,27 @@
 *	Contains our types definitions
 */
 
+typedef enum {
+	TYPE_INT,
+	TYPE_LONG,
+	TYPE_DOUBLE,
+	TYPE_FLOAT,
+	TYPE_STRING,
+	TYPE_CHAR
+} type_kind;
+
 /*
  *	basic struct of our types , it shows qualifiers and other things
  *	related to the type
  */
-struct type {
-	int type;
+typedef struct {
+	type_kind type;
 	bool is_unsigned;
 	bool is_const;
 	bool is_volatile;
 	bool is_restrict;
 	bool is_pointer;
-};
+} type;
 #define type_copy(src, dest) { \
 	dest->type = src->type; \
 	dest->is_unsigned = src->is_unsigned; \
@@ -31,7 +40,12 @@ struct type {
 	dest->is_pointer = src->is_pointer; \
 }
 
-#define STR_TYPE() ((struct type) {.type = T_STRLIT})
+#define INT_TYPE()    ((type) {.type = TYPE_INT})
+#define LONG_TYPE()   ((type) {.type = TYPE_LONG})
+#define DOUBLE_TYPE() ((type) {.type = TYPE_DOUBLE})
+#define FLOAT_TYPE()  ((type) {.type = TYPE_FLOAT})
+#define STRING_TYPE() ((type) {.type = TYPE_STRING})
+#define CHAR_TYPE()   ((type) {.type = TYPE_CHAR})
 
 #define IS_CONST_TYPE(type) (type.is_const)
 
