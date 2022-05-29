@@ -26,6 +26,20 @@ typedef enum value_type {
 	VALUE_CHAR
 } value_type;
 
+static const char *value_type_str[] = {
+	"VALUE_INT",
+	"VALUE_LONG",
+	"VALUE_DOUBLE",
+	"VALUE_FLOAT",
+	"VALUE_STRING",
+	"VALUE_CHAR"
+};
+
+static const char *get_valyetype_str(value_type tp)
+{
+	return value_type_str[tp];
+}
+
 /*
  *	value union is used for everwhere that need to store input data , such as tokens or abstract syntax tree and symbol table
  *	they can have different type of data, so they should be possible to store every kind of data.
