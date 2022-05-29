@@ -7,12 +7,10 @@ unsigned int unsigned_int = 234;
 int age = 10 * 12 + 12 - 12, k = 123 * 12, s, a = 12;
 int count = 2 + 2 * 2 + 2, n = 10;
 long very_long_variable = 124121321232331;
-char ch = '\n';
 double test2 = 1212.1 * 2.1;
 float test = 999.0; 
 //age = count + 10;
 count += 2 + 12;
-char *name = "parsa";
 
 /************************ statistics *************************
  * this is  a test comment

@@ -47,6 +47,22 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 #undef SET_VAL
 }
 
+public type_kind token_type_to_type_kind(token_type tp)
+{
+	switch (tp) {
+		case T_INT :
+			return TYPE_INT;
+		case T_LONG :
+			return TYPE_LONG;
+		case T_DOUBLE :
+			return TYPE_DOUBLE;
+		case T_FLOAT :
+			return TYPE_FLOAT;
+		case T_CHAR :
+			return TYPE_CHAR;
+	}
+}
+
 public bool check_literal_and_type(token *tok, type *tp)
 {
 	switch (tp->type) {
@@ -61,7 +77,7 @@ public bool check_literal_and_type(token *tok, type *tp)
 
 				case T_IDENT :
 					{
-						struct symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
+						symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
 						if (symbol_entry_type(entry) == TYPE_INT || symbol_entry_type(entry) == TYPE_CHAR)
 							return true;
 					}

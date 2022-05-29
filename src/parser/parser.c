@@ -15,7 +15,7 @@ public ASTnode *compile(lexer *l)
 		print_prompt();
 	}
 	next_token();
-	ASTnode *n =	statements(n);
+	ASTnode *n = statements(n);
 	return n;
 }
 
@@ -93,8 +93,7 @@ private ASTnode *declare_variable()
 	type tp;
 	type_copy(((type *)&qualifiers), ((type *)&tp));
 	/* set type for 'type' here , because if we set that before type_copy we will lose our type-specifier */
-	tp.type = tokentype;
-
+	tp.type = token_type_to_type_kind(tokentype);
 decl_again:
 
 	/* here we should check for star , if current token is an star so our type is a pointer to 
@@ -173,7 +172,7 @@ decl_again:
  */
 private ASTnode *parse_assign_variable()
 {
-	struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
+	symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 	/* Show error if given entry is a Const variable
 	 */
 	if (IS_CONST_TYPE(entry->entry_type)) {
@@ -282,7 +281,7 @@ private ASTnode *primary_factor(int ptp, type *tp)
 
 		case T_IDENT :
 			{
-				struct symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
+				symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 				next_token();
 				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, current_token.pos);
 				return n;

@@ -15,15 +15,18 @@
 #include "../lexer/lexer.h"
 #include "../type/types.h"
 
+typedef struct symbol_table_t symbol_table;
+typedef struct symtab_entry_t symtab_entry;
+
 /*
  *	main data structure for symbol table
  *	for now our symbol table is simple based on single linked list
  *	data structure 
  *	TODO : Impelement a hashtable for symbol table
  */
-struct symbol_table {
-	struct symtab_entry *entries;
-	struct symtab_entry *last;	/* we hold last entry because its gonna be so slow to get last entry each time that */
+struct symbol_table_t {
+	symtab_entry *entries;
+	symtab_entry *last;	/* we hold last entry because its gonna be so slow to get last entry each time that */
 	int buflen;
 };
 
@@ -31,8 +34,8 @@ struct symbol_table {
  *	entries for symbol table
  *	single-linked list
  */
-struct symtab_entry {
-	struct symtab_entry *next;
+struct symtab_entry_t {
+	symtab_entry *next;
 	char *name;
 	value val;
 	type entry_type;
@@ -45,7 +48,7 @@ struct symtab_entry {
 /*
  *	our global symbol table
  */
-public struct symbol_table *symtab;
+public symbol_table *symtab;
 
 /*
  *	@brief : Initialize our gloabal symbol table with default value of 
@@ -57,7 +60,7 @@ public void symtab_init();
  *	@brief : Add given entry to global symbol table , it will add to
  *	'next' of last entry, and if last is empty so it's gonna be first one
  */	
-public void symtab_add(struct symtab_entry *);
+public void symtab_add(symtab_entry *);
 
 /*
  *	@brief : Create New entry for symbold table with value type
@@ -67,7 +70,7 @@ public void symtab_create_entry(char *, value, type *, struct position);
 /*
  *	@brief : return entry by its name
  */
-public struct symtab_entry *symtab_get_by_name(char *, bool);
+public symtab_entry *symtab_get_by_name(char *, bool);
 
 /*
  *	@brief : print symbol table in human readable format (it will print 

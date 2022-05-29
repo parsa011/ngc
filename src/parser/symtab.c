@@ -8,11 +8,11 @@
 
 #include "symtab.h"
 
-struct symbol_table *symtab;
+symbol_table *symtab;
 
 public void symtab_init()
 {
-	symtab = ngc_malloc(sizeof(struct symbol_table));
+	symtab = ngc_malloc(sizeof(symbol_table));
 	symtab->buflen = 0;
 }
 
@@ -20,7 +20,7 @@ public void symtab_init()
  *	@brief : Append given entry to end of chain
  *	do panic when there is an entry with given entry name
  */
-public void symtab_add(struct symtab_entry *entry)
+public void symtab_add(symtab_entry *entry)
 {
 	assert(symtab);
 	if (symtab_get_by_name(entry->name, false)) {
@@ -41,7 +41,7 @@ public void symtab_add(struct symtab_entry *entry)
  */
 public void symtab_create_entry(char *text, value val, type *tp, struct position pos)
 {
-	struct symtab_entry *entry = ngc_malloc(sizeof(struct symtab_entry));
+	symtab_entry *entry = ngc_malloc(sizeof(symtab_entry));
 	entry->name = strdup(text);
 	set_val_by_type(&entry->val, &val, T_EQUAL);
 	pos_copy(pos, entry->pos);
@@ -50,9 +50,9 @@ public void symtab_create_entry(char *text, value val, type *tp, struct position
 	symtab_add(entry);
 }
 
-public struct symtab_entry *symtab_get_by_name(char *name, bool show_error)
+public symtab_entry *symtab_get_by_name(char *name, bool show_error)
 {
-	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next){
+	for (symtab_entry *entry = symtab->entries; entry; entry = entry->next){
 		if (STR_EQUAL(name, entry->name))
 			return entry;
 	}
@@ -65,10 +65,10 @@ public struct symtab_entry *symtab_get_by_name(char *name, bool show_error)
 
 public void print_symtab()
 {
-	for (struct symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
+	for (symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
 
 		int type = symbol_entry_type(entry);
-		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_token_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
+		printf("%s -> %s%d%s (%d:%d)", entry->name, COLORUNDLINE, type, COLORDEFAULT, entry->pos.line, entry->pos.col);
 		if (is_pointer(entry)) {
 			printf(" (pointer)");
 		}

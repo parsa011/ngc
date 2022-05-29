@@ -18,6 +18,11 @@
 public void set_val_by_type(value *, value *, token_type);
 
 /*
+ *	@brief : comment for this ? ;/
+ */
+public type_kind token_type_to_type_kind(token_type tp);
+
+/*
  *	@brief : checks if given token type (given token type should be a lietral token_type) is Equivalent to type
  *	for example for a double type , we can have real lietrals or for a int we can have char or int and ...
  */
