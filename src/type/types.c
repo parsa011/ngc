@@ -71,24 +71,40 @@ public type_kind token_type_to_type_kind(token_type tp)
 
 public bool check_literal_and_type(token *tok, type *tp)
 {
+	if (tok->type == T_IDENT) {
+		/* Find entry if given token is identifier token
+		 */
+		symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
+		if (!entry) {
+			// TODO : BUG
+			panic("NOT FOUND");
+		}
+		/* Convert type to it literal by hand to create token
+		 */
+		token_type tok_type;
+		if (entry->entry_type.type == TYPE_INT)
+			tok_type = T_INTLIT;
+		else if (entry->entry_type.type == TYPE_LONG)
+				tok_type = T_LONGLIT;
+		else if (entry->entry_type.type == TYPE_DOUBLE)
+			tok_type = T_DOUBLELIT;
+		else if (entry->entry_type.type == TYPE_FLOAT)
+			tok_type = T_FLOATLIT;
+		else if (entry->entry_type.type == TYPE_CHAR)
+			tok_type = T_CHARLIT;
+		else if (entry->entry_type.type == TYPE_STRING)
+			tok_type = T_STRLIT;
+		/* create fake token to pass into check_literal_and_type()
+		 * so in this case we don't need to get identifier for each type
+		 */
+		token *fake_token = token_init(tok_type);
+		return check_literal_and_type(fake_token, tp);
+	}
 	switch (tp->type) {
+
 		case TYPE_INT :
 		case TYPE_LONG :
-			switch (tok->type) {
-
-				case T_INTLIT :
-				case T_LONGLIT :
-				case T_CHARLIT :
-					return true;
-
-				case T_IDENT :
-					{
-						symtab_entry *entry = symtab_get_by_name(tok->buffer, true);
-						if (symbol_entry_type(entry) == TYPE_INT || symbol_entry_type(entry) == TYPE_CHAR)
-							return true;
-					}
-			}
-			return false;
+			return tok->type == T_INTLIT || tok->type == T_LONGLIT || tok->type == T_CHARLIT;
 
     	case TYPE_CHAR :
     	    if (tok->type == T_STRLIT && tp->is_pointer)
@@ -98,5 +114,6 @@ public bool check_literal_and_type(token *tok, type *tp)
 		case TYPE_FLOAT :
 		case TYPE_DOUBLE :
 			return (tok->type == T_CHARLIT || tok->type == T_INTLIT || tok->type == T_DOUBLELIT || tok->type == T_FLOATLIT);
+
 	}
 }

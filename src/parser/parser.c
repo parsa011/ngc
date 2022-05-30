@@ -291,8 +291,13 @@ private ASTnode *primary_factor(int ptp, type *tp)
 		case T_IDENT :
 			{
 				symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
+				ASTnode_type tp;
+				if (entry->entry_type.type == TYPE_CHAR || entry->entry_type.type == TYPE_STRING)
+					tp = A_STR;
+				else
+					tp = A_CONST;
+				n = create_ast_leaf(current_token.buffer, tp, entry->val, current_token.pos);
 				next_token();
-				n = create_ast_leaf(current_token.buffer, A_CONST, entry->val, current_token.pos);
 				return n;
 			}
 
