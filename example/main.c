@@ -12,6 +12,8 @@ float test = 999.0;
 //age = count + 10;
 count += 2 + 12;
 char *name = "parsa";
+name += " mahmoudy";
+char new_line = '\n';
 
 /************************ statistics *************************
  * this is  a test comment

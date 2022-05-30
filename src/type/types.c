@@ -41,7 +41,13 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 
 		case VALUE_STRING :
 		case VALUE_CHAR :
-			dest->str = src->str;
+			if (operation_type == T_INCEQUAL) {
+				prosing_string_append(dest->str, src->str->value);
+			} else if (operation_type == T_EQUAL)
+				dest->str = src->str;
+			else
+				// TODO : show bad operation on string here
+				panic("ERROR");
 			break;
 	}
 #undef SET_VAL

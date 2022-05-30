@@ -78,7 +78,12 @@ public void ast_free(ASTnode *);
 /*
  *	@brief : Convert gien type to ast node type
  */
-public ASTnode_type tokentype_to_nodetype(token_type);
+public ASTnode_type tokentype_to_nodetype(token_type tp);
+
+/*
+ *	@brief : do string concatination and ... of tree
+ */
+public string *process_string_tree(ASTnode *tree);
 
 /*
  *	@brief : calculate tree by considering type

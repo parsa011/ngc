@@ -87,11 +87,16 @@ public value calculate_tree(ASTnode *n, type_kind type)
 		val.type = VALUE_FLOAT;
 		val.floatval = (float) res;
 	} else if (type == TYPE_STRING || TYPE_CHAR) {
-    	// TODO : string concant and ...
     	val.type = VALUE_STRING;
-        val.str = n->val.str;
+    	// TODO : string concant and ...
+        val.str = process_string_tree(n);
 	}
 	return val;
+}
+
+public string *process_string_tree(ASTnode *tree)
+{
+	string *res = prosing_string_init(tree->val.str->value);
 }
 
 public double calculate_binary_tree(ASTnode *n, value_type type)
