@@ -67,26 +67,29 @@ public char *get_nodetype_str(ASTnode_type type)
 	return ASTnode_type_str[type];
 }
 
-public value calculate_tree(ASTnode *n, value_type type)
+public value calculate_tree(ASTnode *n, type_kind type)
 {
 	value val;
-	//printf("type is : %s\n", get_token_str(type));
-	if (type == VALUE_INT) {
+	if (type == TYPE_INT) {
 		int res = (int) calculate_binary_tree(n, type);
 		val.type = VALUE_INT;
 		val.intval = res;
-	} else if (type == VALUE_LONG) {
+	} else if (type == TYPE_LONG) {
 		long res = (long) calculate_binary_tree(n, type);
 		val.type = VALUE_LONG;
 		val.longval = res;
-	} else if (type == VALUE_DOUBLE) {
+	} else if (type == TYPE_DOUBLE) {
 		double res = calculate_binary_tree(n, type);
 		val.type = VALUE_DOUBLE;
 		val.doubleval = res;
-	} else if (type == VALUE_FLOAT) {
+	} else if (type == TYPE_FLOAT) {
 		double res = calculate_binary_tree(n, type);
 		val.type = VALUE_FLOAT;
 		val.floatval = (float) res;
+	} else if (type == TYPE_STRING || TYPE_CHAR) {
+    	// TODO : string concant and ...
+    	val.type = VALUE_STRING;
+        val.str = n->val.str;
 	}
 	return val;
 }

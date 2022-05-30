@@ -180,7 +180,7 @@ public void get_lexer_pos_string(lexer *l, char *buf)
 	snprintf(buf, 64, "%s:%d:%d", l->file_name, l->pos.line, l->pos.col);
 }
 
-private void skip_ol_comment() 
+private void skip_ol_comment()
 {
 	int c = next_char();
 	while (c != '\n') {
@@ -194,7 +194,7 @@ private void skip_ml_comment()
 	while (1) {
 		if (c == EOF) {
 			show_lexer_error("Early End of file In Comment");
-			panic(NULL);
+			//panic(NULL);
 			return;
 		}
 		if (c == '*') {
@@ -620,6 +620,7 @@ add_again:
 			if (isalpha(c) || c == '_') {
 				scan_ident();
 				set_working_lexer_token_type(guess_text_type(working_lexer->tok.buffer));
+				working_lexer->tok.val.type = VALUE_STRING;
 				break;
 			}
 			if (isdigit(c)) {

@@ -144,7 +144,7 @@ decl_again:
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		ASTnode *rval_tree = get_rvalue_for_type(tp);
-		val.type = tp.type;
+		//val.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
 	}
 	/* Add parsed variable to global symbol table
@@ -221,26 +221,27 @@ private ASTnode *parse_assign_variable()
 private ASTnode *get_rvalue_for_type(type tp)
 {
 	ASTnode *res = NULL;
-	switch (tp.type) {
+	//switch (tp.type) {
 
-		case TYPE_INT :
-		case TYPE_LONG:
-		case TYPE_DOUBLE:
-		case TYPE_FLOAT:
+		//case TYPE_INT :
+		//case TYPE_LONG :
+		//case TYPE_DOUBLE :
+		//case TYPE_FLOAT :
 			res = parse_binary_expression(0, &tp);
-			break;
+		// 	break;
 
-		case T_CHAR :
-			if (tp.is_pointer)
-				res = parse_str_literal();
-			break;
+	//	case TYPE_CHAR :
+	//		if (tp.is_pointer)
+	//			res = parse_str_literal();
+	//		break;
 
-	}
+	//}
 	return res;
 }
 
 private ASTnode *parse_str_literal()
 {
+    print_token(&current_token);
 	ASTnode *n = create_ast_leaf(current_token.buffer, A_STR, current_token.val, current_token.pos);
 	next_token();
 	return n;
@@ -268,10 +269,18 @@ private ASTnode *primary_factor(int ptp, type *tp)
 		case T_LONGLIT :
 		case T_DOUBLELIT :
 		case T_FLOATLIT :
-		case T_STRLIT :
-			n = create_ast_leaf(current_token.buffer, A_CONST, current_token.val, current_token.pos);
-			next_token();
-			return n;
+        case T_CHARLIT :
+        case T_STRLIT :
+            {
+                ASTnode_type tp;
+                if (current_token.type == T_CHARLIT || current_token.type == T_STRLIT)
+                    tp = A_STR;
+                else
+                    tp = A_CONST;
+    			n = create_ast_leaf(current_token.buffer, tp, current_token.val, current_token.pos);
+    			next_token();
+    			return n;
+        	}
 
 		case T_OP_P :
 			next_token();

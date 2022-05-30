@@ -83,7 +83,7 @@ public ASTnode_type tokentype_to_nodetype(token_type);
 /*
  *	@brief : calculate tree by considering type
  */
-public value calculate_tree(ASTnode *, value_type);
+public value calculate_tree(ASTnode *, type_kind);
 
 /*
  *	@brief : name of function is self-document bro XD

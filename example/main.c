@@ -11,6 +11,7 @@ double test2 = 1212.1 * 2.1;
 float test = 999.0; 
 //age = count + 10;
 count += 2 + 12;
+char *name = "parsa";
 
 /************************ statistics *************************
  * this is  a test comment

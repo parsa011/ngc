@@ -40,7 +40,7 @@ public void set_val_by_type(value *dest, value *src, token_type operation_type)
 			break;
 
 		case VALUE_STRING :
-		case VALUE_CHAR:
+		case VALUE_CHAR :
 			dest->str = src->str;
 			break;
 	}
@@ -84,8 +84,10 @@ public bool check_literal_and_type(token *tok, type *tp)
 			}
 			return false;
 
-		case TYPE_STRING:
-			return false;
+    	case TYPE_CHAR :
+    	    if (tok->type == T_STRLIT && tp->is_pointer)
+        	    return true;
+    	    return tok->type == T_CHARLIT;
 		
 		case TYPE_FLOAT :
 		case TYPE_DOUBLE :
