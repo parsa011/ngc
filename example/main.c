@@ -14,7 +14,7 @@ count += 2 + 12;
 char *name = "parsa";
 char *last_name = " mahmoudy";
 char *full_name = name + last_name;
-full_name += " sahebi" + " (best programmer of future)";
+full_name += " sahebi" + " (blah blah blah)" + " I'm not Done yet";
 char new_line = '\n';
 
 /************************ statistics *************************
