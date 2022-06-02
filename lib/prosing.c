@@ -179,9 +179,10 @@ extern char *prosing_string_append(string *str, char *t)
 {
 	assert(t != NULL);
 	int t_len = prosing_string_length(t);
-	str->value = (char *)realloc(str->value,str->len + 1);
+	str->value = (char *) realloc(str->value, str->len + t_len + 1);
 	char *ptr = str->value + str->len;
-	while (*ptr++ = *t++);
+	while (*ptr++ = *t++)
+		;
 	str->len += t_len;
 	str->value[str->len] = '\0';
 	return str->value;
