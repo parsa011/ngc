@@ -82,7 +82,7 @@ public void print_symtab()
 		else if (type == TYPE_DOUBLE)
 			printf(" ---> %lf", VALUE_AS_DOUBLE(entry->val));
 		else if (type == TYPE_CHAR || type == TYPE_STRING)
-			printf(" ---> %s", VALUE_AS_STRING(entry->val)->value);
+			printf(" ---> \"%s\"", VALUE_AS_STRING(entry->val)->value);
 		printf(COLORDEFAULT);
 		if (entry->entry_type.is_const) {
 			printf(" CONST");
