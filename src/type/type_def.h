@@ -47,7 +47,11 @@ typedef struct {
 #define STRING_TYPE() ((type) {.type = TYPE_STRING})
 #define CHAR_TYPE()   ((type) {.type = TYPE_CHAR})
 
-#define IS_CONST_TYPE(type) (type.is_const)
-
-
+#define IS_CONST_TYPE(tp)   (tp.is_const)
+#define IS_INT_TYPE(tp)     (tp == TYPE_INT)
+#define IS_LONG_TYPE(tp)    (tp == TYPE_LONG)
+#define IS_DOUBLE_TYPE(tp)  (tp == TYPE_DOUBLE)
+#define IS_FLOAT_TYPE(tp)   (tp == TYPE_FLOAT)
+#define IS_CHAR_TYPE(tp)    (tp == TYPE_CHAR)
+#define IS_STRING_TYPE(tp)  (tp == TYPE_STRING)
 #endif

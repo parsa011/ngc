@@ -63,9 +63,19 @@ typedef struct value_t {
 #define VALUE_AS_STRING(val) (val.str)
 #define VALUE_AS_CHAR(val)   (val.str)        /* this is just for code readability */
 
-#define INT_VAL(value)  ((value) {.intval = value})
-#define LONG_VAL(value) ((value) {.longval = value})
-#define CHAR_VAL(value) ((value) {.charval = value})
-#define REAL_VAL(value) ((value) {.realval = value})
+#define INT_VAL(val)    ((value) {.intval = val})
+#define LONG_VAL(val)   ((value) {.longval = val})
+#define CHAR_VAL(val)   ((value) {.charval = val})
+#define STR_VAL(val)    ((value) {.str = val})
+#define DOUBLE_VAL(val) ((value) {.doubleval = val})
+#define FLOAT_VAL(val)  ((value) {.floatval = val})
+
+#define IS_INT_VAL(val_type)     (val_type == VALUE_INT)
+#define IS_LONG_VAL(val_type)    (val_type == VALUE_LONG)
+#define IS_DOUBLE_VAL(val_type)  (val_type == VALUE_DOUBLE)
+#define IS_FLOAT_VAL(val_type)   (val_type == VALUE_FLOAT)
+#define IS_STRING_VAL(val_type)  (val_type == VALUE_STRING)
+#define IS_CHAR_VAL(val_type)    (val_type == VALUE_CHAR)
+
 
 #endif

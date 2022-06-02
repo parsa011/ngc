@@ -88,8 +88,7 @@ public value calculate_tree(ASTnode *n, type_kind type)
 		val.floatval = (float) res;
 	} else if (type == TYPE_STRING || TYPE_CHAR) {
     	val.type = VALUE_STRING;
-    	// TODO : string concant and ...
-        val.str = process_string_tree(n);
+    	val.str = process_string_tree(n);
 	}
 	return val;
 }
@@ -106,7 +105,7 @@ public string *process_string_tree(ASTnode *tree)
 	return left_str;
 }
 
-public double calculate_binary_tree(ASTnode *n, value_type type)
+public double calculate_binary_tree(ASTnode *n, type_kind type)
 {
 	double left, right;
 	if (n->left)
@@ -133,25 +132,25 @@ public double calculate_binary_tree(ASTnode *n, value_type type)
 		case A_CONST :
 			{
 				int val_type = n->val.type;
-				if (type == VALUE_INT) {
+				if (IS_INT_TYPE(type)) {
 					return VALUE_AS_INT(n->val);
 				}
-				else if (type == VALUE_LONG) {
-					if (val_type == VALUE_INT) 
+				else if (IS_LONG_TYPE(type)) {
+					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
 					return VALUE_AS_LONG(n->val);
 				}
-				else if (type == VALUE_DOUBLE) {
-					if (val_type == VALUE_INT) 
+				else if (IS_DOUBLE_TYPE(type)) {
+					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
-					else if (val_type == VALUE_LONG)
+					else if (IS_LONG_VAL(val_type))
 						return (double) VALUE_AS_LONG(n->val);
-					else if (val_type == VALUE_FLOAT)
+					else if (IS_FLOAT_VAL(val_type))
 						return VALUE_AS_FLOAT(n->val);
 					return VALUE_AS_DOUBLE(n->val);
 				}
-				else if (type == VALUE_FLOAT) {
-					if (val_type == VALUE_INT) 
+				else if (IS_FLOAT_TYPE(type)) {
+					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
 					return VALUE_AS_FLOAT(n->val);
 				}

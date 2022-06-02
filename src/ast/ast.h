@@ -93,7 +93,7 @@ public value calculate_tree(ASTnode *, type_kind);
 /*
  *	@brief : name of function is self-document bro XD
  */
-public double calculate_binary_tree(ASTnode *, value_type);
+public double calculate_binary_tree(ASTnode *, type_kind);
 
 /*
  *	@brief : Print given ast into human readable format
