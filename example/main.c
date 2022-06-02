@@ -13,7 +13,8 @@ float test = 999.0;
 count += 2 + 12;
 char *name = "parsa";
 char *last_name = " mahmoudy";
-char *full_name = name + last_name + " sahebi";
+char *full_name = name + last_name;
+full_name += " sahebi";
 char new_line = '\n';
 
 /************************ statistics *************************

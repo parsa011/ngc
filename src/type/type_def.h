@@ -48,6 +48,8 @@ typedef struct {
 #define CHAR_TYPE()   ((type) {.type = TYPE_CHAR})
 
 #define IS_CONST_TYPE(tp)   (tp.is_const)
+#define IS_POINTER_TYPE(tp) (tp.is_pointer)
+#define IS_UNSIGNED_TYPE(tp) (tp.is_unsigned)
 #define IS_INT_TYPE(tp)     (tp == TYPE_INT)
 #define IS_LONG_TYPE(tp)    (tp == TYPE_LONG)
 #define IS_DOUBLE_TYPE(tp)  (tp == TYPE_DOUBLE)

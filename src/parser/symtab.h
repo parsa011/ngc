@@ -41,8 +41,6 @@ struct symtab_entry_t {
 	type entry_type;
 	struct position pos;
 };
-#define is_pointer(e) (e->entry_type.is_pointer)
-#define is_const(e)	(e->entry_type.is_const)
 #define symbol_entry_type(e) (e->entry_type.type)
 
 /*

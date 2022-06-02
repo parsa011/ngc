@@ -69,23 +69,24 @@ public void print_symtab()
 
 		int type = symbol_entry_type(entry);
 		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_valyetype_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
-		if (is_pointer(entry)) {
+		if (IS_POINTER_TYPE(entry->entry_type)) {
 			printf(" (pointer)");
 		}
+		printf(" ---> ");
 		printf(COLORYELLOW);
-		if (type == TYPE_INT)
-			printf(" ---> %d", VALUE_AS_INT(entry->val));
-		else if (type == TYPE_LONG) 
-			printf(" ---> %ld", VALUE_AS_LONG(entry->val));
-		else if (type == TYPE_FLOAT)
-			printf(" ---> %f", VALUE_AS_FLOAT(entry->val));
-		else if (type == TYPE_DOUBLE)
-			printf(" ---> %lf", VALUE_AS_DOUBLE(entry->val));
-		else if (type == TYPE_CHAR || type == TYPE_STRING)
-			printf(" ---> \"%s\"", VALUE_AS_STRING(entry->val)->value);
+		if (IS_INT_TYPE(type))
+			printf("%d", VALUE_AS_INT(entry->val));
+		else if (IS_LONG_TYPE(type))
+			printf("%ld", VALUE_AS_LONG(entry->val));
+		else if (IS_FLOAT_TYPE(type))
+			printf("%f", VALUE_AS_FLOAT(entry->val));
+		else if (IS_DOUBLE_TYPE(type))
+			printf("%lf", VALUE_AS_DOUBLE(entry->val));
+		else if (IS_CHAR_TYPE(type) || IS_STRING_TYPE(type))
+			printf("\"%s\"", VALUE_AS_STRING(entry->val)->value);
 		printf(COLORDEFAULT);
-		if (entry->entry_type.is_const) {
-			printf(" CONST");
+		if (IS_CONST_TYPE(entry->entry_type)) {
+			printf(" (const)");
 		}
 		putchar('\n');
 	}

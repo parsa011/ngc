@@ -173,12 +173,12 @@ public void print_ast(ASTnode *n, int depth)
 		printf(" : ");
 		int val_type = n->val.type;
 
-		if (val_type == VALUE_INT)
+		if (IS_INT_VAL(val_type))
 			printf("%d", VALUE_AS_INT(n->val));
-		else if (val_type == VALUE_LONG)
+		else if (IS_LONG_VAL(val_type))
 			printf("%ld", VALUE_AS_LONG(n->val));
-		else if (val_type == VALUE_FLOAT || val_type == VALUE_LONG)
-			printf("%f", val_type == VALUE_DOUBLE ? VALUE_AS_DOUBLE(n->val) : VALUE_AS_FLOAT(n->val));
+		else if (IS_FLOAT_VAL(val_type) || IS_DOUBLE_VAL(val_type))
+			printf("%f", IS_DOUBLE_VAL(val_type) ? VALUE_AS_DOUBLE(n->val) : VALUE_AS_FLOAT(n->val));
 
 	} else if (n->type == A_STR)
 		printf("%s", VALUE_AS_STRING(n->val)->value);
