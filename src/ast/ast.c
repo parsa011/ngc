@@ -96,7 +96,14 @@ public value calculate_tree(ASTnode *n, type_kind type)
 
 public string *process_string_tree(ASTnode *tree)
 {
-	string *res = prosing_string_init(tree->val.str->value);
+	string *str = prosing_string_init(tree->val.str->value);
+	if (tree->left == NULL) {
+		return str;
+	}
+	string *left_str = process_string_tree(tree->left);
+	prosing_string_append(left_str, str->value);
+	prosing_string_free(str);
+	return left_str;
 }
 
 public double calculate_binary_tree(ASTnode *n, value_type type)

@@ -4,6 +4,13 @@
 // implementation of functions
 // ===========================
 
+extern void prosing_string_free(string *str)
+{
+	if (str->value)
+		free(str->value);
+	free(str);
+}
+
 extern void prosing_string_reset(string *str)
 {
 	free(str->value);

@@ -144,7 +144,6 @@ decl_again:
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		ASTnode *rval_tree = get_rvalue_for_type(tp);
-		//val.type = tp.type;
 		val = calculate_tree(rval_tree, tp.type);
 	}
 	/* Add parsed variable to global symbol table

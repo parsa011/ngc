@@ -9,7 +9,7 @@
 */
 
 #include "parser/parser.h"
-#include "parser/symtab.h"
+
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
 	print_symtab();
 	l->close_file(l);
 #endif
-	//ast_free(n);
 	ngc_free(l);
 	return 0;
 }

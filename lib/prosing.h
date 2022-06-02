@@ -17,6 +17,7 @@ typedef struct string_t {
 	int len;
 } string;
 
+extern void prosing_string_free(string *);
 
 /*
  *	make string value null and set len to 0

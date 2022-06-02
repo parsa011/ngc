@@ -12,8 +12,8 @@ float test = 999.0;
 //age = count + 10;
 count += 2 + 12;
 char *name = "parsa";
-char *last_name = "mahmoudy";
-name = last_name;
+char *last_name = " mahmoudy";
+char *full_name = name + last_name + " sahebi";
 char new_line = '\n';
 
 /************************ statistics *************************
