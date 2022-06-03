@@ -8,6 +8,7 @@ As you know, There is a lot of Powerfule languages out there, Most of them have 
 If you have worked with C a bit , You will notice the power and speed of this language . But there is a problem, Readability of C is less than High-level languages, This is obvious because it is a low level language. So NGC tries to have a low level language But to the readability and tools and capabilities of high-level languages
 
 # Goals
+- Interpreter & Compiler
 - Light
 - Fast
 - Cross-platform

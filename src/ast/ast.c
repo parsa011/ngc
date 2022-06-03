@@ -70,23 +70,23 @@ public char *get_nodetype_str(ASTnode_type type)
 public value calculate_tree(ASTnode *n, type_kind type)
 {
 	value val;
-	if (type == TYPE_INT) {
+	if (IS_INT_TYPE(type)) {
 		int res = (int) calculate_binary_tree(n, type);
 		val.type = VALUE_INT;
 		val.intval = res;
-	} else if (type == TYPE_LONG) {
+	} else if (IS_LONG_TYPE(type)) {
 		long res = (long) calculate_binary_tree(n, type);
 		val.type = VALUE_LONG;
 		val.longval = res;
-	} else if (type == TYPE_DOUBLE) {
+	} else if (IS_DOUBLE_TYPE(type)) {
 		double res = calculate_binary_tree(n, type);
 		val.type = VALUE_DOUBLE;
 		val.doubleval = res;
-	} else if (type == TYPE_FLOAT) {
+	} else if (IS_FLOAT_TYPE(type)) {
 		double res = calculate_binary_tree(n, type);
 		val.type = VALUE_FLOAT;
 		val.floatval = (float) res;
-	} else if (type == TYPE_STRING || TYPE_CHAR) {
+	} else if (IS_STRING_TYPE(type) || IS_CHAR_TYPE(type)) {
     	val.type = VALUE_STRING;
     	val.str = process_string_tree(n);
 	}
