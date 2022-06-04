@@ -70,7 +70,7 @@ public void print_symtab()
 		int type = symbol_entry_type(entry);
 		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_valyetype_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
 		if (IS_POINTER_TYPE(entry->entry_type)) {
-			printf(" (pointer)");
+			print(" (pointer)");
 		}
 		printf(" ---> ");
 		printf(COLORYELLOW);
@@ -86,7 +86,10 @@ public void print_symtab()
 			printf("\"%s\"", VALUE_AS_STRING(entry->val)->value);
 		printf(COLORDEFAULT);
 		if (IS_CONST_TYPE(entry->entry_type)) {
-			printf(" (const)");
+			print(" (const)");
+		}
+		if (IS_UNSIGNED_TYPE(entry->entry_type)) {
+			print(" (unsigned)");
 		}
 		putchar('\n');
 	}

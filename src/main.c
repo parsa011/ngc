@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 	print_symtab();
 	l->close_file(l);
 #endif
+	unsigned char *name = "parsa";
 	ngc_free(l);
 	return 0;
 }
