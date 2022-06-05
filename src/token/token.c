@@ -10,7 +10,7 @@
 
 /*
  *	TODO : panic if id was out or token_type_str array range
- */
+n */
 public char *get_token_str(int id)
 {
 	return token_type_str[id];
@@ -131,6 +131,13 @@ public token_type guess_text_type(char *text)
 			else if (STR_EQUAL(text, "if"))
 				return T_IF;
 			break;
+
+#if NGC_DEBUG
+		case 'p':
+			if (STR_EQUAL(text, "print"))
+				return T_PRINT;
+			break;
+#endif			
 
 		case 'v' :
 			if (STR_EQUAL(text, "volatile"))

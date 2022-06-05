@@ -53,6 +53,10 @@ int main(int argc, char *argv[])
 		}
 		l->open_file(l, argv[1]);
 	}
+	
+#if NGC_DEBUG
+	print("DEBUG\n");
+#endif
 #if DEBUG_LEXER
 	lexer_set_working_lexer(l);
 	lex();
@@ -66,7 +70,7 @@ int main(int argc, char *argv[])
 	print_symtab();
 	l->close_file(l);
 #endif
-	unsigned char *name = "parsa";
+
 	ngc_free(l);
 	return 0;
 }

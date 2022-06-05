@@ -111,6 +111,9 @@ typedef enum {
 	T_CHARLIT,		 // 'c'
 
 	T_IDENT,
+#if NGC_DEBUG
+	T_PRINT,
+#endif
 
 	T_NEWLINE,
 
@@ -218,6 +221,9 @@ private char *token_type_str[] = {
 	"T_CHARLIT",	 // 'c'
 
 	"T_IDENT",
+#if NGC_DEBUG
+	"T_PRINT",
+#endif
 
 	"T_NEWLINE",
 
