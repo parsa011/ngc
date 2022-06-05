@@ -33,6 +33,12 @@ private ASTnode *statements(ASTnode *n)
 			case T_PRINT :
 				next_token();
 				ASTnode *tree = parse_expression(0);
+				/* NOTE : we use tree->value.type for type_kind arg
+				 * because value types enum and type_kind have same order so their members
+				 * has corresponding values , HOPE to not change that :)))
+				 * and we consider first elements type in expression as whole expressions
+				 * type :)) take care about thatxs
+				 */
 				value val = calculate_tree(tree, tree->val.type);
 				print_value(val);
 				break;
@@ -67,7 +73,7 @@ private ASTnode *declare_variable()
 	while (is_qualifier(false)) {
 		if (current_token.type == T_CONST) {
 			if (qualifiers.is_const) {
-			show_lexer_error("Variable Is Constant Already");
+				show_lexer_error("Variable Is Constant Already");
 				panic(NULL);
 			}
 			qualifiers.is_const = true;
