@@ -16,7 +16,7 @@
 #include "../lib/prosing.h"
 
 #define NGC_DEBUG 1
-#define DEBUG_LEXER 1
+#define DEBUG_LEXER 0
 
 #define VERSION "0.0.1"
 

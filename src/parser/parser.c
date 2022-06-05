@@ -29,6 +29,15 @@ private ASTnode *statements(ASTnode *n)
 				parse_if_statement();
 				break;
 
+#if NGC_DEBUG
+			case T_PRINT :
+				next_token();
+				ASTnode *tree = parse_expression(0);
+				value val = calculate_tree(tree, tree->val.type);
+				print_value(val);
+				break;
+#endif				
+
 			case T_IDENT :
 				parse_assign_variable();
 				break;
@@ -188,7 +197,7 @@ private ASTnode *parse_assign_variable()
 
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
-	value val = calculate_tree(parse_binary_expression(0, &entry->entry_type), entry->entry_type.type);
+	value val = calculate_tree(parse_expression(0), entry->entry_type.type);
 
 	/* create AST leaf for our value
 	 */
@@ -226,7 +235,7 @@ private ASTnode *get_rvalue_for_type(type tp)
 		//case TYPE_LONG :
 		//case TYPE_DOUBLE :
 		//case TYPE_FLOAT :
-			res = parse_binary_expression(0, &tp);
+			res = parse_expression(0);
 		// 	break;
 
 	//	case TYPE_CHAR :
@@ -251,15 +260,15 @@ private ASTnode *parse_str_literal()
  * for example if given type kind is string literal , so current token should be
  * a strin literal , no numerical value
  */
-private ASTnode *primary_factor(int ptp, type *tp)
+private ASTnode *primary_factor(int ptp)
 {
 	/* Do not check types if current token is open parenthesis
 	 */
-	if (!check_literal_and_type(&current_token, tp) && current_token.type != T_OP_P) {
+//	if (!check_literal_and_type(&current_token, tp) && current_token.type != T_OP_P) {
 		// TODO : enhance bug reporting
-		show_lexer_error("Value And Type Are Not Match");
-		panic(NULL);
-	}
+//		show_lexer_error("Value And Type Are Not Match");
+//		panic(NULL);
+//	}
 
 	ASTnode *n;
 	switch (current_token.type) {
@@ -283,7 +292,7 @@ private ASTnode *primary_factor(int ptp, type *tp)
 
 		case T_OP_P :
 			next_token();
-			n = parse_binary_expression(0, tp);
+			n = parse_expression(0);
 			match(T_CL_P, "Unclosed Parenthesis");
 			return n;
 
@@ -309,14 +318,14 @@ private ASTnode *primary_factor(int ptp, type *tp)
 	return NULL;
 }
 
-private ASTnode *parse_binary_expression(int ptp, type *tp)
+private ASTnode *parse_expression(int ptp)
 {
 	ASTnode *right, *left;
 	/* get numerical part of expression
 	 * here, our token should be a valid numerical token, it can a be a symbol that contains a numeric value
 	 * or it can be constant
 	 */
-	left = primary_factor(ptp, tp);
+	left = primary_factor(ptp);
 	int tokentype = current_token.type;
 	/* save type of current token , it can be open parenthesis or a operation token like + , - and ...
 	 */
@@ -331,7 +340,7 @@ private ASTnode *parse_binary_expression(int ptp, type *tp)
 		/* parse continuation of expression , it will parse just primary(number) if next operation token precedence is 
 		 * less than current operation token precedence
 		 */
-		right = parse_binary_expression(token_precedence(tokentype), tp);
+		right = parse_expression(token_precedence(tokentype));
 		/* join past trees with new tree from 'right'
 		 */
 		left = create_ast_node(token_copy->buffer, tokentype_to_nodetype(tokentype), current_token.val, left, right, token_copy->pos);

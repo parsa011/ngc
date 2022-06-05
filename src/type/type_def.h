@@ -40,6 +40,7 @@ typedef struct {
 	dest->is_pointer = src->is_pointer; \
 }
 
+#define CREATE_TYPE(tp) ((type) {.type = tp})
 #define INT_TYPE()    ((type) {.type = TYPE_INT})
 #define LONG_TYPE()   ((type) {.type = TYPE_LONG})
 #define DOUBLE_TYPE() ((type) {.type = TYPE_DOUBLE})

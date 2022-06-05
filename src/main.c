@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 	}
 	
 #if NGC_DEBUG
-	print("DEBUG\n");
+	print("** DEBUG **\n");
 #endif
 #if DEBUG_LEXER
 	lexer_set_working_lexer(l);

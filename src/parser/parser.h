@@ -47,12 +47,12 @@ private ASTnode *parse_str_literal();
 /*
  *	@breif : return primay factor as a ASTnode tree
  */
-private ASTnode *primary_factor(int, type *);
+private ASTnode *primary_factor(int ptp);
 
 /*
  *	@brief : parse binary expression by pratt parsing algorithm
  */
-private ASTnode *parse_binary_expression(int, type *);
+private ASTnode *parse_expression(int ptp);
 
 private ASTnode *parse_if_statement();
 

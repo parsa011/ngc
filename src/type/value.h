@@ -77,5 +77,30 @@ typedef struct value_t {
 #define IS_STRING_VAL(val_type)  (val_type == VALUE_STRING)
 #define IS_CHAR_VAL(val_type)    (val_type == VALUE_CHAR)
 
+static void print_value(value val)
+{
+	switch (val.type) {
+		case VALUE_INT :
+			printf("%d", VALUE_AS_INT(val));
+			break;
+	   	case VALUE_LONG :
+			printf("%ld", VALUE_AS_LONG(val));
+			break;
+	   	case VALUE_DOUBLE :
+			printf("%lf", VALUE_AS_DOUBLE(val));
+			break;
+	   	case VALUE_FLOAT :
+			printf("%f", VALUE_AS_FLOAT(val));
+			break;
+	   	case VALUE_CHAR :
+			printf("%s", VALUE_AS_CHAR(val)->value);
+			break;
+	   	case VALUE_STRING :
+			printf("%s", VALUE_AS_STRING(val)->value);
+			break;
+	}
+	putchar('\n');
+}
+
 
 #endif

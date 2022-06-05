@@ -16,6 +16,7 @@
 //char *full_name = name + last_name;
 //full_name += " sahebi" + " (blah blah blah)" + " I'm not Done yet";
 //char new_line = '\n';
+char * age = "parsa";
 print age;
 
 /************************ statistics *************************
