@@ -194,6 +194,10 @@ public int token_precedence(token_type type)
 {
 	switch (type) {
 
+		case T_ANDAND :
+		case T_PIPEPIPE :
+			return 3;
+
 		case T_GT :
 		case T_LT :
 		case T_ISEQUAL :

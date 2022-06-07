@@ -23,6 +23,10 @@ typedef enum {
 	A_ISEQUAL, A_LOWER_EQUAL,
 	A_GREATER_EQUAL,
 
+	// Logicals
+	A_AND,
+	A_OR,
+
 	A_ASSIGN,
 	A_LVAL,
 	A_IDENT
@@ -40,7 +44,10 @@ private char *ASTnode_type_str[] = {
 	"A_ISEQUAL", "A_LOWER_EQUAL",
 	"A_GREATER_EQUAL",
 
-
+	// Logicals
+	"A_AND",
+	"A_OR",
+	
 	"A_ASSIGN",
 	"A_LVAL",
 	"A_IDENT"

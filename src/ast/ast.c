@@ -37,6 +37,10 @@ public void ast_free(ASTnode *n)
 public ASTnode_type tokentype_to_nodetype(token_type type)
 {
 	switch (type) {
+		case T_ANDAND :
+			return A_AND;
+		case T_PIPEPIPE :
+			return A_OR;
 		case T_GT :
 			return A_GREATER;
 		case T_LT :
@@ -113,6 +117,10 @@ public double calculate_binary_tree(ASTnode *n, type_kind type)
 	if (n->right)
 		right = calculate_binary_tree(n->right, type);
 	switch (n->type) {
+		case A_AND :
+			return left && right;
+		case A_OR :
+			return left || right;
 		case A_ADD :
 			return left + right;
 		case A_MINUS :

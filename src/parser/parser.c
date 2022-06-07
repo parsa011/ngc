@@ -48,10 +48,14 @@ private ASTnode *statements(ASTnode *n)
 				 *
 				 * We will val_type of left child for whole expresion type
 				 */
-				type_kind tp_kind = tree->val.type;
-				if (tree->type != A_CONST) {
-					tp_kind = tree->left->val.type;
+				print_ast(tree, 0);
+				ASTnode *n = tree;
+check_tree_type:
+				if (n->type != A_CONST) {
+					n = n->left;
+					goto check_tree_type;
 				}
+				type_kind tp_kind = n->val.type;
 				value val = calculate_tree(tree, tp_kind);
 				print_value(val);
 				break;
