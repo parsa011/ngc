@@ -99,7 +99,7 @@ static void print_value(value val)
 			printf("%s", VALUE_AS_STRING(val)->value);
 			break;
 	}
-	putchar('\n');
+	//putchar('\n');
 }
 
 

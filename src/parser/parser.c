@@ -31,6 +31,7 @@ private ASTnode *statements(ASTnode *n)
 
 #if NGC_DEBUG
 			case T_PRINT :
+print_again:
 				next_token();
 				ASTnode *tree = parse_expression(0);
 				/* NOTE : we use tree->value.type for type_kind arg
@@ -57,6 +58,9 @@ check_tree_type:
 				type_kind tp_kind = n->val.type;
 				value val = calculate_tree(tree, tp_kind);
 				print_value(val);
+				if (current_token.type == T_COMMA)
+    				goto print_again;
+				putchar('\n');
 				break;
 #endif				
 
