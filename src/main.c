@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
 		}
 		l->open_file(l, argv[1]);
 	}
-	
 #if NGC_DEBUG
 	print("** DEBUG **\n");
 #endif
@@ -67,7 +66,7 @@ int main(int argc, char *argv[])
 #else
 	symtab_init();
 	ASTnode *n = compile(l);
-	#if DEBUG_PRINT_SYMTAB && NGC_DEBUG
+	#if DEBUG_PRINT_SYMTAB && NGC_DEBUG 
 		print_symtab();
 	#endif
 	l->close_file(l);
@@ -75,4 +74,5 @@ int main(int argc, char *argv[])
 
 	ngc_free(l);
 	return 0;
+
 }

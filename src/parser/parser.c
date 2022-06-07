@@ -31,36 +31,7 @@ private ASTnode *statements(ASTnode *n)
 
 #if NGC_DEBUG
 			case T_PRINT :
-print_again:
-				next_token();
-				ASTnode *tree = parse_expression(0);
-				/* NOTE : we use tree->value.type for type_kind arg
-				 * because value types enum and type_kind have same order so their members
-				 * has corresponding values , HOPE to not change that :)))
-				 * and we consider first elements type in expression as whole expressions
-				 * type :)) take care about thatxs
-				 * But if first argumant was not a value, we search for first value to get
-				 * type of it
-				 * In tree like :
-				 *
-				 *		 A_GREATER :
-				 *			   A_CONST 1
-				 *			   A_CONST 2
-				 *
-				 * We will val_type of left child for whole expresion type
-				 */
-				ASTnode *n = tree;
-check_tree_type:
-				if (n->type != A_CONST && n->type != A_STR) {
-					n = n->left;
-					goto check_tree_type;
-				}
-				type_kind tp_kind = n->val.type;
-				value val = calculate_tree(tree, tp_kind);
-				print_value(val);
-				if (current_token.type == T_COMMA)
-    				goto print_again;
-				putchar('\n');
+			    print_statement();
 				break;
 #endif				
 
@@ -81,6 +52,42 @@ check_tree_type:
 	}
 	return ast;
 }
+
+#if NGC_DEBUG
+private void print_statement()
+{
+print_again:
+	next_token();
+	ASTnode *tree = parse_expression(0);
+	/* NOTE : we use tree->value.type for type_kind arg
+	 * because value types enum and type_kind have same order so their members
+	 * has corresponding values , HOPE to not change that :)))
+	 * and we consider first elements type in expression as whole expressions
+	 * type :)) take care about thatxs
+	 * But if first argumant was not a value, we search for first value to get
+	 * type of it
+	 * In tree like :
+	 *
+	 *		 A_GREATER :
+	 *			   A_CONST 1
+	 *			   A_CONST 2
+	 *
+	 * We will val_type of left child for whole expresion type
+	 */
+	ASTnode *n = tree;
+check_tree_type:
+	if (n->type != A_CONST && n->type != A_STR) {
+		n = n->left;
+		goto check_tree_type;
+	}
+	type_kind tp_kind = n->val.type;
+	value val = calculate_tree(tree, tp_kind);
+	print_value(val);
+	if (current_token.type == T_COMMA)
+		goto print_again;
+	putchar('\n');
+}
+#endif
 
 private ASTnode *declare_variable()
 {

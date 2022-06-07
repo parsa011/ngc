@@ -24,6 +24,14 @@ public ASTnode *compile(lexer *);
  */
 private ASTnode *statements();
 
+#if NGC_DEBUG
+/*
+ * @brief : Pring statement for debug mode;
+ * print_statement := 'print' expresssion ';'
+ */
+private void print_statement();
+#endif
+
 /*
  *	@brief : Parse Declare variable statements
  */
