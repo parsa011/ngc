@@ -68,7 +68,7 @@ public void print_symtab()
 	for (symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
 
 		int type = symbol_entry_type(entry);
-		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_valyetype_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
+		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_valuetype_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);
 		if (IS_POINTER_TYPE(entry->entry_type)) {
 			print(" (pointer)");
 		}

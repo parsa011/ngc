@@ -67,7 +67,9 @@ int main(int argc, char *argv[])
 #else
 	symtab_init();
 	ASTnode *n = compile(l);
-//	print_symtab();
+	#if DEBUG_PRINT_SYMTAB && NGC_DEBUG
+		print_symtab();
+	#endif
 	l->close_file(l);
 #endif
 

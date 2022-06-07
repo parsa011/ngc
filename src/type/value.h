@@ -35,7 +35,7 @@ static const char *value_type_str[] = {
 	"VALUE_CHAR"
 };
 
-static const char *get_valyetype_str(value_type tp)
+static const char *get_valuetype_str(value_type tp)
 {
 	return value_type_str[tp];
 }

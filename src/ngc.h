@@ -17,6 +17,7 @@
 
 #define NGC_DEBUG 1
 #define DEBUG_LEXER 0
+#define DEBUG_PRINT_SYMTAB 0
 
 #define VERSION "0.0.1"
 

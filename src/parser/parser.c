@@ -38,8 +38,21 @@ private ASTnode *statements(ASTnode *n)
 				 * has corresponding values , HOPE to not change that :)))
 				 * and we consider first elements type in expression as whole expressions
 				 * type :)) take care about thatxs
+				 * But if first argumant was not a value, we search for first value to get
+				 * type of it
+				 * In tree like :
+				 *
+				 *		 A_GREATER :
+				 *			   A_CONST 1
+				 *			   A_CONST 2
+				 *
+				 * We will val_type of left child for whole expresion type
 				 */
-				value val = calculate_tree(tree, tree->val.type);
+				type_kind tp_kind = tree->val.type;
+				if (tree->type != A_CONST) {
+					tp_kind = tree->left->val.type;
+				}
+				value val = calculate_tree(tree, tp_kind);
 				print_value(val);
 				break;
 #endif				

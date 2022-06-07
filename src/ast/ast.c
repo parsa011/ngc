@@ -182,7 +182,7 @@ public void print_ast(ASTnode *n, int depth)
 
 	} else if (n->type == A_STR)
 		printf("%s", VALUE_AS_STRING(n->val)->value);
-
+	printf(" %s", get_valuetype_str(n->val.type));
 	putchar('\n');
 	if (n->left) {
 		print_ast(n->left, depth + 4);
