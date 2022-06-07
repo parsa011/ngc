@@ -17,7 +17,7 @@
 //full_name += " sahebi" + " (blah blah blah)" + " I'm not Done yet";
 //char new_line = '\n';
 int a = 1, b = 2;
-print a > b || 1 > 2;
+print a < b || 1 < 2 && a == 1 && b != 1;
 /************************ statistics *************************
  * this is  a test comment
  * Hello From Comment

@@ -247,7 +247,7 @@ public char *get_token_str(int);
 
 /*
  *	@brief : create and return new token
- *	> dont forget to make token free after use :)
+ *	dont forget to make token free after use :)
  */
 public token *token_init(token_type type);
 

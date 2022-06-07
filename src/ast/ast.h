@@ -20,12 +20,14 @@ typedef enum {
 
 	// comparison
 	A_LOWER, A_GREATER,
-	A_ISEQUAL, A_LOWER_EQUAL,
+	A_ISEQUAL, A_NOTEQUAL, A_LOWER_EQUAL,
 	A_GREATER_EQUAL,
 
 	// Logicals
 	A_AND,
 	A_OR,
+
+
 
 	A_ASSIGN,
 	A_LVAL,
@@ -41,7 +43,7 @@ private char *ASTnode_type_str[] = {
 
 	// comparison
 	"A_LOWER", "A_GREATER",
-	"A_ISEQUAL", "A_LOWER_EQUAL",
+	"A_ISEQUAL", "A_NOTEQUAL", "A_LOWER_EQUAL",
 	"A_GREATER_EQUAL",
 
 	// Logicals

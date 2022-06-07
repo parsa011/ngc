@@ -47,6 +47,8 @@ public ASTnode_type tokentype_to_nodetype(token_type type)
 			return A_LOWER;
 		case T_ISEQUAL :
 			return A_ISEQUAL;
+	    case T_NOTEQUAL :
+	        return A_NOTEQUAL;
 		case T_LOWEQ :
 			return A_LOWER_EQUAL;
 		case T_GREAEQ :
@@ -137,6 +139,10 @@ public double calculate_binary_tree(ASTnode *n, type_kind type)
 			return left <= right;
 		case A_GREATER_EQUAL :
 			return left >= right;
+	    case A_ISEQUAL :
+	        return left == right;
+	    case A_NOTEQUAL :
+	        return left != right;
 		case A_CONST :
 			{
 				int val_type = n->val.type;

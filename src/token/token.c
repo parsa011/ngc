@@ -196,11 +196,12 @@ public int token_precedence(token_type type)
 
 		case T_ANDAND :
 		case T_PIPEPIPE :
-			return 3;
+			return 2;
 
 		case T_GT :
 		case T_LT :
 		case T_ISEQUAL :
+		case T_NOTEQUAL :
 		case T_LOWEQ :
 		case T_GREAEQ :
 			return 4;
