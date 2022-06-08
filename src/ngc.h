@@ -15,7 +15,7 @@
 #include "util/file_util.h"
 #include "../lib/prosing.h"
 
-#define NGC_DEBUG 0
+#define NGC_DEBUG 1
 #define DEBUG_LEXER 0
 #define DEBUG_PRINT_SYMTAB 0
 

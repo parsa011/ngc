@@ -132,7 +132,7 @@ public token_type guess_text_type(char *text)
 				return T_IF;
 			break;
 
-#if NGC_DEBUG == 1
+#if NGC_DEBUG
 		case 'p':
 			if (STR_EQUAL(text, "print"))
 				return T_PRINT;

@@ -45,7 +45,7 @@ help :
 	$(call write_help,doc,     create documents and help files)
 
 world :
-	cd $(SRCDIR); make
+	@cd $(SRCDIR); make
 
 remake : clean world
 

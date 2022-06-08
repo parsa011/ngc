@@ -36,7 +36,7 @@ PARSER_OBJS := $(PARSER_SRC:%=$(BUILD_DIR)/%.o)
 
 #==========================================
 
-$(TARGET) : $(OBJS)
+$(TARGET) : $(OBJS) $(INCS)
 	$(CC) main.c $(OBJS) -g -o $(BUILD_DIR)/$@
 
 lexer : $(LEX_OBJS) $(LEX_INCS)
