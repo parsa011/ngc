@@ -93,10 +93,16 @@ static void print_value(value val)
 			printf("%f", VALUE_AS_FLOAT(val));
 			break;
 	   	case VALUE_CHAR :
-			printf("%s", VALUE_AS_CHAR(val)->value);
+			if (VALUE_AS_CHAR(val)->value)
+				printf("%s", VALUE_AS_CHAR(val)->value);
+			else
+				printf("NULL");
 			break;
 	   	case VALUE_STRING :
-			printf("%s", VALUE_AS_STRING(val)->value);
+			if (VALUE_AS_STRING(val)->value)
+				printf("%s", VALUE_AS_STRING(val)->value);
+			else
+				printf("NULL");
 			break;
 	}
 	//putchar('\n');

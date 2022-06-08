@@ -74,16 +74,7 @@ public void print_symtab()
 		}
 		printf(" ---> ");
 		printf(COLORYELLOW);
-		if (IS_INT_TYPE(type))
-			printf("%d", VALUE_AS_INT(entry->val));
-		else if (IS_LONG_TYPE(type))
-			printf("%ld", VALUE_AS_LONG(entry->val));
-		else if (IS_FLOAT_TYPE(type))
-			printf("%f", VALUE_AS_FLOAT(entry->val));
-		else if (IS_DOUBLE_TYPE(type))
-			printf("%lf", VALUE_AS_DOUBLE(entry->val));
-		else if (IS_CHAR_TYPE(type) || IS_STRING_TYPE(type))
-			printf("\"%s\"", VALUE_AS_STRING(entry->val)->value);
+		print_value(entry->val);
 		printf(COLORDEFAULT);
 		if (IS_CONST_TYPE(entry->entry_type)) {
 			print(" (const)");
