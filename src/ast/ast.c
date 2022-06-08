@@ -7,6 +7,7 @@
 */
 
 #include "ast.h"
+#include "../lexer/lexer.h"
 #include <string.h>
 
 public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTnode *left, ASTnode *right, struct position pos)
@@ -17,8 +18,6 @@ public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTno
 	n->left = left;
 	n->right = right;
 	pos_copy(pos, n->pos);
-	//type *entry_node_type = &n->node_type_type;
-	//type_copy(node_type, entry_node_type);
 	set_val_by_type(&n->val, &val, T_EQUAL);
 	return n;
 }
@@ -101,6 +100,10 @@ public value calculate_tree(ASTnode *n, type_kind type)
 
 public string *process_string_tree(ASTnode *tree)
 {
+	if (!IS_STRING_VAL(tree->val.type)) {
+		show_lexer_error("Not Valid String");
+		panic(NULL);
+	}
 	string *str = prosing_string_init(tree->val.str->value);
 	if (tree->left == NULL) {
 		return str;
@@ -169,8 +172,10 @@ public double calculate_binary_tree(ASTnode *n, type_kind type)
 					return VALUE_AS_FLOAT(n->val);
 				}
 			}
+		default :
+			show_lexer_error("Wrong Value Type and Data Type");
+			panic(NULL);
 	}
-	panic("Invalid Or Not-Implemented operation");
 	return -1;
 }
 

@@ -18,6 +18,7 @@
 //char new_line = '\n';
 int a = 1, b = 2;
 char *name = "parsa";
+char last_name = "parsa";
 
 print "result is : ", a + b;
 print a < b || 1 < 2 && a == 1 && b != 1;
