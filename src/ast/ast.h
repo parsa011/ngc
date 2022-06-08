@@ -97,12 +97,12 @@ public string *process_string_tree(ASTnode *tree);
 /*
  *	@brief : calculate tree by considering type
  */
-public value calculate_tree(ASTnode *, type_kind);
+public value calculate_tree(ASTnode *tree, type tp);
 
 /*
  *	@brief : name of function is self-document bro XD
  */
-public double calculate_binary_tree(ASTnode *, type_kind);
+public double calculate_binary_tree(ASTnode * tree, type tp);
 
 /*
  *	@brief : Print given ast into human readable format

@@ -81,7 +81,7 @@ check_tree_type:
 		goto check_tree_type;
 	}
 	type_kind tp_kind = n->val.type;
-	value val = calculate_tree(tree, tp_kind);
+	value val = calculate_tree(tree, CREATE_TYPE(n->val.type));
 	print_value(val);
 	if (current_token.type == T_COMMA)
 		goto print_again;
@@ -186,7 +186,7 @@ decl_again:
 	if (current_token.type == T_EQUAL) {
 		next_token();
 		ASTnode *rval_tree = get_rvalue_for_type(tp);
-		val = calculate_tree(rval_tree, tp.type);
+		val = calculate_tree(rval_tree, tp);
 	}
 	/* Add parsed variable to global symbol table
 	 */
@@ -230,7 +230,7 @@ private ASTnode *parse_assign_variable()
 
 	/* parse rvalue of expression and calculate it to store in value union 
 	 */
-	value val = calculate_tree(parse_expression(0), entry->entry_type.type);
+	value val = calculate_tree(parse_expression(0), entry->entry_type);
 
 	/* create AST leaf for our value
 	 */

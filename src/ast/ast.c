@@ -72,26 +72,26 @@ public char *get_nodetype_str(ASTnode_type type)
 	return ASTnode_type_str[type];
 }
 
-public value calculate_tree(ASTnode *n, type_kind type)
+public value calculate_tree(ASTnode *n, type tp)
 {
 	value val;
-	if (IS_INT_TYPE(type)) {
-		int res = (int) calculate_binary_tree(n, type);
+	if (IS_INT_TYPE(tp.type)) {
+		int res = (int) calculate_binary_tree(n, tp);
 		val.type = VALUE_INT;
 		val.intval = res;
-	} else if (IS_LONG_TYPE(type)) {
-		long res = (long) calculate_binary_tree(n, type);
+	} else if (IS_LONG_TYPE(tp.type)) {
+		long res = (long) calculate_binary_tree(n, tp);
 		val.type = VALUE_LONG;
 		val.longval = res;
-	} else if (IS_DOUBLE_TYPE(type)) {
-		double res = calculate_binary_tree(n, type);
+	} else if (IS_DOUBLE_TYPE(tp.type)) {
+		double res = calculate_binary_tree(n, tp);
 		val.type = VALUE_DOUBLE;
 		val.doubleval = res;
-	} else if (IS_FLOAT_TYPE(type)) {
-		double res = calculate_binary_tree(n, type);
+	} else if (IS_FLOAT_TYPE(tp.type)) {
+		double res = calculate_binary_tree(n, tp);
 		val.type = VALUE_FLOAT;
 		val.floatval = (float) res;
-	} else if (IS_STRING_TYPE(type) || IS_CHAR_TYPE(type)) {
+	} else if (IS_CHAR_TYPE(tp.type) && IS_POINTER_TYPE(tp) || IS_STRING_TYPE(tp.type)) {
     	val.type = VALUE_STRING;
     	val.str = process_string_tree(n);
 	}
@@ -114,13 +114,13 @@ public string *process_string_tree(ASTnode *tree)
 	return left_str;
 }
 
-public double calculate_binary_tree(ASTnode *n, type_kind type)
+public double calculate_binary_tree(ASTnode *n, type tp)
 {
 	double left, right;
 	if (n->left)
-		left = calculate_binary_tree(n->left, type);
+		left = calculate_binary_tree(n->left, tp);
 	if (n->right)
-		right = calculate_binary_tree(n->right, type);
+		right = calculate_binary_tree(n->right, tp);
 	switch (n->type) {
 		case A_AND :
 			return left && right;
@@ -149,15 +149,15 @@ public double calculate_binary_tree(ASTnode *n, type_kind type)
 		case A_CONST :
 			{
 				int val_type = n->val.type;
-				if (IS_INT_TYPE(type)) {
+				if (IS_INT_TYPE(tp.type)) {
 					return VALUE_AS_INT(n->val);
 				}
-				else if (IS_LONG_TYPE(type)) {
+				else if (IS_LONG_TYPE(tp.type)) {
 					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
 					return VALUE_AS_LONG(n->val);
 				}
-				else if (IS_DOUBLE_TYPE(type)) {
+				else if (IS_DOUBLE_TYPE(tp.type)) {
 					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
 					else if (IS_LONG_VAL(val_type))
@@ -166,7 +166,7 @@ public double calculate_binary_tree(ASTnode *n, type_kind type)
 						return VALUE_AS_FLOAT(n->val);
 					return VALUE_AS_DOUBLE(n->val);
 				}
-				else if (IS_FLOAT_TYPE(type)) {
+				else if (IS_FLOAT_TYPE(tp.type)) {
 					if (IS_INT_VAL(val_type))
 						return VALUE_AS_INT(n->val);
 					return VALUE_AS_FLOAT(n->val);
