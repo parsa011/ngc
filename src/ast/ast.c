@@ -187,20 +187,12 @@ public void print_ast(ASTnode *n, int depth)
 		putchar(' ');
 	}
 	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
-
+	
+	printf(" --->");
 	if (n->type == A_CONST) {
-		printf(" : ");
-		int val_type = n->val.type;
-
-		if (IS_INT_VAL(val_type))
-			printf("%d", VALUE_AS_INT(n->val));
-		else if (IS_LONG_VAL(val_type))
-			printf("%ld", VALUE_AS_LONG(n->val));
-		else if (IS_FLOAT_VAL(val_type) || IS_DOUBLE_VAL(val_type))
-			printf("%f", IS_DOUBLE_VAL(val_type) ? VALUE_AS_DOUBLE(n->val) : VALUE_AS_FLOAT(n->val));
-
+		print_value(n->val);
 	} else if (n->type == A_STR)
-		printf("%s", VALUE_AS_STRING(n->val)->value);
+		printf(" '%s'", VALUE_AS_STRING(n->val)->value);
 	printf(" %s", get_valuetype_str(n->val.type));
 	putchar('\n');
 	if (n->left) {
