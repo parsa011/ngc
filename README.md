@@ -13,6 +13,7 @@ If you have worked with C a bit , You will notice the power and speed of this la
 - Fast
 - Cross-platform
 - Reliable
+- Learning & FUN :)
 
 # Building
 First Clone the project :
