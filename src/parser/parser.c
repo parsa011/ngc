@@ -15,28 +15,39 @@ public ASTnode *compile(lexer *l)
 		print_prompt();
 	}
 	next_token();
-	ASTnode *n = statements(n);
+	ASTnode *n = statements();
 	return n;
 }
 
-private ASTnode *statements(ASTnode *n)
+/*
+ *
+ *	statement ::= labeled-statement
+ *			| expression-statement
+ *			| compound-statement
+ *			| selection-statement
+ *			| iteration-statement
+ *			| jump-statement
+ *
+ */
+private ASTnode *statements()
 {
     ASTnode *ast = NULL;
-	while (!is_eof()) {
+	ASTnode *left = NULL;
+	while (current_token.type != T_EOF) {
 		switch (current_token.type) {
 
 			case T_IF :
-				parse_if_statement();
+				left = parse_if_statement();
 				break;
 
 #if NGC_DEBUG
 			case T_PRINT :
-			    print_statement();
+			    parse_print_statement();
 				break;
 #endif				
 
 			case T_IDENT :
-				parse_assign_variable();
+				left = parse_assign_variable();
 				break;
 
 			default :
@@ -44,6 +55,7 @@ private ASTnode *statements(ASTnode *n)
 					declare_variable();
 				}
 				break;
+
 		}
 		if (interp_mode) {
 			print_prompt();
@@ -53,8 +65,14 @@ private ASTnode *statements(ASTnode *n)
 	return ast;
 }
 
+private ASTnode *compound_statement()
+{
+	ASTnode *tree = NULL;
+	return tree;
+}
+
 #if NGC_DEBUG
-private void print_statement()
+private void parse_print_statement()
 {
 print_again:
 	next_token();
@@ -63,7 +81,7 @@ print_again:
 	 * because value types enum and type_kind have same order so their members
 	 * has corresponding values , HOPE to not change that :)))
 	 * and we consider first elements type in expression as whole expressions
-	 * type :)) take care about thatxs
+	 * type :)) take care about that
 	 * But if first argumant was not a value, we search for first value to get
 	 * type of it
 	 * In tree like :
@@ -262,21 +280,7 @@ private ASTnode *parse_assign_variable()
 private ASTnode *get_rvalue_for_type(type tp)
 {
 	ASTnode *res = NULL;
-	//switch (tp.type) {
-
-		//case TYPE_INT :
-		//case TYPE_LONG :
-		//case TYPE_DOUBLE :
-		//case TYPE_FLOAT :
-			res = parse_expression(0);
-		// 	break;
-
-	//	case TYPE_CHAR :
-	//		if (tp.is_pointer)
-	//			res = parse_str_literal();
-	//		break;
-
-	//}
+	res = parse_expression(0);
 	return res;
 }
 
@@ -362,7 +366,7 @@ private ASTnode *parse_expression(int ptp)
 	int tokentype = current_token.type;
 	/* save type of current token , it can be open parenthesis or a operation token like + , - and ...
 	 */
-	if (is_endof_binexpr())
+	if (is_endof_expression())
 		goto return_ast;
 	token *token_copy;
 	while (token_precedence(tokentype) > ptp) {
@@ -380,15 +384,27 @@ private ASTnode *parse_expression(int ptp)
 		tokentype = current_token.type;
 		/* check if we can get out of this loop, chekcs if current token is like semi or comma or ...
 		 */
-		if (is_endof_binexpr())
+		if (is_endof_expression())
 			break;
 	}
 return_ast:
 	return left;
 }
 
+/*
+ *	Parser If statements , kind of selection-statement : 
+ *
+ *		if_statement := 'if' '(' expression ')' statement 
+ *		              | 'if' '(' expression ')' statement 'else' statement
+ */
 private ASTnode *parse_if_statement()
 {
 	ASTnode *condition_tree, *if_tree, *else_tree;
-	return NULL;
+	match(T_IF, "If keyword Expected");
+	left_paren();
+	ASTnode *condition = parse_expression(0);
+	if (calculate_tree(condition, CREATE_TYPE(TYPE_INT)).intval)
+		print("Condition is true\n");
+	right_paren();
+	ASTnode *body = statements();
 }

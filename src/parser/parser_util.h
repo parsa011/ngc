@@ -12,6 +12,9 @@
 
 #include "../ngc.h"
 #include "../lexer/lexer.h"
+#include "../type/types.h"
+#include "../ast/ast.h"
+#include "symtab.h"
 
 /*
  *	this is like our lexer, it will point to our working lexer , so we can have access
@@ -21,6 +24,7 @@ public lexer *current_lexer;
 
 #define next_token() (lex())
 #define current_token (current_lexer->tok)
+#define PRINT_TOK()   (print_token(&current_token))
 
 /*
  *	@brief : set working lexer to given lexer, and also activate given lexer in lexer phase
@@ -54,7 +58,7 @@ public bool is_qualifier(bool);
  *	@brief : checks if current token is end of a binary expression or no
  *	token should be something like semicolon or comm or ...
  */
-public bool is_endof_binexpr();
+public bool is_endof_expression();
 
 /*
  *	@brief : Skip tokens , until we take something with given token type
@@ -65,6 +69,9 @@ public void skip_token_until(token_type);
  *	@brief : check if current token is semicolon , it will use match with some default args to check , nothing  more :)
  */
 public void semi();
+
+public void left_paren();
+public void right_paren();
 
 /*
  *	@brief : Check is current token is assign token or (assign token like = , += and ...)

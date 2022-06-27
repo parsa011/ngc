@@ -29,6 +29,16 @@ public void semi()
 	match(T_SEMI, "Semicolon Expected Before Current Token");
 }
 
+public void left_paren()
+{
+	match(T_OP_P, "'(' Expected");
+}
+
+public void right_paren()
+{
+	match(T_CL_P, "')' Expected");
+}
+
 public void assign_token()
 {
 	if (!is_assign_token(current_token.type)) {
@@ -68,7 +78,7 @@ public bool is_qualifier(bool go_next)
 	return res;
 }
 
-public bool is_endof_binexpr()
+public bool is_endof_expression()
 {
 	int tokentype = current_token.type;
 	return tokentype == T_SEMI  || tokentype == T_CL_P || tokentype == T_COMMA;
