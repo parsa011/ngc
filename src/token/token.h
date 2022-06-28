@@ -12,222 +12,222 @@
 #include "../type/value.h"
 
 typedef enum {
-	T_EOF,
+	TOKEN_EOF,
 
-	T_PLUS, 		// +
-	T_DASH,			// -
-	T_STAR,			// *
-	T_SLASH,		// /
-	T_PERCENT,		// %
-	T_PIPE,			// |
-	T_PIPEPIPE,		// ||
-	T_EQUAL,		// =
-	T_AND,			// &
-	T_ANDAND,		// &&
-	T_DOT,			// .
-	T_ELLIPSIS,		// ...
-	T_COMMA,		// ,
-	T_CARET,		// ^
-	T_QUES,			// ?
-	T_EXCLAM,		// !
-	T_GT,			// >
-	T_LT,			// <
-	T_HASHTAG,		// #
-	T_BSLASH,
-	T_TILDE,		// ~
-	T_COLON,		// :
-	T_SEMI,			// ;
+	TOKEN_PLUS, 		// +
+	TOKEN_DASH,			// -
+	TOKEN_STAR,			// *
+	TOKEN_SLASH,		// /
+	TOKEN_PERCENT,		// %
+	TOKEN_PIPE,			// |
+	TOKEN_PIPEPIPE,		// ||
+	TOKEN_EQUAL,		// =
+	TOKEN_AND,			// &
+	TOKEN_ANDAND,		// &&
+	TOKEN_DOT,			// .
+	TOKEN_ELLIPSIS,		// ...
+	TOKEN_COMMA,		// ,
+	TOKEN_CARET,		// ^
+	TOKEN_QUES,			// ?
+	TOKEN_EXCLAM,		// !
+	TOKEN_GT,			// >
+	TOKEN_LT,			// <
+	TOKEN_HASHTAG,		// #
+	TOKEN_BSLASH,
+	TOKEN_TILDE,		// ~
+	TOKEN_COLON,		// :
+	TOKEN_SEMI,			// ;
 
-	T_OP_CB,		// {
-	T_CL_CB,		// }
-	T_OBRKT,		// [
-	T_CBRKT,		// ]
-	T_OP_P,			// {
-	T_CL_P,			// }
+	TOKEN_OP_CB,		// {
+	TOKEN_CL_CB,		// }
+	TOKEN_OBRKT,		// [
+	TOKEN_CBRKT,		// ]
+	TOKEN_OP_P,			// {
+	TOKEN_CL_P,			// }
 
-	T_INC,			// ++
-	T_DEC,			// --
+	TOKEN_INC,			// ++
+	TOKEN_DEC,			// --
 
-	T_ISEQUAL,		// ==
-	T_INCEQUAL,		// +=
-	T_DECEQUAL,		// -=
-	T_MUEQUAL,		// *=
-	T_MODEQUAL,		// %=
-	T_GREAEQ,		// >=
-	T_LOWEQ,		// <=
-	T_SHLEQUAL,		// <<=
-	T_SHREQUAL,		// >>=
-	T_DIVEQUAL,		// /=
-	T_NOTEQUAL,		// !=
-	T_ANDEQUAL,		// &=
-	T_OREQUAL,		// |=
-	T_XOREQUAL,		// ^=
-	T_SHIFT_L,		// <<
-	T_SHIFT_R,		// >>
+	TOKEN_ISEQUAL,		// ==
+	TOKEN_INCEQUAL,		// +=
+	TOKEN_DECEQUAL,		// -=
+	TOKEN_MUEQUAL,		// *=
+	TOKEN_MODEQUAL,		// %=
+	TOKEN_GREAEQ,		// >=
+	TOKEN_LOWEQ,		// <=
+	TOKEN_SHLEQUAL,		// <<=
+	TOKEN_SHREQUAL,		// >>=
+	TOKEN_DIVEQUAL,		// /=
+	TOKEN_NOTEQUAL,		// !=
+	TOKEN_ANDEQUAL,		// &=
+	TOKEN_OREQUAL,		// |=
+	TOKEN_XOREQUAL,		// ^=
+	TOKEN_SHIFT_L,		// <<
+	TOKEN_SHIFT_R,		// >>
 	
-	T_DO,
-	T_WHILE,
-	T_FOR,
-	T_IF,
-	T_ELSE,
-	T_ENUM,
-	T_STRUCT,
-	T_UNION,
-	T_AUTO,
-	T_BREAK,
-	T_CONTINUE,
-	T_DEFAULT,
-	T_SWITCH,
-	T_CASE,
-	T_VOLATILE,
-	T_CONST,
-	T_SIGNED,
-	T_UNSIGNED,
-	T_STATIC,
-	T_EXTERN,
-	T_GOTO,
-	T_RETURN,
-	T_SIZEOF,
-	T_REGISTER,
-	T_TYPEDEF,
-	T_RESTRICT,
-	T_LABEL,
+	TOKEN_DO,
+	TOKEN_WHILE,
+	TOKEN_FOR,
+	TOKEN_IF,
+	TOKEN_ELSE,
+	TOKEN_ENUM,
+	TOKEN_STRUCT,
+	TOKEN_UNION,
+	TOKEN_AUTO,
+	TOKEN_BREAK,
+	TOKEN_CONTINUE,
+	TOKEN_DEFAULT,
+	TOKEN_SWITCH,
+	TOKEN_CASE,
+	TOKEN_VOLATILE,
+	TOKEN_CONST,
+	TOKEN_SIGNED,
+	TOKEN_UNSIGNED,
+	TOKEN_STATIC,
+	TOKEN_EXTERN,
+	TOKEN_GOTO,
+	TOKEN_RETURN,
+	TOKEN_SIZEOF,
+	TOKEN_REGISTER,
+	TOKEN_TYPEDEF,
+	TOKEN_RESTRICT,
+	TOKEN_LABEL,
 
-	T_INT,
-	T_CHAR,
-	T_VOID,
-	T_DOUBLE,
-	T_FLOAT,
-	T_LONG,
+	TOKEN_INT,
+	TOKEN_CHAR,
+	TOKEN_VOID,
+	TOKEN_DOUBLE,
+	TOKEN_FLOAT,
+	TOKEN_LONG,
 
-	T_STRLIT,		 // "string"
-	T_DOUBLELIT,	 // 1.13
-	T_FLOATLIT,	     // 1.13
-	T_INTLIT,		 // 123
-	T_LONGLIT,		 // 123
-	T_OCTALLIT,		 // 012
-	T_HEXLIT,		 // 0x123
-	T_BINLIT,		 //	0b123 
-	T_CHARLIT,		 // 'c'
+	TOKEN_STRLIT,		 // "string"
+	TOKEN_DOUBLELIT,	 // 1.13
+	TOKEN_FLOATLIT,	     // 1.13
+	TOKEN_INTLIT,		 // 123
+	TOKEN_LONGLIT,		 // 123
+	TOKEN_OCTALLIT,		 // 012
+	TOKEN_HEXLIT,		 // 0x123
+	TOKEN_BINLIT,		 //	0b123 
+	TOKEN_CHARLIT,		 // 'c'
 
-	T_IDENT,
+	TOKEN_IDENT,
 #if NGC_DEBUG
-	T_PRINT,
+	TOKEN_PRINT,
 #endif
 
-	T_NEWLINE,
+	TOKEN_NEWLINE,
 
-	T_BAD
+	TOKEN_BAD
 } token_type;
 
 // TODO : Create Dictionary-Like struct for this
 private char *token_type_str[] = {
-	"T_EOF",
+	"TOKEN_EOF",
 
-	"T_PLUS", 		// +
-	"T_DASH",		// -
-	"T_STAR",		// *
-	"T_SLASH",		// /
-	"T_PERCENT",	// %
-	"T_PIPE",		// |
-	"T_PIPEPIPE",	// ||
-	"T_EQUAL",		// =
-	"T_AND",		// &
-	"T_ANDAND",		// &&
-	"T_DOT",		// .
-	"T_ELLIPSIS",	// ...
-	"T_COMMA",		// ,
-	"T_CARET",		// ^
-	"T_QUES",		// ?
-	"T_EXCLAM",		// !
-	"T_GT",			// >
-	"T_LT",			// <
-	"T_HASHTAG",	// #
-	"T_BSLASH",	
-	"T_TILDE",		// ~
-	"T_COLON",		// :
-	"T_SEMI",		// ;
+	"TOKEN_PLUS", 		// +
+	"TOKEN_DASH",		// -
+	"TOKEN_STAR",		// *
+	"TOKEN_SLASH",		// /
+	"TOKEN_PERCENT",	// %
+	"TOKEN_PIPE",		// |
+	"TOKEN_PIPEPIPE",	// ||
+	"TOKEN_EQUAL",		// =
+	"TOKEN_AND",		// &
+	"TOKEN_ANDAND",		// &&
+	"TOKEN_DOT",		// .
+	"TOKEN_ELLIPSIS",	// ...
+	"TOKEN_COMMA",		// ,
+	"TOKEN_CARET",		// ^
+	"TOKEN_QUES",		// ?
+	"TOKEN_EXCLAM",		// !
+	"TOKEN_GT",			// >
+	"TOKEN_LT",			// <
+	"TOKEN_HASHTAG",	// #
+	"TOKEN_BSLASH",	
+	"TOKEN_TILDE",		// ~
+	"TOKEN_COLON",		// :
+	"TOKEN_SEMI",		// ;
 
-	"T_OP_CB",		// {
-	"T_CL_CB",		// }
-	"T_OBRKT",		// [
-	"T_CBRKT",		// ]
-	"T_OP_P",		// (
-	"T_CP_P",		// )
+	"TOKEN_OP_CB",		// {
+	"TOKEN_CL_CB",		// }
+	"TOKEN_OBRKT",		// [
+	"TOKEN_CBRKT",		// ]
+	"TOKEN_OP_P",		// (
+	"TOKEN_CP_P",		// )
 
-	"T_INC",			// ++
-	"T_DEC",			// --
+	"TOKEN_INC",			// ++
+	"TOKEN_DEC",			// --
 
-	"T_ISEQUAL",		// ==
-	"T_INCEQUAL",		// +=
-	"T_DECEQUAL",		// -=
-	"T_MUEQUAL",		// *=
-	"T_MODEQUAL",		// %=
-	"T_GREAEQ",			// >=
-	"T_LOWEQ",			// <=
-	"T_SHLEQUAL",		// <<=
-	"T_SHREQUAL",		// >>=
-	"T_DIVEQUAL",		// /=
-	"T_NOTEQUAL",		// !=
-	"T_ANDEQUAL",		// &=
-	"T_OREQUAL",		// |=
-	"T_XOREQUAL",		// ^=
-	"T_SHIFT_L",		// <<
-	"T_SHIFT_R",		// >>
+	"TOKEN_ISEQUAL",		// ==
+	"TOKEN_INCEQUAL",		// +=
+	"TOKEN_DECEQUAL",		// -=
+	"TOKEN_MUEQUAL",		// *=
+	"TOKEN_MODEQUAL",		// %=
+	"TOKEN_GREAEQ",			// >=
+	"TOKEN_LOWEQ",			// <=
+	"TOKEN_SHLEQUAL",		// <<=
+	"TOKEN_SHREQUAL",		// >>=
+	"TOKEN_DIVEQUAL",		// /=
+	"TOKEN_NOTEQUAL",		// !=
+	"TOKEN_ANDEQUAL",		// &=
+	"TOKEN_OREQUAL",		// |=
+	"TOKEN_XOREQUAL",		// ^=
+	"TOKEN_SHIFT_R",		// >>
+	"TOKEN_SHIFT_L",		// <<
 
-	"T_DO",
-	"T_WHILE",
-	"T_FOR",
-	"T_IF",
-	"T_ELSE",
-	"T_ENUM",
-	"T_STRUCT",
-	"T_UNION",
-	"T_AUTO",
-	"T_BREAK",
-	"T_CONTINUE",
-	"T_DEFAULT",
-	"T_SWITCH",
-	"T_CASE",
-	"T_VOLATILE",
-	"T_CONST",
-	"T_SIGNED",
-	"T_UNSIGNED",
-	"T_STATIC",
-	"T_EXTERN",
-	"T_GOTO",
-	"T_RETURN",
-	"T_SIZEOF",
-	"T_REGISTER",
-	"T_TYPEDEF",
-	"T_RESTRICT",
-	"T_LABEL",
+	"TOKEN_DO",
+	"TOKEN_WHILE",
+	"TOKEN_FOR",
+	"TOKEN_IF",
+	"TOKEN_ELSE",
+	"TOKEN_ENUM",
+	"TOKEN_STRUCT",
+	"TOKEN_UNION",
+	"TOKEN_AUTO",
+	"TOKEN_BREAK",
+	"TOKEN_CONTINUE",
+	"TOKEN_DEFAULT",
+	"TOKEN_SWITCH",
+	"TOKEN_CASE",
+	"TOKEN_VOLATILE",
+	"TOKEN_CONST",
+	"TOKEN_SIGNED",
+	"TOKEN_UNSIGNED",
+	"TOKEN_STATIC",
+	"TOKEN_EXTERN",
+	"TOKEN_GOTO",
+	"TOKEN_RETURN",
+	"TOKEN_SIZEOF",
+	"TOKEN_REGISTER",
+	"TOKEN_TYPEDEF",
+	"TOKEN_RESTRICT",
+	"TOKEN_LABEL",
 
-	"T_INT",
-	"T_CHAR",
-	"T_VOID",
-	"T_DOUBLE",
-	"T_FLOAT",
-	"T_LONG",
+	"TOKEN_INT",
+	"TOKEN_CHAR",
+	"TOKEN_VOID",
+	"TOKEN_DOUBLE",
+	"TOKEN_FLOAT",
+	"TOKEN_LONG",
 
-	"T_STRLIT",		 // "string"
-	"T_DOUBLELIT",	 // 1.23
-	"T_FLOATLIT",	 // 1.23
-	"T_INTLIT",		 // 123
-	"T_LONGLIT",	 // 123
-	"T_OCTALLIT",	 // 012
-	"T_HEXLIT",		 // 0x123
-	"T_BINLIT",		 //	0b123 
-	"T_CHARLIT",	 // 'c'
+	"TOKEN_STRLIT",		 // "string"
+	"TOKEN_DOUBLELIT",	 // 1.23
+	"TOKEN_FLOATLIT",	 // 1.23
+	"TOKEN_INTLIT",		 // 123
+	"TOKEN_LONGLIT",	 // 123
+	"TOKEN_OCTALLIT",	 // 012
+	"TOKEN_HEXLIT",		 // 0x123
+	"TOKEN_BINLIT",		 //	0b123 
+	"TOKEN_CHARLIT",	 // 'c'
 
-	"T_IDENT",
+	"TOKEN_IDENT",
 #if NGC_DEBUG
-	"T_PRINT",
+	"TOKEN_PRINT",
 #endif
 
-	"T_NEWLINE",
+	"TOKEN_NEWLINE",
 
-	"T_BAD"
+	"TOKEN_BAD"
 };
 
 #define TOKEN_BUF_SIZE 64 
@@ -267,7 +267,7 @@ public void token_free(token *);
 public int token_precedence(token_type);
 
 /*
- *	@brief : return keyword type related to given string , return T_IDENT if given char was not keyword
+ *	@brief : return keyword type related to given string , return TOKEN_IDENT if given char was not keyword
  */
 public token_type guess_text_type(char *);
 

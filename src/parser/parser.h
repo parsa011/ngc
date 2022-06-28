@@ -9,9 +9,6 @@
 */
 
 #include "parser_util.h"
-#include "../type/types.h"
-#include "../ast/ast.h"
-#include "symtab.h"
 
 /*
  *	@brief : This is entry point of parser , we will call this everwhere that we need
@@ -24,12 +21,20 @@ public ASTnode *compile(lexer *);
  */
 private ASTnode *statements();
 
+/*
+ *	@brief : parser compound statement with this grammer :
+ *
+ * 	compound-statement ::= '{' {declaration}* {statement}* '}'
+ *
+ */
+private ASTnode *compound_statement();
+
 #if NGC_DEBUG
 /*
  * @brief : Pring statement for debug mode;
  * print_statement := 'print' expresssion ';'
  */
-private void print_statement();
+private void parse_print_statement();
 #endif
 
 /*

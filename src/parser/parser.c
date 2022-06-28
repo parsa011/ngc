@@ -33,20 +33,20 @@ private ASTnode *statements()
 {
     ASTnode *ast = NULL;
 	ASTnode *left = NULL;
-	while (current_token.type != T_EOF) {
+	while (current_token.type != TOKEN_EOF) {
 		switch (current_token.type) {
 
-			case T_IF :
+			case TOKEN_IF :
 				left = parse_if_statement();
 				break;
 
 #if NGC_DEBUG
-			case T_PRINT :
+			case TOKEN_PRINT :
 			    parse_print_statement();
 				break;
 #endif				
 
-			case T_IDENT :
+			case TOKEN_IDENT :
 				left = parse_assign_variable();
 				break;
 
@@ -101,7 +101,7 @@ check_tree_type:
 	type_kind tp_kind = n->val.type;
 	value val = calculate_tree(tree, CREATE_TYPE(n->val.type));
 	print_value(val);
-	if (current_token.type == T_COMMA)
+	if (current_token.type == TOKEN_COMMA)
 		goto print_again;
 	putchar('\n');
 }
@@ -116,13 +116,13 @@ private ASTnode *declare_variable()
 	type qualifiers;
 	qualifiers.is_const = qualifiers.is_unsigned = false;
 	while (is_qualifier(false)) {
-		if (current_token.type == T_CONST) {
+		if (current_token.type == TOKEN_CONST) {
 			if (qualifiers.is_const) {
 				show_lexer_error("Variable Is Constant Already");
 				panic(NULL);
 			}
 			qualifiers.is_const = true;
-		} else if (current_token.type == T_UNSIGNED) {
+		} else if (current_token.type == TOKEN_UNSIGNED) {
 			if (qualifiers.is_unsigned) {
 				show_lexer_error("Variable Is Unsigned Already");
 				panic(NULL);
@@ -159,7 +159,7 @@ decl_again:
 	/* here we should check for star , if current token is an star so our type is a pointer to 
 	 * then we have to edit our type but for now we skip them
 	 */
-	if (current_token.type == T_STAR) {
+	if (current_token.type == TOKEN_STAR) {
 		tp.is_pointer = true;
 		next_token();
 	} else
@@ -168,7 +168,7 @@ decl_again:
 	/* check if current token is identifier or no 
 	 * it should be ident because we want to use it as variable name
 	 */
-	if (current_token.type != T_IDENT) {
+	if (current_token.type != TOKEN_IDENT) {
 		show_lexer_error("Identifier Expected");
 		panic(NULL);
 	}
@@ -201,7 +201,7 @@ decl_again:
 	 * check if current token is assign token or no 
 	 * if it is , so we gonna parse right value
 	 */
-	if (current_token.type == T_EQUAL) {
+	if (current_token.type == TOKEN_EQUAL) {
 		next_token();
 		ASTnode *rval_tree = get_rvalue_for_type(tp);
 		val = calculate_tree(rval_tree, tp);
@@ -209,7 +209,7 @@ decl_again:
 	/* Add parsed variable to global symbol table
 	 */
 	symtab_create_entry(text, val, &tp, pos);
-	if (current_token.type == T_COMMA) {
+	if (current_token.type == TOKEN_COMMA) {
 		/*
 		 * int age = 10, count;
 		 *             ^
@@ -239,7 +239,7 @@ private ASTnode *parse_assign_variable()
 		panic(NULL);
 	}
 	ASTnode *left = create_ast_leaf(strdup(entry->name), A_IDENT, entry->val, current_token.pos);
-	match(T_IDENT, "Identifier Expected");
+	match(TOKEN_IDENT, "Identifier Expected");
 
 	/* we can have some different type of assign token like =, += and ...
 	 */
@@ -301,7 +301,7 @@ private ASTnode *primary_factor(int ptp)
 {
 	/* Do not check types if current token is open parenthesis
 	 */
-//	if (!check_literal_and_type(&current_token, tp) && current_token.type != T_OP_P) {
+//	if (!check_literal_and_type(&current_token, tp) && current_token.type != TOKEN_OP_P) {
 		// TODO : enhance bug reporting
 //		show_lexer_error("Value And Type Are Not Match");
 //		panic(NULL);
@@ -310,15 +310,15 @@ private ASTnode *primary_factor(int ptp)
 	ASTnode *n;
 	switch (current_token.type) {
 
-		case T_INTLIT :
-		case T_LONGLIT :
-		case T_DOUBLELIT :
-		case T_FLOATLIT :
-        case T_CHARLIT :
-        case T_STRLIT :
+		case TOKEN_INTLIT :
+		case TOKEN_LONGLIT :
+		case TOKEN_DOUBLELIT :
+		case TOKEN_FLOATLIT :
+        case TOKEN_CHARLIT :
+        case TOKEN_STRLIT :
             {
                 ASTnode_type tp;
-                if (current_token.type == T_CHARLIT || current_token.type == T_STRLIT)
+                if (current_token.type == TOKEN_CHARLIT || current_token.type == TOKEN_STRLIT)
                     tp = A_STR;
                 else
                     tp = A_CONST;
@@ -327,13 +327,13 @@ private ASTnode *primary_factor(int ptp)
     			return n;
         	}
 
-		case T_OP_P :
+		case TOKEN_OP_P :
 			next_token();
 			n = parse_expression(0);
-			match(T_CL_P, "Unclosed Parenthesis");
+			match(TOKEN_CL_P, "Unclosed Parenthesis");
 			return n;
 
-		case T_IDENT :
+		case TOKEN_IDENT :
 			{
 				symtab_entry *entry = symtab_get_by_name(current_token.buffer, true);
 				ASTnode_type tp;
@@ -400,7 +400,7 @@ return_ast:
 private ASTnode *parse_if_statement()
 {
 	ASTnode *condition_tree, *if_tree, *else_tree;
-	match(T_IF, "If keyword Expected");
+	match(TOKEN_IF, "If keyword Expected");
 	left_paren();
 	ASTnode *condition = parse_expression(0);
 	if (calculate_tree(condition, CREATE_TYPE(TYPE_INT)).intval)

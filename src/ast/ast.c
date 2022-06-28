@@ -18,7 +18,7 @@ public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTno
 	n->left = left;
 	n->right = right;
 	pos_copy(pos, n->pos);
-	set_val_by_type(&n->val, &val, T_EQUAL);
+	set_val_by_type(&n->val, &val, TOKEN_EQUAL);
 	return n;
 }
 
@@ -36,29 +36,29 @@ public void ast_free(ASTnode *n)
 public ASTnode_type tokentype_to_nodetype(token_type type)
 {
 	switch (type) {
-		case T_ANDAND :
+		case TOKEN_ANDAND :
 			return A_AND;
-		case T_PIPEPIPE :
+		case TOKEN_PIPEPIPE :
 			return A_OR;
-		case T_GT :
+		case TOKEN_GT :
 			return A_GREATER;
-		case T_LT :
+		case TOKEN_LT :
 			return A_LOWER;
-		case T_ISEQUAL :
+		case TOKEN_ISEQUAL :
 			return A_ISEQUAL;
-	    case T_NOTEQUAL :
+	    case TOKEN_NOTEQUAL :
 	        return A_NOTEQUAL;
-		case T_LOWEQ :
+		case TOKEN_LOWEQ :
 			return A_LOWER_EQUAL;
-		case T_GREAEQ :
+		case TOKEN_GREAEQ :
 			return A_GREATER_EQUAL;
-		case T_STAR :
+		case TOKEN_STAR :
 			return A_MULTIPLY;
-		case T_SLASH :
+		case TOKEN_SLASH :
 			return A_DIVIDE;
-		case T_DASH :
+		case TOKEN_DASH :
 			return A_MINUS;
-		case T_PLUS :
+		case TOKEN_PLUS :
 			return A_ADD;
 	}
 	panic("Invalid token type (for convert to node type)");
@@ -76,23 +76,24 @@ public value calculate_tree(ASTnode *n, type tp)
 {
 	value val;
 	if (IS_INT_TYPE(tp.type)) {
-		int res = (int) calculate_binary_tree(n, tp);
+		int res = (int) process_binary_tree(n, tp);
 		val.type = VALUE_INT;
 		val.intval = res;
 	} else if (IS_LONG_TYPE(tp.type)) {
-		long res = (long) calculate_binary_tree(n, tp);
+		long res = (long) process_binary_tree(n, tp);
 		val.type = VALUE_LONG;
 		val.longval = res;
 	} else if (IS_DOUBLE_TYPE(tp.type)) {
-		double res = calculate_binary_tree(n, tp);
+		double res = process_binary_tree(n, tp);
 		val.type = VALUE_DOUBLE;
 		val.doubleval = res;
 	} else if (IS_FLOAT_TYPE(tp.type)) {
-		double res = calculate_binary_tree(n, tp);
+		double res = process_binary_tree(n, tp);
 		val.type = VALUE_FLOAT;
 		val.floatval = (float) res;
-	} else if (IS_CHAR_TYPE(tp.type) && IS_POINTER_TYPE(tp) || IS_STRING_TYPE(tp.type)) {
-    	val.type = VALUE_STRING;
+	} else if (IS_CHAR_TYPE(tp.type) && IS_POINTER_TYPE(tp) || IS_STRING_TYPE(tp.type) || IS_CHAR_TYPE(tp.type)) {
+    	val.type = IS_CHAR_TYPE(tp.type) && IS_POINTER_TYPE(tp) || IS_STRING_TYPE(tp.type)
+			? VALUE_STRING : VALUE_CHAR;
     	val.str = process_string_tree(n);
 	}
 	return val;
@@ -114,13 +115,13 @@ public string *process_string_tree(ASTnode *tree)
 	return left_str;
 }
 
-public double calculate_binary_tree(ASTnode *n, type tp)
+public double process_binary_tree(ASTnode *n, type tp)
 {
 	double left, right;
 	if (n->left)
-		left = calculate_binary_tree(n->left, tp);
+		left = process_binary_tree(n->left, tp);
 	if (n->right)
-		right = calculate_binary_tree(n->right, tp);
+		right = process_binary_tree(n->right, tp);
 	switch (n->type) {
 		case A_AND :
 			return left && right;
@@ -186,15 +187,14 @@ public void print_ast(ASTnode *n, int depth)
 	for (int i = 0; i < depth; i++) {
 		putchar(' ');
 	}
-	printf("%s (%d:%d)", get_nodetype_str(n->type), n->pos.line, n->pos.col);
+	printf("%s (%d:%d) --->", get_nodetype_str(n->type), n->pos.line, n->pos.col);
 	
-	printf(" --->");
 	if (n->type == A_CONST) {
 		print_value(n->val);
 	} else if (n->type == A_STR)
 		printf(" '%s'", VALUE_AS_STRING(n->val)->value);
-	printf(" %s", get_valuetype_str(n->val.type));
-	putchar('\n');
+	
+	printf(" %s\n", get_valuetype_str(n->val.type));
 	if (n->left) {
 		print_ast(n->left, depth + 4);
 	}

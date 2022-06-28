@@ -71,8 +71,6 @@ int main(int argc, char *argv[])
 	#endif
 	l->close_file(l);
 #endif
-
 	ngc_free(l);
 	return 0;
-
 }

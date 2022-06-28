@@ -262,15 +262,15 @@ private double scan_number(char c, token_type *t)
 	if (in_floating_point) {
 		double float_res = res + floating_point / pow;
 		if (float_res > FLT_MAX)
-			*t = T_DOUBLELIT;
+			*t = TOKEN_DOUBLELIT;
 		else
-			*t = T_FLOATLIT;
+			*t = TOKEN_FLOATLIT;
 		return float_res;
 	}
 	if (res > INT_MAX) {
-		*t = T_LONGLIT;
+		*t = TOKEN_LONGLIT;
 	} else 
-		*t = T_INTLIT;
+		*t = TOKEN_INTLIT;
 	return res;
 }
 
@@ -314,55 +314,55 @@ public void lex()
 	switch (c) {
 
 		case EOF :
-			set_working_lexer_token_type(T_EOF);
+			set_working_lexer_token_type(TOKEN_EOF);
 			break;
 
 		case '+' :
 			c = next_char();
 			if (c == '=' ) {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_INCEQUAL);
+				set_working_lexer_token_type(TOKEN_INCEQUAL);
 				break;
 			} else if (c == '+') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_INC);
+				set_working_lexer_token_type(TOKEN_INC);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_PLUS);
+			set_working_lexer_token_type(TOKEN_PLUS);
 			break;
 
 		case '-' :
 			c = next_char();
 			if (c == '=' ) {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_DECEQUAL);
+				set_working_lexer_token_type(TOKEN_DECEQUAL);
 				break;
 			} else if (c == '-') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_DEC);
+				set_working_lexer_token_type(TOKEN_DEC);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_DASH);
+			set_working_lexer_token_type(TOKEN_DASH);
 			break;
 
 		case '*' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_MUEQUAL);
+				set_working_lexer_token_type(TOKEN_MUEQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_STAR);
+			set_working_lexer_token_type(TOKEN_STAR);
 			break;
 
 		case '/' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_DIVEQUAL);
+				set_working_lexer_token_type(TOKEN_DIVEQUAL);
 				break;
 			} else if (c == '*') {
 				skip_ml_comment();
@@ -374,55 +374,55 @@ public void lex()
 				break;
 			} else 
 				put_back(c);
-			set_working_lexer_token_type(T_SLASH);
+			set_working_lexer_token_type(TOKEN_SLASH);
 			break;
 
 		case '%' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_MODEQUAL);
+				set_working_lexer_token_type(TOKEN_MODEQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_PERCENT);
+			set_working_lexer_token_type(TOKEN_PERCENT);
 			break;
 
 		case '|' :
 			c = next_char();
 			if (c == '|') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_PIPEPIPE);
+				set_working_lexer_token_type(TOKEN_PIPEPIPE);
 				break;
 			} else if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_OREQUAL);
+				set_working_lexer_token_type(TOKEN_OREQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_PIPE);
+			set_working_lexer_token_type(TOKEN_PIPE);
 			break;
 
 		case '=' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_ISEQUAL);
+				set_working_lexer_token_type(TOKEN_ISEQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_EQUAL);
+			set_working_lexer_token_type(TOKEN_EQUAL);
 			break;
 
 		case '&' :
 			c = next_char();
 			if (c == '&') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_ANDAND);
+				set_working_lexer_token_type(TOKEN_ANDAND);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_AND);
+			set_working_lexer_token_type(TOKEN_AND);
 			break;
 				
 		case '.' :
@@ -433,44 +433,44 @@ public void lex()
 				add_char_to_token(c);
 				if (c != '.') {
 					show_lexer_error("Bad Token");
-					set_working_lexer_token_type(T_BAD);
+					set_working_lexer_token_type(TOKEN_BAD);
 					break;
 				}
-				set_working_lexer_token_type(T_ELLIPSIS);
+				set_working_lexer_token_type(TOKEN_ELLIPSIS);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_DOT);
+			set_working_lexer_token_type(TOKEN_DOT);
 			break;
 
 		case ',' :
-			set_working_lexer_token_type(T_COMMA);
+			set_working_lexer_token_type(TOKEN_COMMA);
 			break;
 		
 		case '^' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_XOREQUAL);
+				set_working_lexer_token_type(TOKEN_XOREQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_CARET);
+			set_working_lexer_token_type(TOKEN_CARET);
 			break;
 
 		case '?' :
-			set_working_lexer_token_type(T_QUES);
+			set_working_lexer_token_type(TOKEN_QUES);
 			break;
 		
 		case '!' :
 			c = next_char();
 			if (c == '=') {
 				add_char_to_token(c);
-				set_working_lexer_token_type(T_NOTEQUAL);
+				set_working_lexer_token_type(TOKEN_NOTEQUAL);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_EXCLAM);
+			set_working_lexer_token_type(TOKEN_EXCLAM);
 			break;
 
 		case '>' :
@@ -480,18 +480,18 @@ public void lex()
 				c = next_char();
 				if (c == '=') {
 					add_char_to_token(c);
-					set_working_lexer_token_type(T_SHREQUAL);
+					set_working_lexer_token_type(TOKEN_SHREQUAL);
 					break;
 				} else
 					put_back(c);
-				set_working_lexer_token_type(T_SHIFT_R);
+				set_working_lexer_token_type(TOKEN_SHIFT_R);
 				break;
 			} else if (c == '=') {
-				set_working_lexer_token_type(T_GREAEQ);
+				set_working_lexer_token_type(TOKEN_GREAEQ);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_GT);
+			set_working_lexer_token_type(TOKEN_GT);
 			break;
 
 
@@ -502,17 +502,17 @@ public void lex()
 				c = next_char();
 				if (c == '=') {
 					add_char_to_token(c);
-					set_working_lexer_token_type(T_SHLEQUAL);
+					set_working_lexer_token_type(TOKEN_SHLEQUAL);
 					break;
 				} else
 					put_back(c);
-				set_working_lexer_token_type(T_SHIFT_L);
+				set_working_lexer_token_type(TOKEN_SHIFT_L);
 			} else if (c == '=') {
-				set_working_lexer_token_type(T_LOWEQ);
+				set_working_lexer_token_type(TOKEN_LOWEQ);
 				break;
 			} else
 				put_back(c);
-			set_working_lexer_token_type(T_LT);
+			set_working_lexer_token_type(TOKEN_LT);
 			break;
 
 		case '"' :
@@ -538,7 +538,7 @@ add_again:
 				goto str_concat;
 			else
 				put_back(c);
-			set_working_lexer_token_type(T_STRLIT);
+			set_working_lexer_token_type(TOKEN_STRLIT);
 			break;
 
 		case '\'' :
@@ -561,11 +561,11 @@ add_again:
 				c = next_char();
 			}
 			if (c != '\'') {
-				set_working_lexer_token_type(T_BAD);
+				set_working_lexer_token_type(TOKEN_BAD);
 				show_lexer_error("Unclosed Char Literal");
 				break;
 			}
-			set_working_lexer_token_type(T_CHARLIT);
+			set_working_lexer_token_type(TOKEN_CHARLIT);
 			break;
 
 		case '#' :
@@ -573,47 +573,47 @@ add_again:
 			while (c != '\n')
 				c = next_char();
 			lex();
-			//set_working_lexer_token_type(T_HASHTAG);
+			//set_working_lexer_token_type(TOKEN_HASHTAG);
 			break;
 		
 		case '\\' :
-			set_working_lexer_token_type(T_BSLASH);
+			set_working_lexer_token_type(TOKEN_BSLASH);
 			break;
 
 		case '~' :
-			set_working_lexer_token_type(T_TILDE);
+			set_working_lexer_token_type(TOKEN_TILDE);
 			break;
 
 		case ':' :
-			set_working_lexer_token_type(T_COLON);
+			set_working_lexer_token_type(TOKEN_COLON);
 			break;
 
 		case ';' :
-			set_working_lexer_token_type(T_SEMI);
+			set_working_lexer_token_type(TOKEN_SEMI);
 			break;
 
 		case '{' :
-			set_working_lexer_token_type(T_OP_CB);
+			set_working_lexer_token_type(TOKEN_OP_CB);
 			break;
 
 		case '}' :
-			set_working_lexer_token_type(T_CL_CB);
+			set_working_lexer_token_type(TOKEN_CL_CB);
 			break;
 
 		case '[' :
-			set_working_lexer_token_type(T_OBRKT);
+			set_working_lexer_token_type(TOKEN_OBRKT);
 			break;
 
 		case ']' :
-			set_working_lexer_token_type(T_CBRKT);
+			set_working_lexer_token_type(TOKEN_CBRKT);
 			break;
 
 		case '(' :
-			set_working_lexer_token_type(T_OP_P);
+			set_working_lexer_token_type(TOKEN_OP_P);
 			break;
 
 		case ')' :
-			set_working_lexer_token_type(T_CL_P);
+			set_working_lexer_token_type(TOKEN_CL_P);
 			break;
 
 		default :
@@ -626,13 +626,13 @@ add_again:
 			if (isdigit(c)) {
 				double res = scan_number(c, &working_lexer->tok.type);
 				working_lexer->tok.val.type = working_lexer->tok.type;
-				if (working_lexer->tok.type == T_DOUBLELIT) {
+				if (working_lexer->tok.type == TOKEN_DOUBLELIT) {
 					working_lexer->tok.val.doubleval = res;
 					working_lexer->tok.val.type = VALUE_DOUBLE;
-				} else if (working_lexer->tok.type == T_FLOATLIT) {
+				} else if (working_lexer->tok.type == TOKEN_FLOATLIT) {
 					working_lexer->tok.val.floatval = (float) res;
 					working_lexer->tok.val.type = VALUE_FLOAT;
-				} else if (working_lexer->tok.type == T_LONGLIT) {
+				} else if (working_lexer->tok.type == TOKEN_LONGLIT) {
 					working_lexer->tok.val.longval = (long) res;
 					working_lexer->tok.val.type = VALUE_LONG;
 				} else {
@@ -641,7 +641,7 @@ add_again:
 				}
 				break;
 			}
-			set_working_lexer_token_type(T_BAD);
+			set_working_lexer_token_type(TOKEN_BAD);
 			show_lexer_error("Bad Token");
 			break;
 	}

@@ -26,17 +26,17 @@ public void match(token_type type, char *msg)
 
 public void semi()
 {
-	match(T_SEMI, "Semicolon Expected Before Current Token");
+	match(TOKEN_SEMI, "Semicolon Expected Before Current Token");
 }
 
 public void left_paren()
 {
-	match(T_OP_P, "'(' Expected");
+	match(TOKEN_OP_P, "'(' Expected");
 }
 
 public void right_paren()
 {
-	match(T_CL_P, "')' Expected");
+	match(TOKEN_CL_P, "')' Expected");
 }
 
 public void assign_token()
@@ -50,7 +50,7 @@ public void assign_token()
 
 public bool is_eof()
 {
-	return current_token.type == T_EOF;
+	return current_token.type == TOKEN_EOF;
 }
 
 public bool is_type_keyword(bool go_next)
@@ -68,9 +68,9 @@ public bool is_qualifier(bool go_next)
 {
 	bool res = false;
 	switch (current_token.type) {
-		case T_CONST :
-		case T_VOLATILE :
-		case T_UNSIGNED :
+		case TOKEN_CONST :
+		case TOKEN_VOLATILE :
+		case TOKEN_UNSIGNED :
 			res = true;
 	}
 	if (go_next)
@@ -81,7 +81,7 @@ public bool is_qualifier(bool go_next)
 public bool is_endof_expression()
 {
 	int tokentype = current_token.type;
-	return tokentype == T_SEMI  || tokentype == T_CL_P || tokentype == T_COMMA;
+	return tokentype == TOKEN_SEMI  || tokentype == TOKEN_CL_P || tokentype == TOKEN_COMMA;
 }
 
 public void skip_token_until(token_type type)

@@ -8,12 +8,11 @@
 
 #include "symtab.h"
 
-symbol_table *symtab;
+symbol_table symtab;
 
 public void symtab_init()
 {
-	symtab = ngc_malloc(sizeof(symbol_table));
-	symtab->buflen = 0;
+	symtab.buflen = 0;
 }
 
 /*
@@ -22,18 +21,17 @@ public void symtab_init()
  */
 public void symtab_add(symtab_entry *entry)
 {
-	assert(symtab);
 	if (symtab_get_by_name(entry->name, false)) {
 		show_lexer_error("There is a entry with This name");
 		panic(NULL);
 	}
-	if (!symtab->entries) {
-		symtab->entries = entry;
+	if (!symtab.entries) {
+		symtab.entries = entry;
 	} else {
-		symtab->last->next = entry;
+		symtab.last->next = entry;
 	}
-	symtab->last = entry;
-	symtab->last->next = NULL;
+	symtab.last = entry;
+	symtab.last->next = NULL;
 }
 
 /*
@@ -43,7 +41,7 @@ public void symtab_create_entry(char *text, value val, type *tp, struct position
 {
 	symtab_entry *entry = ngc_malloc(sizeof(symtab_entry));
 	entry->name = strdup(text);
-	set_val_by_type(&entry->val, &val, T_EQUAL);
+	set_val_by_type(&entry->val, &val, TOKEN_EQUAL);
 	pos_copy(pos, entry->pos);
 	type *entry_type = &entry->entry_type;
 	type_copy(tp, entry_type);
@@ -52,7 +50,7 @@ public void symtab_create_entry(char *text, value val, type *tp, struct position
 
 public symtab_entry *symtab_get_by_name(char *name, bool show_error)
 {
-	for (symtab_entry *entry = symtab->entries; entry; entry = entry->next){
+	for (symtab_entry *entry = symtab.entries; entry; entry = entry->next){
 		if (STR_EQUAL(name, entry->name))
 			return entry;
 	}
@@ -65,7 +63,7 @@ public symtab_entry *symtab_get_by_name(char *name, bool show_error)
 
 public void print_symtab()
 {
-	for (symtab_entry *entry = symtab->entries; entry; entry = entry->next) {
+	for (symtab_entry *entry = symtab.entries; entry; entry = entry->next) {
 
 		int type = symbol_entry_type(entry);
 		printf("%s -> %s%s%s (%d:%d)", entry->name, COLORUNDLINE, get_valuetype_str(type), COLORDEFAULT, entry->pos.line, entry->pos.col);

@@ -46,7 +46,7 @@ struct symtab_entry_t {
 /*
  *	our global symbol table
  */
-public symbol_table *symtab;
+public symbol_table symtab;
 
 /*
  *	@brief : Initialize our gloabal symbol table with default value of 

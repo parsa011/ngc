@@ -27,8 +27,8 @@ typedef enum {
 	A_AND,
 	A_OR,
 
-
-
+	A_GLUE,
+	
 	A_ASSIGN,
 	A_LVAL,
 	A_IDENT
@@ -49,6 +49,8 @@ private char *ASTnode_type_str[] = {
 	// Logicals
 	"A_AND",
 	"A_OR",
+
+	"A_GLUE",
 	
 	"A_ASSIGN",
 	"A_LVAL",
@@ -102,7 +104,7 @@ public value calculate_tree(ASTnode *tree, type tp);
 /*
  *	@brief : name of function is self-document bro XD
  */
-public double calculate_binary_tree(ASTnode * tree, type tp);
+public double process_binary_tree(ASTnode * tree, type tp);
 
 /*
  *	@brief : Print given ast into human readable format
