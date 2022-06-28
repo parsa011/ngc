@@ -78,4 +78,9 @@ public void right_paren();
  */
 public void assign_token();
 
+/*
+ *	just check if current_token type is equal to tp
+ */
+public bool token_is(token_type tp);
+
 #endif

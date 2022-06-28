@@ -94,3 +94,8 @@ public void skip_token_until(token_type type)
 		next_token();
 	}
 }
+
+public bool token_is(token_type tp)
+{
+	return current_token.type == tp;
+}
