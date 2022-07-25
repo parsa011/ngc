@@ -13,6 +13,7 @@
 public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTnode *left, ASTnode *right, struct position pos)
 {
 	ASTnode *n = ngc_malloc(sizeof(ASTnode));
+	memset(n, 0, sizeof(ASTnode));
 	n->title = strdup(title);
 	n->type = type;
 	n->left = left;

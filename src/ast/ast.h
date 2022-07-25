@@ -30,8 +30,11 @@ typedef enum {
 	A_GLUE,
 	
 	A_ASSIGN,
+	A_DECLER,
 	A_LVAL,
 	A_IDENT,
+
+	A_PRINT,
 	
 	A_EOF
 } ASTnode_type; 
@@ -54,8 +57,11 @@ private char *ASTnode_type_str[] = {
 	"A_GLUE",
 	
 	"A_ASSIGN",
+	"A_DECLER",
 	"A_LVAL",
 	"A_IDENT",
+
+	"A_PRINT",
 
 	"A_EOF"
 }; 

@@ -19,6 +19,8 @@ public ASTnode *compile(lexer *l)
 	ASTnode *n;
 	do {
 		n = parse_compound_statement();
+		if (n)
+			print_ast(n, 0);
 	} while (n->type != A_EOF);
 	return n;
 }

@@ -23,8 +23,9 @@ public ASTnode *parse_compound_statement()
 		next_token();
 	}
 	
-	if (!need_cl_cb)
+	if (!need_cl_cb) {
 		return parse_statement();
+	}
 	
 	while (!token_is(TOKEN_CL_CB)) {
 		
@@ -38,26 +39,33 @@ public ASTnode *parse_statement()
 	if (interp_mode) {
 		print_prompt();
 	}
+	ASTnode *tree = NULL;
 	switch (current_token.type) {
 		case TOKEN_EOF :
-			return create_ast_node("EOF", A_EOF, INT_VAL(0), NULL, NULL, current_lexer->pos);
-
+			tree = create_ast_node("EOF", A_EOF, INT_VAL(0), NULL, NULL, current_lexer->pos);
+			break;
+			
 		case TOKEN_PRINT :
 		    parse_print_statement();
+			tree = create_ast_node("Print", A_PRINT, INT_VAL(0), NULL, NULL, current_lexer->pos);
 			break;
 
 		case TOKEN_IF :
-			return parse_if_statement();
+			tree = parse_if_statement();
+			break;
 			
 		default :
 			if (is_type_keyword(false) || is_qualifier(false)) {
 				parse_variable_decleration();
+				tree = create_ast_node("Decleration", A_DECLER, INT_VAL(0), NULL, NULL, current_lexer->pos);
 			} else {
 				parse_assignment_expression();
+				tree = create_ast_node("Assign", A_ASSIGN, INT_VAL(0), NULL, NULL, current_lexer->pos);
 			}
 		break;
 	}
 	semi();
+	return tree;
 }
 
 #if NGC_DEBUG
