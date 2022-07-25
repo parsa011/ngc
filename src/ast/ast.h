@@ -31,8 +31,9 @@ typedef enum {
 	
 	A_ASSIGN,
 	A_LVAL,
-	A_IDENT
-
+	A_IDENT,
+	
+	A_EOF
 } ASTnode_type; 
 
 private char *ASTnode_type_str[] = {
@@ -54,7 +55,9 @@ private char *ASTnode_type_str[] = {
 	
 	"A_ASSIGN",
 	"A_LVAL",
-	"A_IDENT"
+	"A_IDENT",
+
+	"A_EOF"
 }; 
 
 typedef struct ASTnode_t ASTnode;
@@ -72,19 +75,19 @@ struct ASTnode_t {
  *	@brief : This routine will create new instance of ast node
  *	but we dont set value here , you should set value after creating new one
  */
-public ASTnode *create_ast_node(char *, ASTnode_type, value, ASTnode *, ASTnode *, struct position);
+public ASTnode *create_ast_node(char *title, ASTnode_type type, value val, ASTnode *left, ASTnode *right, struct position pos);
 
 /*
  *	@brief : create a left for abstract syntax tree
  *	leaf can be something like variables that are defined everywhere 
  *	like in function or in list of function arguments
  */
-public ASTnode *create_ast_leaf(char *, ASTnode_type, value, struct position);
+public ASTnode *create_ast_leaf(char *title, ASTnode_type type, value val, struct position pos);
 
 /*
  *	@brief : free ast node (given node with it childrens)
  */
-public void ast_free(ASTnode *);
+public void ast_free(ASTnode *ast);
 
 /*
  *	@brief : Convert gien type to ast node type
@@ -109,6 +112,6 @@ public double process_binary_tree(ASTnode * tree, type tp);
 /*
  *	@brief : Print given ast into human readable format
  */
-public void print_ast(ASTnode *, int);
+public void print_ast(ASTnode *ast, int padding);
 
 #endif

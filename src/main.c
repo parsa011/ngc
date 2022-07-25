@@ -22,13 +22,14 @@ void usage(char *program_name)
 	panic(NULL);
 }
 
+#define PANIC_MSG_LEN 256
 void panic(const char *msg, ...)
 {
 	if (msg) {
-		char buf[256];
+		char buf[PANIC_MSG_LEN];
 		va_list ap;
 		va_start(ap, msg);
-		vsnprintf(buf, 256, msg, ap);
+		vsnprintf(buf, PANIC_MSG_LEN, msg, ap);
 		va_end(ap);
 		fprintf(stderr, "%s\n", buf);
 	}
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
 		print_symtab();
 	#endif
 	l->close_file(l);
+	print_symtab();
 #endif
 	ngc_free(l);
 	return 0;
