@@ -23,6 +23,8 @@ name = "hello";
 char *last_name = "parsa";
 name = "parsa";
 print name + " mahmoudy " + name +" sahebi";
+name = "parsa " + name + " Mahmoudy";
+print name;
 print 12 + 8;
 /************************ statistics *************************
  * this is  a test comment

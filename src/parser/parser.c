@@ -16,11 +16,13 @@ public ASTnode *compile(lexer *l)
 		print_prompt();
 	}
 	next_token();
-	ASTnode *n = NULL;
+	ASTnode *n = NULL, *tree = NULL;
 	do {
 		n = parse_compound_statement();
-		if (n)
-			print_ast(n, 0);
+		tree = create_ast_node("ROOT", A_GLUE, INT_VAL(0), tree, n, current_lexer->pos);
+		//if (n)
+		//	print_ast(n, 0);
 	} while (n->type != A_EOF);
+	print_ast(tree, 0);
 	return n;
 }
