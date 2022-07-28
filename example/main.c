@@ -21,9 +21,9 @@ int a = 1, b = 2;
 char *name = "parsa";
 name = "hello";
 char *last_name = "parsa";
-print name;
 name = "parsa";
-print name;
+print name + " mahmoudy " + name +" sahebi";
+print 12 + 8;
 /************************ statistics *************************
  * this is  a test comment
  * Hello From Comment

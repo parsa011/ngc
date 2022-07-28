@@ -71,7 +71,6 @@ int main(int argc, char *argv[])
 		print_symtab();
 	#endif
 	l->close_file(l);
-	print_symtab();
 #endif
 	ngc_free(l);
 	return 0;

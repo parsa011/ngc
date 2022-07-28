@@ -42,12 +42,14 @@ public ASTnode *parse_statement()
 	ASTnode *tree = NULL;
 	switch (current_token.type) {
 		case TOKEN_EOF :
+			/*
+			 * return tree after creating it, because we don't need to expect ';' after 'EOF' token
+			 */
 			tree = create_ast_node("EOF", A_EOF, INT_VAL(0), NULL, NULL, current_lexer->pos);
-			break;
+			return tree;
 			
 		case TOKEN_PRINT :
-		    parse_print_statement();
-			tree = create_ast_node("Print", A_PRINT, INT_VAL(0), NULL, NULL, current_lexer->pos);
+		    tree = parse_print_statement();
 			break;
 
 		case TOKEN_IF :
@@ -56,11 +58,9 @@ public ASTnode *parse_statement()
 			
 		default :
 			if (is_type_keyword(false) || is_qualifier(false)) {
-				parse_variable_decleration();
-				tree = create_ast_node("Decleration", A_DECLER, INT_VAL(0), NULL, NULL, current_lexer->pos);
+				tree = parse_variable_decleration();
 			} else {
-				parse_assignment_expression();
-				tree = create_ast_node("Assign", A_ASSIGN, INT_VAL(0), NULL, NULL, current_lexer->pos);
+				tree = parse_assignment_expression();
 			}
 		break;
 	}
@@ -69,7 +69,7 @@ public ASTnode *parse_statement()
 }
 
 #if NGC_DEBUG
-public void parse_print_statement()
+public ASTnode *parse_print_statement()
 {
 print_again:
 	next_token();
@@ -101,6 +101,8 @@ check_tree_type:
 	if (current_token.type == TOKEN_COMMA)
 		goto print_again;
 	putchar('\n');
+	tree = create_ast_node("Print", A_PRINT, val, tree, NULL, tree->pos);
+	return tree;
 }
 #endif
 

@@ -16,7 +16,7 @@ public ASTnode *compile(lexer *l)
 		print_prompt();
 	}
 	next_token();
-	ASTnode *n;
+	ASTnode *n = NULL;
 	do {
 		n = parse_compound_statement();
 		if (n)

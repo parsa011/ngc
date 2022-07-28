@@ -43,7 +43,7 @@ public ASTnode *parse_statement();
  *
  *		print-statement ::= 'print' expression ';'
  */
-public void parse_print_statement();
+public ASTnode *parse_print_statement();
 
 /*
  *	@brief : ---

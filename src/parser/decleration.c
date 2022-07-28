@@ -121,4 +121,5 @@ decl_again:
 		goto decl_again;
 	}
 	free(text);
+	return create_ast_node("Decleration", A_DECLER, val, NULL, NULL, current_lexer->pos);
 }
