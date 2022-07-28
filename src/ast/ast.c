@@ -102,18 +102,22 @@ public value calculate_tree(ASTnode *n, type tp)
 
 public string *process_string_tree(ASTnode *tree)
 {
+	if (!tree)
+		return NULL;
 	if (!IS_STRING_VAL(tree->val.type)) {
 		show_lexer_error("Not Valid String");
 		panic(NULL);
 	}
-	string *str = prosing_string_init(tree->val.str->value);
-	if (tree->left == NULL) {
-		return str;
-	}
-	string *left_str = process_string_tree(tree->left);
-	prosing_string_append(left_str, str->value);
-	prosing_string_free(str);
-	return left_str;
+	string *str = prosing_string_init(
+		tree->type == A_STR ? tree->val.str->value : ""
+		);
+	string *nodes = process_string_tree(tree->left);
+	if (nodes)
+		prosing_string_append(str, nodes->value);
+	nodes = process_string_tree(tree->right);
+	if (nodes)
+		prosing_string_append(str, nodes->value);
+	return str;
 }
 
 public double process_binary_tree(ASTnode *n, type tp)
